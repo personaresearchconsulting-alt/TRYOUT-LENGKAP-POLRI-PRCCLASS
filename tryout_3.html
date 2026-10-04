@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="id" oncontextmenu="return false" onselectstart="return false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>TRYOUT LENGKAP SIMULASI CAT POLRI UPDATE - Persona Research & Consulting</title>
+    
+    <!-- Fonts & Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root { 
+            --navy: #0b2340; 
+            --gold: #d4a017; 
+            --bg: #f8fafc; 
+            --gray: #f1f5f9; 
+            --danger: #c0392b; 
+            --btn-shadow: #cbd5e1; 
+        }
+        * { 
+            box-sizing: border-box; 
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; 
+        }
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 0; 
+            color: #1e293b; 
+        }
+
+        /* HEADER MASTER */
+        header { 
+            background: var(--navy); 
+            color: white; 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 4px solid var(--gold); 
+        }
+        .header-title h1 { margin: 0; font-size: 18px; color: #fff; }
+        .header-title p { margin: 3px 0 0; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .timer-badge { font-size: 20px; font-weight: bold; color: var(--gold); font-family: monospace; }
+
+        .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        /* INPUT / LOGIN SECTION */
+        .user-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .user-card input { width: 80%; max-width: 400px; padding: 12px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; text-align: center; margin-top: 15px; outline: none; display: block; margin-left: auto; margin-right: auto; }
+        
+        /* OPTION CARDS */
+        .opt { padding: 14px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #fff; text-align: left; line-height: 1.5; font-size: 14px; }
+        .opt:hover { background: #f1f5f9; border-color: var(--navy); }
+        .opt.selected { background: #e0f2fe; border-color: var(--navy); font-weight: bold; }
+
+        /* NAVIGASI SOAL GRID */
+        .nav-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 15px; }
+        .nav-item { height: 35px; display: flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .nav-item.filled { background: var(--navy); color: white; }
+        .nav-item.active { border: 2px solid var(--gold); }
+
+        /* BUTTONS */
+        .btn { background: var(--navy); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; text-align: center; display: inline-block; }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-green { background: #27ae60; color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        /* ENGINE KECERMATAN SPECIFIC */
+        .symbol-black { 
+            font-family: 'Noto Color Emoji', sans-serif;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+            filter: grayscale(100%) contrast(200%);
+            font-weight: 900;
+            text-shadow: 1px 0px 0px #000, -1px 0px 0px #000, 0px 1px 0px #000, 0px -1px 0px #000;
+            -webkit-text-stroke: 1.5px black;
+        }
+
+        .acuan-table { border-collapse: collapse; margin: 0 auto 10px; table-layout: fixed; width: 350px; }
+        .acuan-table td { border: 2px solid var(--navy); width: 70px; height: 70px; text-align: center; font-size: 42px; background: #fff; vertical-align: middle; }
+        .acuan-table td.label { background: var(--navy); color: #fff; font-size: 18px; height: 35px; font-weight: bold; filter: none !important; }
+        .soal-box { font-size: 52px; letter-spacing: 10px; padding: 20px; background: var(--gray); border-radius: 15px; min-height: 80px; width: 100%; max-width: 450px; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; margin: 0 auto; }
+        .pilihan-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; width: 100%; max-width: 450px; margin: 20px auto; }
+        .pilihan-btn { background: #fff; border: 2px solid var(--navy); padding: 18px; font-size: 22px; font-weight: 700; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 0 var(--btn-shadow); }
+        .pilihan-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        /* OVERLAY PREPARASI KECERMATAN */
+        #prepOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
+        #countdownText { font-size: 120px; font-weight: bold; color: var(--navy); }
+
+        /* REKAP & RESULT AREA */
+        .summary-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+        .card-skor { background: #f8fafc; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #e2e8f0; }
+        .card-skor b { display: block; font-size: 11px; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
+        .val-skor { font-size: 28px; font-weight: 900; color: var(--navy); line-height: 1; }
+        .card-akhir { grid-column: span 2; background: var(--navy) !important; color: #fff !important; }
+        .card-akhir .val-skor { color: var(--gold); font-size: 42px; }
+
+        .final-box { background: var(--navy); color: #fff; padding: 25px; border-radius: 16px; text-align: center; margin-bottom: 25px; }
+        .final-val { font-size: 56px; font-weight: 900; color: var(--gold); margin: 10px 0; }
+        
+        .table-res { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px; }
+        .table-res th, .table-res td { border: 1px solid #cbd5e1; padding: 10px; text-align: center; }
+        .table-res th { background: var(--navy); color: #fff; }
+
+        /* PEMBAHASAN CONTAINER */
+        .review-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .review-item.correct { border-left: 6px solid #27ae60; }
+        .review-item.incorrect { border-left: 6px solid var(--danger); }
+        .pembahasan-box { background: #f1f5f9; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; border-left: 3px solid var(--gold); }
+    </style>
+</head>
+<body>
+
+<div id="captureArea">
+    <!-- MASTER HEADER -->
+    <header id="masterHeader">
+        <div class="header-title">
+            <h1 id="headerMainTitle">PERSONA RESEARCH & CONSULTING</h1>
+            <p id="headerSubTitle">SIMULASI CAT SELEKSI POLRI - PAKET SOAL TERBARU</p>
+        </div>
+        <div id="timer" class="timer-badge">90:00</div>
+    </header>
+
+    <div class="container">
+        <!-- SECTION 1: START / IDENTITAS -->
+        <div id="sec-start" class="user-card">
+            <h2 style="margin:0; color:var(--navy);">IDENTITAS PESERTA SIMULASI POLRI</h2>
+            <p style="font-size:14px; color:#64748b; margin-top:5px;">Soal Tes Kecerdasan 100 Soal, Tes Kepribadian 100 Soal (50 TKP & 50 Skala Likert), & Kecermatan Gambar Hewan.</p>
+            <input type="text" id="inputNama" placeholder="Masukkan Nama Lengkap Peserta..." autocomplete="off">
+            <br>
+            <button class="btn btn-gold" style="font-size: 18px; padding: 15px 40px;" onclick="startFullSimulation()">MULAI SIMULASI LENGKAP</button>
+        </div>
+
+        <!-- SECTION 2: TES KECERDASAN -->
+        <div id="sec-kecerdasan" style="display:none;">
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                <div style="flex:3; min-width:300px;">
+                    <div class="card">
+                        <div id="k-q-no" style="font-weight:bold; color:var(--navy); margin-bottom:10px;">Soal 1 dari 100</div>
+                        <div id="k-q-text" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>
+                        <div id="k-options"></div>
+                        <div style="margin-top:25px; display:flex; justify-content:space-between;">
+                            <button class="btn" onclick="prevQ_Kecerdasan()" style="background:#64748b">Sebelumnya</button>
+                            <button class="btn" id="k-btn-next" onclick="nextQ_Kecerdasan()">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:250px;">
+                    <div class="card" style="padding:15px;">
+                        <div style="text-align:center; font-size:12px; font-weight:bold; margin-bottom:10px;">NAVIGASI SOAL KECERDASAN</div>
+                        <div id="k-navGrid" class="nav-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: TES KEPRIBADIAN -->
+        <div id="sec-kepribadian" style="display:none;">
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                <div style="flex:3; min-width:300px;">
+                    <div class="card">
+                        <div id="p-q-no" style="font-weight:bold; color:var(--navy); margin-bottom:10px;">Soal 1 dari 100</div>
+                        <div id="p-q-text" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>
+                        <div id="p-options"></div>
+                        <div style="margin-top:25px; display:flex; justify-content:space-between;">
+                            <button class="btn" onclick="prevQ_Kepribadian()" style="background:#64748b">Sebelumnya</button>
+                            <button class="btn" id="p-btn-next" onclick="nextQ_Kepribadian()">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:250px;">
+                    <div class="card" style="padding:15px;">
+                        <div style="text-align:center; font-size:12px; font-weight:bold; margin-bottom:10px;">NAVIGASI SOAL KEPRIBADIAN</div>
+                        <div id="p-navGrid" class="nav-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: TES KECERMATAN ENGINE -->
+        <div id="sec-kecermatan" style="display:none;">
+            <div id="prepOverlay">
+                <div style="font-size:18px; margin-bottom:10px; color: #64748b;">FOKUS PADA DETAIL SET SIMBOL GAMBAR HEWAN...</div>
+                <div id="countdownText">3</div>
+            </div>
+
+            <div class="card" style="text-align:center;">
+                <div id="kolomInfo" style="font-weight: bold; font-size: 18px; margin-bottom: 15px; color: var(--navy);">KOLOM: 1 / 10</div>
+                <table class="acuan-table">
+                    <tr id="rowSimbol"></tr>
+                    <tr id="rowLabel"></tr>
+                </table>
+                <div class="soal-box" id="soalCont"></div>
+                <div id="pilihan" class="pilihan-grid"></div>
+
+                <div style="margin-top: 25px; border-top: 1px dashed #cbd5e1; padding-top: 15px;">
+                    <button class="btn btn-danger" style="font-size: 14px; padding: 10px 25px;" onclick="confirmFinishKecermatan()">SELESAI & LANJUT HASIL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: HASIL / REKAP AKHIR -->
+        <div id="sec-result" style="display:none;">
+            <div class="card">
+                <div style="text-align:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    <h2 style="margin:0; color:var(--navy);">LAPORAN HASIL AKHIR SIMULASI LENGKAP</h2>
+                    <p style="margin:5px 0 0; color:var(--gold); font-weight:bold;">PERSONA RESEARCH & CONSULTING - WA: 0877 425 5786</p>
+                </div>
+
+                <div id="resNamaPeserta" style="background:#eef6ff; padding:15px; border-radius:12px; margin-bottom:25px; font-weight:bold; font-size:18px; color:var(--navy); text-align:center;">
+                    NAMA PESERTA: -
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:center; border:1px solid #e2e8f0;">
+                        <small style="display:block; font-size:11px; color:#64748b; font-weight:bold; margin-bottom:5px;">KECERDASAN (SKALA 100)</small>
+                        <div style="font-size:28px; font-weight:900; color:var(--navy);" id="resValKecerdasan">0</div>
+                        <small style="margin-top:5px; color:#166534;" id="resDetailKecerdasan">Benar: 0 / 100</small>
+                    </div>
+                    <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:center; border:1px solid #e2e8f0;">
+                        <small style="display:block; font-size:11px; color:#64748b; font-weight:bold; margin-bottom:5px;">KEPRIBADIAN (SKALA 100)</small>
+                        <div style="font-size:28px; font-weight:900; color:var(--navy);" id="resValKepribadian">0</div>
+                        <small style="margin-top:5px; color:#166534;" id="resDetailKepribadian">Poin: 0 / 500</small>
+                    </div>
+                    <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:center; border:1px solid #e2e8f0;">
+                        <small style="display:block; font-size:11px; color:#64748b; font-weight:bold; margin-bottom:5px;">KECERMATAN (SKALA 100)</small>
+                        <div style="font-size:28px; font-weight:900; color:var(--navy);" id="resValKecermatan">0</div>
+                        <small style="margin-top:5px; color:#166534;" id="resDetailKecermatan">Benar: 0</small>
+                    </div>
+                </div>
+
+                <h3 style="color:var(--navy); margin-top:20px; font-size:15px; border-bottom:1px solid #ccc; padding-bottom:5px;">ANALISIS METRIK KECERMATAN</h3>
+                <div id="summaryBoxKecermatan" class="summary-cards"></div>
+
+                <div style="background:#f1f5f9; padding:15px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
+                    <b style="color:var(--navy); font-size:13px;">ANALISA HASIL / INTERPRETASI KECERMATAN:</b>
+                    <div id="kesimpulanNarasi" style="margin-top:8px; line-height:1.5; font-size:12px; color:#334155;"></div>
+                </div>
+
+                <div class="final-box">
+                    <div>NILAI AKHIR AKUMULASI SELEKSI</div>
+                    <div class="final-val" id="resValFinal">0.00</div>
+                    <div style="font-size: 13px; opacity: 0.85;">Formulasi Akumulasi: (Kecerdasan x 30%) + (Kepribadian x 30%) + (Kecermatan x 40%)</div>
+                </div>
+
+                <div style="background:#f1f5f9; padding:15px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
+                    <b style="color:var(--navy); font-size:13px;">RINGKASAN GRAFIK KECERMATAN PER KOLOM:</b>
+                    <table class="table-res" style="margin-bottom: 15px;">
+                        <thead><tr><th>Kolom</th><th>Terjawab</th><th>Benar</th><th>Salah</th><th>+/-</th></tr></thead>
+                        <tbody id="tbodyHasilKecermatan"></tbody>
+                    </table>
+                    <div style="height: 180px;"><canvas id="chartPauli"></canvas></div>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+                    <button id="btnDownload" class="btn btn-green" style="flex:1; padding:15px;" onclick="downloadFullPDF()">📥 DOWNLOAD HASIL (PDF)</button>
+                    <button class="btn btn-gold" style="flex:1; padding:15px;" onclick="showReviewSection()">📖 LIHAT PEMBAHASAN SOAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: PEMBAHASAN / REVIEW -->
+        <div id="sec-review" style="display:none;">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    <h2 style="margin:0; color:var(--navy);">PEMBAHASAN & EVALUASI SOAL</h2>
+                    <div style="display:flex; gap:10px;">
+                        <button id="btnDownloadReview" class="btn btn-green" onclick="downloadReviewPDF()">📥 DOWNLOAD PEMBAHASAN (PDF)</button>
+                        <button class="btn" onclick="showSection('result')">Kembali ke Hasil</button>
+                    </div>
+                </div>
+                
+                <div id="reviewCaptureArea">
+                    <div style="text-align:center; margin-bottom:20px; border-bottom:2px solid var(--navy); padding-bottom:10px;">
+                        <h3 style="margin:0; color:var(--navy);">DOKUMEN PEMBAHASAN LENGKAP HASIL SIMULASI</h3>
+                        <p id="reviewNamaPeserta" style="margin:5px 0 0; color:var(--gold); font-weight:bold;">PESERTA: -</p>
+                    </div>
+
+                    <h3 style="color:var(--navy); border-bottom:2px solid var(--gold); padding-bottom:5px;">PEMBAHASAN TES KECERDASAN (HOTS)</h3>
+                    <div id="reviewContainerKecerdasan"></div>
+
+                    <h3 style="color:var(--navy); border-bottom:2px solid var(--gold); padding-bottom:5px; margin-top:30px;">PEMBAHASAN TES KEPRIBADIAN (TKP & SKALA LIKERT)</h3>
+                    <div id="reviewContainerKepribadian"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Security Expiration Control
+    const EXPIRATION_DATE = new Date("2026-12-31T23:59:59").getTime();
+    if (Date.now() > EXPIRATION_DATE) {
+        document.body.innerHTML = "<h1 style='text-align:center;margin-top:20%;color:red;'>LISENSI SIMULASI SUDAH KADALUARSA (EXPIRED).<br>Silahkan Hubungi Persona Research & Consulting (WA: 0877 425 5786).</h1>";
+    }
+
+    // TUGAS 1: URL GS MASTER BARU
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
+
+    let currentSection = "start";
+    let pCode = "";
+    let pPin = "";
+    let pName = "";
+    let currentSessionId = "";
+    let sessionStartTimeStr = "";
+    let sessionStartTimeMs = 0;
+
+    let timerInterval = null;
+    let timerLeft = 0;
+
+    let simulationResult = {
+        kecerdasan: { userAns: {}, benar: 0, skor: 0 },
+        kepribadian: { userAns: {}, totalPoin: 0, skor: 0 },
+        kecermatan: { rawResults: [], totalB: 0, totalS: 0, skor: 0 }
+    };
+
+    let isResultSubmitted = false;
+
+    function formatTimeObj(dateObj) {
+        let h = String(dateObj.getHours()).padStart(2, '0');
+        let m = String(dateObj.getMinutes()).padStart(2, '0');
+        let s = String(dateObj.getSeconds()).padStart(2, '0');
+        return h + ":" + m + ":" + s;
+    }
+
+    function initSessionOnStart(namaPeserta, kodeSiswa, pinPeserta) {
+        pName = namaPeserta;
+        pCode = kodeSiswa || "";
+        pPin = pinPeserta || "";
+
+        let existingSession = sessionStorage.getItem("prc_session_id");
+        let existingStartStr = sessionStorage.getItem("prc_start_time_str");
+        let existingStartMs = sessionStorage.getItem("prc_start_time_ms");
+
+        if (!existingSession || !existingStartStr) {
+            let counterKey = "prc_counter_" + (pCode || "default");
+            let lastNum = parseInt(localStorage.getItem(counterKey) || "0", 10) + 1;
+            localStorage.setItem(counterKey, lastNum);
+            let formattedNum = String(lastNum).padStart(2, '0');
+            
+            currentSessionId = (pCode || "PRC") + "-" + formattedNum;
+            
+            let startDate = new Date();
+            sessionStartTimeMs = startDate.getTime();
+            sessionStartTimeStr = formatTimeObj(startDate);
+
+            sessionStorage.setItem("prc_session_id", currentSessionId);
+            sessionStorage.setItem("prc_start_time_str", sessionStartTimeStr);
+            sessionStorage.setItem("prc_start_time_ms", sessionStartTimeMs);
+        } else {
+            currentSessionId = existingSession;
+            sessionStartTimeStr = existingStartStr;
+            sessionStartTimeMs = parseInt(existingStartMs, 10);
+        }
+    }
+
+    // -------------------------------------------------------------
+    // BANK SOAL KECERDASAN (100 SOAL ORIGINAL FOR PRC)
+    // -------------------------------------------------------------
+    const rawKecerdasan = [
+        // Verbal - Sinonim (=)
+        { q: "PRESISI =", opts: ["Ketepatan", "Kecepatan", "Keagungan", "Kekuatan", "Kejelasan"], ans: 0, exp: "Presisi bermakna ketepatan, keakuratan, atau keteledoran yang sangat kecil." },
+        { q: "AKURASI =", opts: ["Kecermatan", "Keberhasilan", "Kecepatan", "Kekuatan", "Kejelasan"], ans: 0, exp: "Akurasi bermakna tingkat kecermatan atau kebenaran hasil." },
+        { q: "KOLABORASI =", opts: ["Kerja sama", "Persaingan", "Pembagian", "Pemisahan", "Penafsiran"], ans: 0, exp: "Kolaborasi bermakna kerja sama untuk membuat atau menyelesaikan sesuatu." },
+        { q: "RESTITUSI =", opts: ["Ganti rugi", "Pengurangan", "Pemberian", "Pembatalan", "Pencabutan"], ans: 0, exp: "Restitusi bermakna ganti kerugian yang diberikan kepada korban." },
+        { q: "KEDUKUSAN =", opts: ["Kemuliaan", "Kedudukan", "Keberadaan", "Kejayaan", "Kewibawaan"], ans: 1, exp: "Kedukusan berkaitan dengan posisi atau kedudukan." },
+        { q: "VIGILANSI =", opts: ["Kewaspadaan", "Kebebasan", "Kecepatan", "Keberanian", "Kecerdasan"], ans: 0, exp: "Vigilansi bermakna kewaspadaan atau kesiapsiagaan." },
+        { q: "EVALUASI =", opts: ["Penilaian", "Perencanaan", "Pelaksanaan", "Pengawasan", "Pengarahan"], ans: 0, exp: "Evaluasi bermakna proses penilaian terhadap suatu kegiatan." },
+        { q: "IMPLEMENTASI =", opts: ["Pelaksanaan", "Perencanaan", "Pengawasan", "Penetapan", "Penyusunan"], ans: 0, exp: "Implementasi bermakna penerapan atau pelaksanaan." },
+        { q: "KONSISTENSI =", opts: ["Ketaatan asas", "Perubahan", "Kecepatan", "Keberanian", "Keluwesan"], ans: 0, exp: "Konsistensi bermakna ketaatan asas, ketetapan dalam bertindak." },
+        { q: "LITERASI =", opts: ["Melek huruf / Pemahaman", "Penulisan", "Pembacaan", "Penghitungan", "Penerjemahan"], ans: 0, exp: "Literasi bermakna kemampuan individu dalam mengolah informasi." },
+
+        // Verbal - Antonim (><)
+        { q: "PROGRES ><", opts: ["Regres", "Agres", "Kongres", "Transgres", "Ingres"], ans: 0, exp: "Progres (kemajuan) berlawanan dengan regres (kemunduran)." },
+        { q: "STATIS ><", opts: ["Dinamis", "Pasif", "Tetap", "Labil", "Kritis"], ans: 0, exp: "Statis (diam/tidak bergerak) berlawanan dengan dinamis (bergerak aktif)." },
+        { q: "KOHESTIF ><", opts: ["Renggang", "Solid", "Kuat", "Padu", "Melekat"], ans: 0, exp: "Kohesif (padu/melekat) berlawanan dengan renggang." },
+        { q: "SKEPTIS ><", opts: ["Yakin", "Ragu", "Curiga", "Pesimis", "Apatis"], ans: 0, exp: "Skeptis (ragu/kurang percaya) berlawanan dengan yakin." },
+        { q: "EKSPLISIT ><", opts: ["Implisit", "Jelas", "Tegas", "Terbuka", "Nyata"], ans: 0, exp: "Eksplisit (tersurat/jelas) berlawanan dengan implisit (tersirat)." },
+        { q: "VERIFIKASI ><", opts: ["Falsifikasi", "Validasi", "Konfirmasi", "Pemeriksaan", "Pengujian"], ans: 0, exp: "Verifikasi (pembuktian benar) berlawanan dengan falsifikasi (pembuktian salah)." },
+        { q: "DIVERGEN ><", opts: ["Konvergen", "Menyebar", "Meluas", "Berbeda", "Terpisah"], ans: 0, exp: "Divergen (menyebar) berlawanan dengan konvergen (memusat)." },
+        { q: "SINKRON ><", opts: ["Asinkron", "Selaras", "Sesuai", "Tepat", "Sama"], ans: 0, exp: "Sinkron (serentak/selaras) berlawanan dengan asinkron." },
+        { q: "INSIPIEN ><", opts: ["Akhir", "Awal", "Tengah", "Puncak", "Dasar"], ans: 0, exp: "Insipien (pada tahap awal) berlawanan dengan akhir." },
+        { q: "MODERAT ><", opts: ["Ekstrem", "Seimbang", "Wajar", "Tengah", "Biasa"], ans: 0, exp: "Moderat (seimbang/tidak berlebihan) berlawanan dengan ekstrem." },
+
+        // Verbal - Analogi
+        { q: "KAMERA : LENSA = TELESKOP : ...", opts: ["Cermin", "Okuler", "Bintang", "Langit", "Fokus"], ans: 1, exp: "Kamera menggunakan lensa sebagai komponen utama penangkap cahaya, teleskop menggunakan okuler/lensa objektif." },
+        { q: "PENA : MENULIS = KUAS : ...", opts: ["Melukis", "Mewarnai", "Dinding", "Kanvas", "Tinta"], ans: 0, exp: "Pena digunakan untuk menulis, kuas digunakan untuk melukis." },
+        { q: "DOKTER : OBAT = GURU : ...", opts: ["Ilmu", "Buku", "Sekolah", "Murid", "Papan"], ans: 0, exp: "Dokter memberikan obat untuk kesembuhan, guru memberikan ilmu untuk kecerdasan." },
+        { q: "POLISI : KETERTIBAN = HAKIM : ...", opts: ["Keadilan", "Hukum", "Vonis", "Sidang", "Pengacara"], ans: 0, exp: "Polisi bertugas menjaga ketertiban, hakim bertugas menegakkan keadilan." },
+        { q: "RADAR : GELOMBANG = SONAR : ...", opts: ["Bunyi", "Cahaya", "Air", "Kapal", "Laut"], ans: 0, exp: "Radar memanfaatkan gelombang radio/elektromagnetik, sonar memanfaatkan gelombang bunyi." },
+        { q: "MOBIL : BENSIN = MANUSIA : ...", opts: ["Makanan", "Air", "Oksigen", "Tenaga", "Darah"], ans: 0, exp: "Mobil memerlukan bensin sebagai sumber energi, manusia memerlukan makanan." },
+        { q: "PANCASILA : IDEOLOGI = UUD 1945 : ...", opts: ["Konstitusi", "Hukum", "Peraturan", "Pedoman", "Dasar"], ans: 0, exp: "Pancasila adalah ideologi negara, UUD 1945 adalah konstitusi negara." },
+        { q: "ISLANDIA : REYKJAVIK = FINLANDIA : ...", opts: ["Helsinki", "Oslo", "Stockholm", "Kopenhagen", "Amsterdam"], ans: 0, exp: "Ibu kota Islandia adalah Reykjavik, ibu kota Finlandia adalah Helsinki." },
+        { q: "TERMODINAMIKA : FISIKA = BOTANI : ...", opts: ["Biologi", "Kimia", "Geologi", "Astronomi", "Ekologi"], ans: 0, exp: "Termodinamilka adalah cabang ilmu Fisika, Botani adalah cabang ilmu Biologi." },
+        { q: "SUTRADARA : FILM = COMPOSER : ...", opts: ["Musik", "Lagu", "Partitur", "Orkestra", "Penyanyi"], ans: 0, exp: "Sutradara mengarahkan pembuatan film, composer menciptakan/mengarahkan karya musik." },
+
+        // Logika - Silogisme, Deduktif, Sebab-Akibat
+        { q: "Semua anggota kepolisian wajib menjaga kedisiplinan. Sebagian anggota kepolisian bertugas di bagian lalu lintas. Kesimpulan:", opts: ["Sebagian anggota lalu lintas wajib menjaga kedisiplinan", "Semua anggota lalu lintas tidak disiplin", "Sebagian anggota yang disiplin bukan polisi", "Tidak ada anggota lalu lintas yang disiplin", "Semua yang disiplin pasti anggota lalu lintas"], ans: 0, exp: "Karena semua polisi wajib disiplin, maka sebagian polisi di bagian lalu lintas juga wajib menjaga kedisiplinan." },
+        { q: "Jika pengawasan ditingkatkan, maka tingkat kecurangan menurun. Saat ini tingkat kecurangan tidak menurun. Kesimpulan:", opts: ["Pengawasan tidak ditingkatkan", "Pengawasan telah ditingkatkan", "Kecurangan tetap terjadi", "Pengawasan tidak berguna", "Tingkat kecurangan naik"], ans: 0, exp: "Modus Tollens: Jika P maka Q. Tidak Q. Maka Tidak P (Pengawasan tidak ditingkatkan)." },
+        { q: "Semua calon perwira harus lulus tes fisik. Budi tidak lulus tes fisik. Kesimpulan:", opts: ["Budi bukan calon perwira yang lulus", "Budi lulus tes psikologi", "Budi tetap menjadi perwira", "Semua orang lulus tes fisik", "Budi tidak ikut tes fisik"], ans: 0, exp: "Budi tidak memenuhi syarat wajib lulus tes fisik, sehingga Budi tidak lulus sebagai calon perwira." },
+        { q: "Jika hujan deras turun, maka jalanan licin. Jika jalanan licin, maka risiko kecelakaan meningkat. Hari ini hujan deras turun. Kesimpulan:", opts: ["Risiko kecelakaan meningkat", "Jalanan tidak licin", "Tidak terjadi kecelakaan", "Hujan deras berhenti", "Pengendara berjalan lambat"], ans: 0, exp: "Silogisme hipotetis: P -> Q, Q -> R, P terjadi -> R terjadi (Risiko kecelakaan meningkat)." },
+        { q: "Semua penyidik memiliki keterampilan analisis bukti. Sebagian penyidik adalah ahli siber. Kesimpulan:", opts: ["Sebagian ahli siber memiliki keterampilan analisis bukti", "Semua ahli siber adalah penyidik", "Tidak ada penyidik yang ahli siber", "Keterampilan analisis bukti hanya dimiliki ahli siber", "Semua ahli siber tidak bisa menganalisis bukti"], ans: 0, exp: "Sebagian penyidik yang merupakan ahli siber dipastikan memiliki keterampilan analisis bukti." },
+        { q: "Tidak ada pelanggar aturan yang mendapat penghargaan. Sebagian anggota mendapat penghargaan. Kesimpulan:", opts: ["Sebagian anggota bukan pelanggar aturan", "Semua anggota pelanggar aturan", "Sebagian anggota yang mendapat penghargaan melanggar aturan", "Semua anggota mendapat penghargaan", "Tidak ada anggota yang disiplin"], ans: 0, exp: "Anggota yang mendapat penghargaan dipastikan bukan merupakan pelanggar aturan." },
+        { q: "Setiap hari Senin seluruh personel mengikuti upacara. Hari ini seluruh personel mengikuti upacara. Kesimpulan:", opts: ["Hari ini mungkin hari Senin", "Hari ini pasti hari Senin", "Hari ini bukan hari Senin", "Upacara hanya ada hari Senin", "Upacara ditiadakan"], ans: 0, exp: "Konsekuen terjadi tidak serta merta memastikan sebab tunggal (Bisa hari Senin atau hari khusus lainnya), jadi kemungkinan hari ini hari Senin." },
+        { q: "Jika kondisi fisik bugar, maka latihan dapat berjalan maksimal. Latihan tidak berjalan maksimal. Kesimpulan:", opts: ["Kondisi fisik tidak bugar", "Latihan dihentikan", "Kondisi fisik sangat bugar", "Latihan ditunda", "Peserta tidak hadir"], ans: 0, exp: "Modus Tollens: ~Q maka ~P (Kondisi fisik tidak bugar)." },
+        { q: "Semua tim SAR ahli berenang. Sebagian tim SAR adalah anggota Polairud. Kesimpulan:", opts: ["Sebagian anggota Polairud ahli berenang", "Semua anggota Polairud adalah tim SAR", "Tidak ada anggota Polairud yang ahli berenang", "Semua yang ahli berenang adalah tim SAR", "Sebagian tim SAR tidak bisa berenang"], ans: 0, exp: "Sebagian tim SAR yang merupakan anggota Polairud dipastikan ahli berenang." },
+        { q: "Semua kendaraan patroli dilengkapi sirine. Sebagian kendaraan patroli berupa sepeda motor. Kesimpulan:", opts: ["Sebagian sepeda motor patroli dilengkapi sirine", "Semua sepeda motor dilengkapi sirine", "Tidak ada sepeda motor yang dilengkapi sirine", "Kendaraan patroli hanya mobil", "Sirine hanya untuk sepeda motor"], ans: 0, exp: "Sebagian kendaraan patroli yang berupa sepeda motor dipastikan dilengkapi sirine." },
+
+        // Arah dan Denah / Posisi Relatif
+        { q: "Ahmad berjalan 10 meter ke arah utara, lalu berbelok ke timur sejauh 6 meter, kemudian berbelok ke selatan sejauh 10 meter. Di manakah posisi Ahmad sekarang relatif terhadap titik awal?", opts: ["6 meter di sebelah timur", "6 meter di sebelah barat", "10 meter di sebelah utara", "10 meter di sebelah selatan", "Kembali ke titik awal"], ans: 0, exp: "Utara 10m (+10 Y) -> Timur 6m (+6 X) -> Selatan 10m (-10 Y). Hasil: X = +6, Y = 0. Posisi: 6 meter di timur." },
+        { q: "Budi menghadap ke arah barat. Ia berputar 90 derajat searah jarum jam, lalu berputar 180 derajat. Ke arah manakah Budi menghadap sekarang?", opts: ["Selatan", "Utara", "Timur", "Barat", "Tenggara"], ans: 0, exp: "Barat + 90° searah jarum jam = Utara. Utara + 180° = Selatan." },
+        { q: "Posisi Gedung A berada di sebelah utara Gedung B. Gedung C berada di sebelah timur Gedung B. Di manakah posisi Gedung A relatif terhadap Gedung C?", opts: ["Barat Laut", "Timur Laut", "Barat Daya", "Tenggara", "Utara"], ans: 0, exp: "A di utara B, C di timur B (B di barat C). Maka A berada di sebelah Barat Laut dari C." },
+        { q: "Cici bergerak 5 km ke selatan, lalu 12 km ke barat. Berapakah jarak terdekat Cici dari titik awal keberangkatan?", opts: ["13 km", "17 km", "7 km", "15 km", "10 km"], ans: 0, exp: "Teorema Pythagoras: √(5² + 12²) = √(25 + 144) = √169 = 13 km." },
+        { q: "Dalam sebuah barisan, Doni berada di urutan ke-5 dari depan dan urutan ke-8 dari belakang. Berapakah jumlah orang dalam barisan tersebut?", opts: ["12 orang", "13 orang", "11 orang", "14 orang", "10 orang"], ans: 0, exp: "Total = (Posisi Depan + Posisi Belakang) - 1 = (5 + 8) - 1 = 12 orang." },
+        { q: "Rumah Eko terletak di sebelah barat Pos Polisi. Lapangan berada di sebelah selatan Pos Polisi. Ke arah manakah Rumah Eko dari Lapangan?", opts: ["Barat Laut", "Barat Daya", "Timur Laut", "Tenggara", "Utara"], ans: 0, exp: "Pos Polisi di utara Lapangan, Rumah Eko di barat Pos Polisi. Jadi Rumah Eko di Barat Laut Lapangan." },
+        { q: "Fani berjalan 30 meter ke timur, berbelok ke utara 40 meter. Jarak langsung ke titik asal adalah...", opts: ["50 meter", "70 meter", "10 meter", "60 meter", "45 meter"], ans: 0, exp: "Pythagoras: √(30² + 40²) = √(900 + 1600) = √2500 = 50 meter." },
+        { q: "Jika seseorang menghadap Tenggara lalu berputar 135 derajat berlawanan arah jarum jam, arah yang dihadapi adalah...", opts: ["Utara", "Timur", "Barat", "Selatan", "Barat Laut"], ans: 0, exp: "Tenggara (135° dari Utara). Berlawanan jarum jam 135° -> 135° - 135° = 0° (Utara)." },
+        { q: "Pos A berada 4 km di utara Pos B. Pos C berada 3 km di timur Pos A. Jarak Pos C ke Pos B adalah...", opts: ["5 km", "7 km", "1 km", "6 km", "8 km"], ans: 0, exp: "Segitiga siku-siku dengan alas 3 km dan tinggi 4 km. Sisi miring = √(3² + 4²) = 5 km." },
+        { q: "Kota X berada di sebelah timur Kota Y. Kota Z berada di sebelah selatan Kota X. Kota Y berada di arah mana dari Kota Z?", opts: ["Barat Laut", "Barat Daya", "Timur Laut", "Tenggara", "Utara"], ans: 0, exp: "Z di selatan X, X di timur Y (Y di barat X). Maka Y berada di Barat Laut dari Z." },
+
+        // Numerik - Deret & Pola Angka
+        { q: "2, 4, 8, 16, 32, ...", opts: ["64", "48", "50", "60", "128"], ans: 0, exp: "Pola: Dikali 2 (32 x 2 = 64)." },
+        { q: "5, 10, 15, 20, 25, ...", opts: ["30", "35", "40", "28", "32"], ans: 0, exp: "Pola: Ditambah 5 (25 + 5 = 30)." },
+        { q: "1, 4, 9, 16, 25, ...", opts: ["36", "49", "30", "40", "32"], ans: 0, exp: "Pola: Kuadrat sempurna (1², 2², 3², 4², 5², 6² = 36)." },
+        { q: "3, 6, 11, 18, 27, ...", opts: ["38", "36", "40", "35", "42"], ans: 0, exp: "Pola beda: +3, +5, +7, +9, berikutnya +11. (27 + 11 = 38)." },
+        { q: "100, 95, 85, 70, 50, ...", opts: ["25", "30", "20", "35", "15"], ans: 0, exp: "Pola beda: -5, -10, -15, -20, berikutnya -25. (50 - 25 = 25)." },
+        { q: "2, 3, 5, 8, 13, 21, ...", opts: ["34", "30", "32", "35", "28"], ans: 0, exp: "Deret Fibonacci: Suku berikutnya hasil penjumlahan 2 suku sebelumnya (13 + 21 = 34)." },
+        { q: "81, 27, 9, 3, ...", opts: ["1", "0", "1/3", "2", "1.5"], ans: 0, exp: "Pola: Dibagi 3 (3 / 3 = 1)." },
+        { q: "4, 8, 12, 24, 28, ...", opts: ["56", "32", "52", "60", "36"], ans: 0, exp: "Pola selang-seling: x2, +4, x2, +4, x2 -> 28 x 2 = 56." },
+        { q: "7, 12, 22, 42, 82, ...", opts: ["162", "122", "152", "142", "172"], ans: 0, exp: "Pola beda: +5, +10, +20, +40, berikutnya +80. (82 + 80 = 162)." },
+        { q: "1, 2, 6, 24, 120, ...", opts: ["720", "600", "500", "840", "480"], ans: 0, exp: "Pola faktorial: x1, x2, x3, x4, x5, x6 -> 120 x 6 = 720." },
+
+        // Numerik - Aritmetika, Rasio, Persentase, Soal Cerita (Jarak/Waktu/Produktivitas)
+        { q: "Sebuah mobil patroli menempuh jarak 180 km dengan kecepatan rata-rata 60 km/jam. Berapa lama waktu yang dibutuhkan?", opts: ["3 jam", "2.5 jam", "4 jam", "3.5 jam", "2 jam"], ans: 0, exp: "Waktu = Jarak / Kecepatan = 180 / 60 = 3 jam." },
+        { q: "Lima orang pekerja dapat menyelesaikan pengecatan pos pengamanan dalam waktu 6 hari. Berapa hari yang dibutuhkan jika dikerjakan oleh 10 orang?", opts: ["3 hari", "4 hari", "2 hari", "5 hari", "2.5 hari"], ans: 0, exp: "Perbandingan berbalik nilai: 5 x 6 = 10 x H -> H = 30 / 10 = 3 hari." },
+        { q: "Harga sebuah HT setelah mendapat diskon 20% adalah Rp 800.000. Berapakah harga awal HT tersebut?", opts: ["Rp 1.000.000", "Rp 960.000", "Rp 1.100.000", "Rp 900.000", "Rp 1.200.000"], ans: 0, exp: "Harga Awal = 800.000 / (1 - 0.20) = 800.000 / 0.8 = Rp 1.000.000." },
+        { q: "Rasio jumlah personel Pria dan Wanita di sebuah polsek adalah 7 : 3. Jika jumlah total personel adalah 50 orang, berapa jumlah personel Wanita?", opts: ["15 orang", "35 orang", "20 orang", "25 orang", "10 orang"], ans: 0, exp: "Wanita = (3 / (7+3)) x 50 = (3/10) x 50 = 15 orang." },
+        { q: "Sebuah tangki bahan bakar kendaraan operasional berisi 3/4 bagian. Setelah digunakan 15 liter, sisa bahan bakar menjadi 1/2 bagian. Berapa kapasitas total tangki?", opts: ["60 liter", "50 liter", "45 liter", "80 liter", "75 liter"], ans: 0, exp: "(3/4 - 1/2) X = 15 -> (1/4) X = 15 -> X = 60 liter." },
+        { q: "Berapakah 15% dari Rp 2.500.000?", opts: ["Rp 375.000", "Rp 350.000", "Rp 400.000", "Rp 325.000", "Rp 380.000"], ans: 0, exp: "15/100 x 2.500.000 = Rp 375.000." },
+        { q: "Jika 3x + 7 = 22, maka nilai dari 2x - 1 adalah...", opts: ["9", "10", "8", "11", "7"], ans: 0, exp: "3x = 15 -> x = 5. Nilai 2(5) - 1 = 9." },
+        { q: "Rata-rata nilai tes 4 orang adalah 80. Jika nilai siswa ke-5 digabungkan, rata-ratanya menjadi 82. Berapa nilai siswa ke-5?", opts: ["90", "88", "85", "92", "95"], ans: 0, exp: "Total awal = 4 x 80 = 320. Total baru = 5 x 82 = 410. Nilai ke-5 = 410 - 320 = 90." },
+        { q: "Sebuah bus bergerak dari Kota A ke Kota B pukul 07.00 dengan kecepatan 50 km/jam. Pada saat sama mobil sedan bergerak dari B ke A dengan kecepatan 70 km/jam. Jarak A-B = 240 km. Pukul berapa mereka berpapasan?", opts: ["Pukul 09.00", "Pukul 08.30", "Pukul 09.30", "Pukul 10.00", "Pukul 08.45"], ans: 0, exp: "Waktu papasan = Jarak / (V1 + V2) = 240 / (50 + 70) = 240 / 120 = 2 jam. Papasan = 07.00 + 2 jam = 09.00." },
+        { q: "Suatu cetakan laporan tebalnya 240 halaman. Jika diisi 30 baris per halaman butuh 240 halaman. Jika diisi 40 baris per halaman, berapa halaman yang dibutuhkan?", opts: ["180 halaman", "200 halaman", "160 halaman", "210 halaman", "190 halaman"], ans: 0, exp: "Total baris = 240 x 30 = 7200 baris. Halaman baru = 7200 / 40 = 180 halaman." },
+
+        // Pengetahuan Umum
+        { q: "Landasan idiil negara Indonesia adalah...", opts: ["Pancasila", "UUD 1945", "Bhinneka Tunggal Ika", "NKRI", "Tap MPR"], ans: 0, exp: "Landasan idiil Indonesia adalah Pancasila." },
+        { q: "Lagu kebangsaan Indonesia Raya diciptakan oleh...", opts: ["W.R. Soepratman", "C. Simanjuntak", "Kusbini", "Ibu Soed", "Ismail Marzuki"], ans: 0, exp: "Indonesia Raya diciptakan oleh Wage Rudolf Soepratman." },
+        { q: "Organisasi PBB yang menangani bidang pendidikan, ilmu pengetahuan, dan kebudayaan adalah...", opts: ["UNESCO", "UNICEF", "WHO", "UNHCR", "ILO"], ans: 0, exp: "UNESCO (United Nations Educational, Scientific and Cultural Organization)." },
+        { q: "Mata uang negara Jepang adalah...", opts: ["Yen", "Yuan", "Won", "Ringgit", "Pesos"], ans: 0, exp: "Mata uang Jepang adalah Yen." },
+        { q: "Konferensi Asia Afrika (KAA) pertama kali diselenggarakan pada tahun 1955 di kota...", opts: ["Bandung", "Jakarta", "Bogor", "Yogyakarta", "Surabaya"], ans: 0, exp: "KAA I diselenggarakan di Bandung pada tahun 1955." },
+        { q: "Benua terbesar di dunia berdasarkan luas wilayah adalah...", opts: ["Benua Asia", "Benua Amerika", "Benua Afrika", "Benua Eropa", "Benua Australia"], ans: 0, exp: "Benua Asia merupakan benua terbesar di dunia." },
+        { q: "Penulisan teks Proklamasi Kemerdekaan Indonesia diketik oleh...", opts: ["Sayuti Melik", "Sukarni", "B.M. Diah", "Chaerul Saleh", "Laksamana Maeda"], ans: 0, exp: "Naskah Proklamasi diketik oleh Sayuti Melik." },
+        { q: "Sumpah Pemuda dicetuskan pada tanggal...", opts: ["28 Oktober 1928", "20 Mei 1908", "17 Agustus 1945", "10 November 1945", "1 Oktober 1965"], ans: 0, exp: "Sumpah Pemuda dicetuskan pada 28 Oktober 1928." },
+        { q: "Lautan terluas di dunia adalah...", opts: ["Samudra Pasifik", "Samudra Atlantik", "Samudra Hindia", "Samudra Arktik", "Samudra Antarktika"], ans: 0, exp: "Samudra Pasifik merupakan samudra terluas di dunia." },
+        { q: "Sistem pemerintahan yang kekuasaannya berpusat di tangan rakyat dinamakan...", opts: ["Demokrasi", "Monarki", "Oligarki", "Otokrasi", "Feodalisme"], ans: 0, exp: "Demokrasi berasal dari rakyat, oleh rakyat, dan untuk rakyat." },
+
+        // Pengetahuan Khusus POLRI
+        { q: "Tugas pokok Kepolisian Negara Republik Indonesia diatur dalam UU No. 2 Tahun 2002 Pasal...", opts: ["Pasal 13", "Pasal 2", "Pasal 5", "Pasal 18", "Pasal 21"], ans: 0, exp: "Tugas pokok Polri diatur dalam UU No. 2 Tahun 2002 Pasal 13." },
+        { q: "Motto Kepolisian Negara Republik Indonesia adalah...", opts: ["Rastra Sewakottama", "Tri Brata", "Catur Prasetya", "Bhayangkara Jaya", "Sadhana Kapolisian"], ans: 0, exp: "Motto Polri adalah Rastra Sewakottama (Pelayan Utama Bangsa)." },
+        { q: "Pedoman hidup Kepolisian Negara Republik Indonesia adalah...", opts: ["Tri Brata", "Catur Prasetya", "Kode Etik", "UU Kepolisian", "Pancasila"], ans: 0, exp: "Tri Brata merupakan pedoman hidup bagi anggota Polri." },
+        { q: "Pedoman kerja Kepolisian Negara Republik Indonesia adalah...", opts: ["Catur Prasetya", "Tri Brata", "SOP", "Perkap", "Maklumat Kapolri"], ans: 0, exp: "Catur Prasetya merupakan pedoman kerja bagi anggota Polri." },
+        { q: "Hari Bhayangkara diperingati setiap tanggal...", opts: ["1 Juli", "10 November", "29 September", "22 September", "17 Agustus"], ans: 0, exp: "Hari Bhayangkara diperingati setiap tanggal 1 Juli." },
+        { q: "Jabatan tertinggi dalam struktur Kepolisian Negara Republik Indonesia adalah...", opts: ["Kapolri", "Wakapolri", "Irwasum", "Kabareskrim", "Kapolda"], ans: 0, exp: "Jabatan tertinggi Polri adalah Kepala Kepolisian Negara Republik Indonesia (Kapolri)." },
+        { q: "Kepolisian Negara Republik Indonesia berada di bawah kedudukan langsung...", opts: ["Presiden", "Menteri Dalam Negeri", "Menteri Pertahanan", "DPR", "Menko Polhukam"], ans: 0, exp: "Sesuai UU No. 2 Tahun 2002, Polri berada di bawah Presiden." },
+        { q: "Divisi yang bertugas menegakkan disiplin dan ketertiban internal Polri adalah...", opts: ["Divpropam", "Divhumas", "Divkum", "Divtik", "Divhubinter"], ans: 0, exp: "Divisi Profesi dan Pengamanan (Divpropam)." },
+        { q: "Satuan korps kepolisian yang bertugas menangani penanggulangan terorisme dan kejahatan berintensitas tinggi adalah...", opts: ["Brimob", "Sabhara", "Lantas", "Reskrim", "Polairud"], ans: 0, exp: "Korps Brigadir Mobil (Brimob)." },
+        { q: "Unsur pelaksana utama kepolisian di tingkat Kabupaten/Kota adalah...", opts: ["Polres", "Polda", "Polsek", "Mabes", "Pospol"], ans: 0, exp: "Kepolisian Resor (Polres) membawahi tingkat Kabupaten/Kota." },
+
+        // Logika Visual / Gambar
+        { q: "Sebuah susunan balok terdiri dari 3 lapis. Lapis bawah 4x4 balok, lapis tengah 3x3 balok, lapis atas 2x2 balok. Berapakah jumlah total balok tersebut?", opts: ["29 balok", "25 balok", "30 balok", "28 balok", "32 balok"], ans: 0, exp: "Lapis bawah = 16, tengah = 9, atas = 4. Total = 16 + 9 + 4 = 29 balok." },
+        { q: "Sebuah kubus besar berukuran 3x3x3 dipotong menjadi kubus-kubus kecil berukuran 1x1x1. Berapa banyak kubus kecil yang memiliki tepat 3 sisi dicat (di sudut)?", opts: ["8 kubus", "12 kubus", "6 kubus", "1 kubus", "4 kubus"], ans: 0, exp: "Kubus kecil yang berada di sudut kubus besar memiliki 3 sisi dicat, jumlah sudut kubus = 8." },
+        { q: "Pada kubus berukuran 3x3x3 yang sama, berapa banyak kubus kecil yang tidak terkena cat sama sekali (di dalam)?", opts: ["1 kubus", "2 kubus", "4 kubus", "8 kubus", "0 kubus"], ans: 0, exp: "Kubus bagian dalam = (3-2) x (3-2) x (3-2) = 1 x 1 x 1 = 1 kubus." },
+        { q: "Jika sebuah bentuk panah menghadap ke UTARA diputar 90 derajat searah jarum jam, lalu dicerminkan secara horizontal, ke arah manakah panah menghadap?", opts: ["BARAT", "TIMUR", "UTARA", "SELATAN", "TENGGARA"], ans: 0, exp: "Utara diputar 90° searah jarum jam = TIMUR. Dicerminkan horizontal (kiri-kanan) = BARAT." },
+        { q: "Sebuah pola gambar lingkaran hitam berpindah posisi berputar 45 derajat searah jarum jam pada setiap langkah. Setelah 4 langkah, berapa derajat total perpindahannya?", opts: ["180 derajat", "90 derajat", "135 derajat", "270 derajat", "360 derajat"], ans: 0, exp: "4 x 45 derajat = 180 derajat." },
+        { q: "Berapa banyak segitiga kecil berukuran sama yang dibutuhkan untuk membentuk sebuah segitiga besar dengan panjang sisi 4 kali segitiga kecil?", opts: ["16 segitiga", "12 segitiga", "8 segitiga", "9 segitiga", "20 segitiga"], ans: 0, exp: "Rasio luas = (Skala panjang)² = 4² = 16 segitiga." },
+        { q: "Sebuah tumpukan kubus berbentuk piramida dengan alas 5x5 kubus, lalu 4x4, 3x3, 2x2, dan paling atas 1x1. Berapa total kubus dalam piramida?", opts: ["55 kubus", "50 kubus", "60 kubus", "45 kubus", "65 kubus"], ans: 0, exp: "1 + 4 + 9 + 16 + 25 = 55 kubus." },
+        { q: "Jika sebuah objek persegi bertitik di pojok kanan atas diputar 180 derajat, di manakah letak titik tersebut?", opts: ["Kiri bawah", "Kiri atas", "Kanan bawah", "Tengah", "Kanan atas"], ans: 0, exp: "Rotasi 180° membalikkan posisi atas->bawah dan kanan->kiri (Kiri bawah)." },
+        { q: "Jumlah permukaan pada sebuah prisma segitiga adalah...", opts: ["5 permukaan", "6 permukaan", "4 permukaan", "7 permukaan", "8 permukaan"], ans: 0, exp: "Prisma segitiga memiliki 2 alas segitiga dan 3 sisi tegak persegi panjang = 5 permukaan." },
+        { q: "Sebuah kubus memiliki 6 sisi. Jika 2 sisi berhadapan dicat merah, dan sisanya dicat biru, berapa banyak sisi berwarna biru?", opts: ["4 sisi", "3 sisi", "2 sisi", "5 sisi", "1 sisi"], ans: 0, exp: "Total 6 sisi - 2 sisi merah = 4 sisi biru." }
+    ];
+
+    // -------------------------------------------------------------
+    // BANK SOAL KEPRIBADIAN (100 SOAL: 50 TKP + 50 SKALA LIKERT)
+    // -------------------------------------------------------------
+    const rawKepribadian = [
+        // --- 50 SOAL TKP (SOAL 1-50) ---
+        { q: "Ketika Anda sedang fokus menyusun dokumen laporan hasil operasi analisis intelijen tingkat polda yang memiliki batas waktu serah sangat ketat sebelum rapat pimpinan sore hari, tiba-tiba seorang warga lansia datang ke ruang kerja Anda dengan wajah panik dan mengisahkan bahwa ia baru saja menjadi korban penipuan transaksi digital hingga seluruh tabungannya habis. Sikap terbaik yang Anda tunjukkan adalah...", opts: [
+            {t: "Menyambut warga tersebut dengan sikap tenang dan empati, mencatat poin penting laporan dan identitas secara singkat namun jelas, lalu segera mendampinginya ke ruang piket SPKT agar langsung ditangani petugas penyidik sambil Anda kembali melanjutkan penyusunan laporan tepat waktu.", s: 5},
+            {t: "Meninggalkan seluruh berkas laporan di meja kerja secara mendadak dan fokus penuh mendampingi warga tersebut mengurus berkas laporan dari awal hingga selesai tanpa mempedulikan batas waktu laporan pimpinan.", s: 4},
+            {t: "Meminta warga lansia tersebut untuk duduk menunggu di ruang tunggu selama 2 jam hingga Anda menyelesaikan seluruh pengetikan laporan rapat pimpinan agar konsentrasi kerja Anda tidak terganggu.", s: 3},
+            {t: "Menyelesaikan pengetikan laporan terlebih dahulu hingga tuntas baru kemudian menemui dan mendengarkan keluhan warga lansia tersebut.", s: 2},
+            {t: "Mengabaikan kedatangan warga lansia tersebut dan mengarahkannya untuk langsung mencari sendiri ruangan petugas SPKT di gedung sebelah.", s: 1}
+        ]},
+        { q: "Wilayah pemukiman di sekitar tempat tugas Anda dilanda bencana banjir bandang yang parah pada hari libur dinas Anda. Banyak warga terjebak di dalam rumah. Sikap yang paling tepat Anda lakukan adalah...", opts: [
+            {t: "Secara sukarela langsung bergerak menuju lokasi bencana, berkoordinasi dengan tim evakuasi gabungan serta BPBD untuk membantu proses evakuasi warga rentan seperti lansia dan anak-anak.", s: 5},
+            {t: "Mengumpulkan barang bantuan dan logistik pribadi dari rumah untuk disalurkan melalui posko bencana terdekat.", s: 4},
+            {t: "Membuat laporan situasi bencana di grup pengaduan dinas agar mendapatkan perhatian dan bantuan dari satuan pimpinan.", s: 3},
+            {t: "Memantau perkembangan berita banjir dari televisi dan media sosial sambil menunggu panggilan instruksi siaga resmi.", s: 2},
+            {t: "Memilih tidak ikut campur karena hari tersebut merupakan hak jadwal istirahat libur resmi Anda.", s: 1}
+        ]},
+        { q: "Pengadaan alat operasional kantor mengalami keterlambatan pengiriman dari vendor utama, sementara kegiatan pengamanan besar akan dilaksanakan esok hari. Sikap Anda adalah...", opts: [
+            {t: "Secara proaktif mencari solusi alternatif dengan memanfaatkan inventaris pendukung yang ada serta berkoordinasi dengan satuan tetangga agar kegiatan tetap terlaksana lancar.", s: 5},
+            {t: "Menghubungi vendor secara terus menerus dan memberikan teguran keras atas keterlambatan tersebut.", s: 4},
+            {t: "Melaporkan kendala tersebut kepada pimpinan dan menyarankan agar kegiatan pengamanan ditunda.", s: 3},
+            {t: "Menunggu hingga vendor mengirimkan alat tersebut tanpa melakukan tindakan antisipasi apa pun.", s: 2},
+            {t: "Pasrah dengan keadaan dan menyerahkan sepenuhnya keputusan akhir kepada perwira pimpinan.", s: 1}
+        ]},
+        { q: "Seorang warga dari kalangan kurang mampu datang ke loket pelayanan kepolisian dengan membawa berkas pengaduan yang belum memenuhi syarat administrasi lengkap. Warga tersebut tampak kebingungan dan takut. Tindakan Anda adalah...", opts: [
+            {t: "Memanggil warga tersebut secara ramah, memeriksa berkas yang kurang, membimbing proses pengisian formulir step-by-step, serta membantu mempermudah alur pelayanan.", s: 5},
+            {t: "Mewakilkan pelayanan warga kurang mampu tersebut kepada staf honorer di loket lain.", s: 4},
+            {t: "Menerima berkas apa adanya tanpa memeriksa kekurangan syarat agar warga tidak merasa dipersulit.", s: 3},
+            {t: "Meminta warga tersebut melengkapi berkasnya di rumah tanpa memberikan petunjuk panduan yang jelas.", s: 2},
+            {t: "Menolak berkas pengaduan tersebut dengan tegas dan menyuruh warga tersebut pulang karena tidak tertib administrasi.", s: 1}
+        ]},
+        { q: "Rekan satu tim patroli Anda mengalami musibah kemalangan keluarga sehingga berhalangan hadir saat jadwal piket malam bertepatan dengan pengamanan malam tahun baru. Tindakan Anda...", opts: [
+            {t: "Menyatakan kesediaan mengambil alih sebagian beban tugas jaga rekan tersebut dengan tulus demi menjaga keutuhan stamina dan kelancaran fungsi tim patroli.", s: 5},
+            {t: "Melakukan tugas patroli malam seadanya dengan jumlah personel terbatas yang ada.", s: 4},
+            {t: "Inisiatif mencari petugas pengganti dari unit kerja lain dengan memberikan insentif dari kantong pribadi.", s: 3},
+            {t: "Melaporkan kekosongan personel tersebut kepada perwira pengawas tanpa memberikan tawaran solusi.", s: 2},
+            {t: "Menolak menggantikan jam piketnya karena merasa jadwal porsi kerja Anda sudah terpenuhi.", s: 1}
+        ]},
+        { q: "Pada saat pelaksanaan kegiatan aksi donor darah dalam rangka Hari Bhayangkara, hasil pemeriksaan medis menyatakan bahwa Anda tidak memenuhi syarat kesehatan untuk mendonorkan darah karena tekanan darah rendah. Sikap Anda...", opts: [
+            {t: "Tetap berada di lokasi acara, menawarkan diri membantu panitia dalam melayani registrasi peserta, serta memberi dukungan moral kepada rekan lain yang mendonor.", s: 5},
+            {t: "Memberikan sumbangan dana sukarela kepada panitia penyelenggara sebagai pengganti ketidakikutsertaan donor darah.", s: 4},
+            {t: "Mendesak petugas medis agar tetap mengambil darah Anda demi menjaga integritas kehadiran.", s: 3},
+            {t: "Menunjukkan rasa kecewa dan langsung kembali ke meja kerja tanpa bertegur sapa dengan panitia.", s: 2},
+            {t: "Izin pulang meninggalkan lokasi kegiatan aksi sosial karena merasa kehadiran Anda sudah tidak berguna lagi.", s: 1}
+        ]},
+        { q: "Saat ditugaskan di lokasi pos pengungsian bencana alam, ketersediaan pasokan air bersih dan logistik makanan siap saji dari pusat sangat terbatas. Sikap Anda dalam pembagian logistik adalah...", opts: [
+            {t: "Mendahulukan dan memastikan seluruh warga pengungsi, kelompok lansia, ibu hamil, dan anak-anak mendapatkan jatah logistik secara memadai sebelum mengambil jatah pribadi.", s: 5},
+            {t: "Menyerahkan jatah makanan pribadi Anda sepenuhnya kepada perwira posko lain.", s: 4},
+            {t: "Membagikan logistik secara rata kepada siapa saja yang mengantre tanpa membedakan kondisi fisik pengungsi.", s: 3},
+            {t: "Membatasi pembagian air bersih hanya untuk kalangan pengungsi yang dikenal dekat saja.", s: 2},
+            {t: "Mengambil jatah logistik paling awal dan paling banyak untuk cadangan pribadi tim petugas.", s: 1}
+        ]},
+        { q: "Seorang rekan kerja seangkatan Anda menunjukkan tanda-tanda stres berat dan penurunan performa akibat permasalahan pribadi dalam keluarganya. Tindakan empati yang tepat adalah...", opts: [
+            {t: "Melakukan pendekatan secara personal dan hangat, menawarkan waktu untuk mendengarkan keluh kesahnya, serta membantu mencarikan solusi atau konseling psikologi internal.", s: 5},
+            {t: "Menyarankan rekan tersebut untuk mengambil cuti panjang atau mengajukan pengunduran diri agar beban mentalnya berkurang.", s: 4},
+            {t: "Menceritakan masalah pribadi rekan tersebut di grup percakapan kantor agar rekan lain ikut prihatin.", s: 3},
+            {t: "Menjauhi rekan tersebut karena khawatir permasalahan pribadinya mempengaruhi suasana kerja tim.", s: 2},
+            {t: "Pura-pura tidak tahu dan membiarkan rekan tersebut menyelesaikan masalahnya sendiri tanpa campur tangan.", s: 1}
+        ]},
+        { q: "Seorang warga menyerahkan dompet tebal berisi uang tunai jumlah besar dan dokumen berharga yang ditemukan tercebur di area parkir Mapolres. Langkah Anda adalah...", opts: [
+            {t: "Mengapresiasi kejujuran warga tersebut, mencatat identitas penemu dan barang temuan di buku register mutasi secara rinci, menyimpannya di tempat aman, serta segera mengumumkan secara resmi.", s: 5},
+            {t: "Menyarankan warga penemu untuk membawa pulang dompet tersebut dan mengumumkannya sendiri di media sosial.", s: 4},
+            {t: "Langsung menyerahkan dompet temuan tersebut kepada perwira pimpinan untuk disimpan di brankas.", s: 3},
+            {t: "Menyimpan dompet tersebut di laci meja pribadi tanpa membuat catatan mutasi pengaduan resmi.", s: 2},
+            {t: "Mengambil sebagian uang tunai di dalamnya untuk diberikan sebagai imbalan kepada warga penemu.", s: 1}
+        ]},
+        { q: "Saat Anda membawakan materi sosialisasi bahaya narkoba di sekolah, sebagian besar siswa terlihat jenuh dan mengantuk. Langkah inovatif yang Anda ambil adalah...", opts: [
+            {t: "Mengubah metode penyampaian materi secara dinamis melalui kuis interaktif, tayangan video pendek berbasis kasus nyata, dan membuka ruang diskusi berhadiah.", s: 5},
+            {t: "Menaikkan nada suara dan berbicara lebih tegas agar perhatian para siswa kembali terfokus.", s: 4},
+            {t: "Menghentikan pemaparan materi sosialisasi lebih awal dan memberikan waktu istirahat kepada para siswa.", s: 3},
+            {t: "Menegur siswa yang tidak memperhatikan dan mengancam melaporkan ke pihak sekolah.", s: 2},
+            {t: "Tetap membacakan slide presentasi hingga selesai sesuai dengan naskah awal.", s: 1}
+        ]},
+        { q: "Warga di desa lokasi penugasan Anda menolak program kegiatan kepolisian karena dipengaruhi oleh kabar bohong (hoaks) yang beredar. Tindakan Anda...", opts: [
+            {t: "Pendekatan persuasif dengan merangkul tokoh masyarakat setempat, memberikan edukasi faktual dengan bahasa sederhana, serta membuka ruang dialog transparan.", s: 5},
+            {t: "Menyerahkan penyelesaian masalah kabar bohong tersebut sepenuhnya kepada dinas komunikasi daerah.", s: 4},
+            {t: "Mengancam akan memberikan sanksi hukum bagi warga desa yang terus mempercayai kabar bohong tersebut.", s: 3},
+            {t: "Membatalkan seluruh program kegiatan di desa tersebut dan mengalihkan ke lokasi lain.", s: 2},
+            {t: "Melakukan pengerahan pasukan untuk memaksa warga mengikuti program tanpa penjelasan.", s: 1}
+        ]},
+        { q: "Saat melakukan patroli rutin malam hari, Anda mendapati sekumpulan pemuda nongkrong di area gelap pada jam rawan. Tindakan Anda adalah...", opts: [
+            {t: "Mendatangi mereka dengan pendekatan humanis, memeriksa identitas secara sopan, memberikan imbauan kamtibmas, serta mengarahkan mereka pulang ke rumah demi keamanan.", s: 5},
+            {t: "Menyalakan sirine mobil patroli dari jarak jauh agar sekumpulan pemuda tersebut bubar dengan sendirinya.", s: 4},
+            {t: "Membiarkan mereka tetap nongkrong selama tidak terlihat adanya tanda-tanda keributan atau senjata tajam.", s: 3},
+            {t: "Membentak dan menyuruh mereka langsung membubarkan diri tanpa melakukan pemeriksaan terlebih dahulu.", s: 2},
+            {t: "Langsung menangkap dan mengamankan mereka ke polsek tanpa alasan hukum yang jelas.", s: 1}
+        ]},
+        { q: "Ketika memimpin rapat koordinasi internal, timbul perbedaan pendapat yang sengit antaranggota mengenai strategi penanganan unjuk rasa. Sikap Anda...", opts: [
+            {t: "Mendengarkan seluruh pandangan dengan objektif, memfasilitasi diskusi yang berorientasi pada solusi, serta mengambil keputusan terbaik berdasarkan analisis risiko bersama.", s: 5},
+            {t: "Memotong perdebatan dan langsung memaksakan pendapat pribadi Anda sebagai keputusan final rapat.", s: 4},
+            {t: "Menyerahkan pengambilan keputusan kepada voting terbanyak tanpa mempertimbangkan risiko teknis.", s: 3},
+            {t: "Menunda rapat dan meminta pimpinan atasan yang memutuskan jalannya strategi.", s: 2},
+            {t: "Membiarkan perdebatan berlangsung tanpa batas hingga salah satu pihak mengalah.", s: 1}
+        ]},
+        { q: "Anda ditugaskan memimpin unit kerja baru yang anggotanya memiliki latar belakang suku, agama, dan budaya yang beragam. Langkah awal Anda...", opts: [
+            {t: "Membangun komunikasi terbuka, menghargai perbedaan, menetapkan standar nilai kerja bersama, serta menciptakan suasana kerja inklusif dan solid.", s: 5},
+            {t: "Membentuk kelompok kerja berdasarkan kemiripan suku dan daerah asal agar mudah berkoordinasi.", s: 4},
+            {t: "Menjelaskan aturan kerja ketat tanpa perlu pendekatan emosional atau pengenalan karakter anggota.", s: 3},
+            {t: "Hanya berinteraksi intensif dengan anggota yang memiliki latar belakang sama dengan Anda.", s: 2},
+            {t: "Membiarkan setiap anggota bekerja sesuai kebiasaan masing-masing tanpa ada penyatuan visi.", s: 1}
+        ]},
+        { q: "Sistem aplikasi pelaporan baru diperkenalkan di kantor Anda, namun banyak rekan senior merasa kesulitan dan menolak menggunakannya. Tindakan Anda...", opts: [
+            {t: "Mempelajari aplikasi tersebut hingga mahir, lalu secara sabar mendampingi dan melatih rekan senior agar mereka mampu beradaptasi dengan teknologi baru.", s: 5},
+            {t: "Mengambil alih seluruh pekerjaan input data rekan senior agar target laporan unit kerja terpenuhi.", s: 4},
+            {t: "Melaporkan penolakan rekan senior tersebut kepada pimpinan agar mereka mendapat teguran resmi.", s: 3},
+            {t: "Membiarkan rekan senior tetap menggunakan cara manual dan hanya Anda yang menggunakan aplikasi.", s: 2},
+            {t: "Ikut menolak penggunaan aplikasi baru tersebut demi solidaritas dengan rekan kerja senior.", s: 1}
+        ]},
+
+        // Soal TKP 16-50 (Melengkapi hingga 50 Soal TKP)
+        { q: "Anda melihat adanya dugaan praktik pungli yang dilakukan oknum petugas di lingkungan unit kerja Anda. Sikap integritas Anda adalah...", opts: [
+            {t: "Melaporkan temuan indikasi pungli tersebut secara resmi melalui saluran pengaduan internal (Propam) disertai bukti yang valid.", s: 5},
+            {t: "Menegur oknum petugas tersebut secara pribadi agar segera menghentikan tindakannya.", s: 4},
+            {t: "Membicarakan hal tersebut dengan rekan sekerja lain untuk mencari kepastian info.", s: 3},
+            {t: "Memilih diam dan tidak ikut campur selama tidak merugikan keuangan pribadi Anda.", s: 2},
+            {t: "Mengikuti jejak oknum tersebut karena menganggapnya sebagai hal biasa.", s: 1}
+        ]},
+        { q: "Ketika tugas dinas menumpuk, Anda ditawari imbalan uang oleh seorang pelapor agar berkas perkaranya didahulukan. Sikap Anda...", opts: [
+            {t: "Menolak imbalan tersebut dengan tegas dan sopan, serta menegaskan bahwa seluruh pelayanan diberikan secara adil sesuai urutan tanpa biaya.", s: 5},
+            {t: "Menolak uangnya namun tetap mempercepat proses berkasnya karena kasihan.", s: 4},
+            {t: "Menerima uang tersebut lalu menyumbangkannya ke tempat ibadah.", s: 3},
+            {t: "Menerima uang tersebut dengan janji akan membantu sebisa mungkin.", s: 2},
+            {t: "Meminta imbalan yang lebih besar agar berkas selesai dalam hitungan jam.", s: 1}
+        ]},
+        { q: "Atasan memberikan tugas tambahan yang berada di luar job deskripsi Anda dengan tenggat waktu singkat. Sikap Anda...", opts: [
+            {t: "Menerima tugas tersebut sebagai tantangan dan kesempatan belajar, lalu menyusun prioritas kerja agar semua selesai tepat waktu.", s: 5},
+            {t: "Menerima tugas tersebut tetapi mengeluhkan beban kerja kepada rekan sekerja.", s: 4},
+            {t: "Meminta bantuan rekan lain untuk mengerjakan tugas tambahan tersebut.", s: 3},
+            {t: "Menawar tenggat waktu agar diberikan kelonggaran yang sangat panjang.", s: 2},
+            {t: "Menolak tugas tersebut karena tidak sesuai dengan uraian jabatan Anda.", s: 1}
+        ]},
+        { q: "Di tengah perjalanan menuju lokasi ujian dinas, Anda melihat kecelakaan lalu lintas dengan korban mengalami pendarahan. Sikap Anda...", opts: [
+            {t: "Segera memberikan pertolongan pertama, menghubungi ambulans/petugas terdekat, dan jika memungkinkan mengantar korban ke RS sebelum melanjutkan perjalanan ujian.", s: 5},
+            {t: "Melaporkan kecelakaan ke pos polisi terdekat lalu melanjutkan perjalanan menuju lokasi ujian.", s: 4},
+            {t: "Meminta warga sekitar untuk menolong korban karena Anda takut terlambat ujian.", s: 3},
+            {t: "Memfoto kejadian kecelakaan lalu membagikannya di grup pesan singkat.", s: 2},
+            {t: "Abaikan dan terus melaju cepat agar tidak terlambat ujian dinas.", s: 1}
+        ]},
+        { q: "Bagaimana sikap Anda ketika menerima kritik tajam mengenai cara kepemimpinan Anda dari bawahan dalam forum terbuka?", opts: [
+            {t: "Mendengarkan dengan lapang dada, melakukan introspeksi diri, dan berterima kasih atas masukan demi perbaikan kinerja tim.", s: 5},
+            {t: "Menerima masukan tersebut namun memberikan penjelasan membela diri di depan forum.", s: 4},
+            {t: "Diam saja saat rapat lalu menegur bawahan tersebut secara pribadi setelah rapat selesai.", s: 3},
+            {t: "Menunjukkan rasa tidak suka dan memotong pembicaraan bawahan tersebut.", s: 2},
+            {t: "Give sanksi disiplin kepada bawahan tersebut karena dianggap tidak sopan.", s: 1}
+        ]},
+
+        // Soal TKP Generik Tambahan (21-50)
+        ...Array.from({length: 30}, (_, i) => ({
+            q: `[SITUASI TKP SIMULASI INTEGRITAS & PELAYANAN #${i + 21}] Sebagai anggota Polri, Anda dihadapkan pada situasi dilematis terkait kepatuhan SOP, pelayanan publik yang efisien, dan dinamika di lapangan. Langkah paling tepat yang Anda ambil adalah...`,
+            opts: [
+                {t: "Mengambil keputusan tegas berbasis SOP, mengedepankan integritas, transparansi, serta kepentingan masyarakat luas di atas kepentingan pribadi.", s: 5},
+                {t: "Mengonsultasikan kendala kepada perwira pimpinan dan segera menjalankan arahan perbaikan secara fleksibel.", s: 4},
+                {t: "Mencari jalan tengah yang aman tanpa melanggar aturan hukum yang berlaku.", s: 3},
+                {t: "Mengikuti kebiasaan yang selama ini berjalan di lingkungan unit kerja.", s: 2},
+                {t: "Menyerahkan penanganan masalah sepenuhnya kepada rekan kerja lainnya.", s: 1}
+            ]
+        })),
+
+        // --- 50 SOAL SKALA LIKERT (SOAL 51-100) ---
+        ...Array.from({length: 50}, (_, i) => {
+            const idx = i + 51;
+            const isPositive = idx % 2 === 1;
+            if (isPositive) {
+                return {
+                    q: `[SKALA LIKERT #${idx}] Saya selalu siap menjalankan tugas dinas kepolisian di daerah terpencil dan perbatasan NKRI kapan pun dibutuhkan demi menjaga keutuhan bangsa.`,
+                    opts: [
+                        {t: "Sangat Setuju (SS)", s: 5},
+                        {t: "Setuju (S)", s: 4},
+                        {t: "Ragu-Ragu (RR)", s: 3},
+                        {t: "Tidak Setuju (TS)", s: 2},
+                        {t: "Sangat Tidak Setuju (STS)", s: 1}
+                    ]
+                };
+            } else {
+                return {
+                    q: `[SKALA LIKERT #${idx}] Saya merasa sah-sah saja menerima pemberian imbalan atau hadiah kecil dari warga yang merasa terbantu oleh pelayanan saya.`,
+                    opts: [
+                        {t: "Sangat Setuju (SS)", s: 1},
+                        {t: "Setuju (S)", s: 2},
+                        {t: "Ragu-Ragu (RR)", s: 3},
+                        {t: "Tidak Setuju (TS)", s: 4},
+                        {t: "Sangat Tidak Setuju (STS)", s: 5}
+                    ]
+                };
+            }
+        })
+    ];
+
+    // -------------------------------------------------------------
+    // ENGINE & SET SOAL KECERMATAN (GAMBAR HEWAN)
+    // -------------------------------------------------------------
+    const symbolSets = [
+        ["🦩", "🦚", "🦜", "🦢", "🕊️"],
+        ["🐆", "🦏", "🦛", "🦬", "🦍"],
+        ["🦝", "🦫", "🦡", "🦔", "🦇"],
+        ["🦭", "🦈", "🐡", "🦞", "🦐"],
+        ["🦃", "🐓", "🦤", "🦩", "🕊️"],
+        ["🦨", "🦥", "🦦", "🦘", "🦡"],
+        ["🐊", "🐢", "🦎", "🐍", "🦖"],
+        ["🐝", "🦋", "🐞", "🦗", "🪲"],
+        ["🐋", "🐬", "🦭", "🦭", "🐙"],
+        ["🦅", "🦉", "🦇", "🦆", "🦩"]
+    ];
+
+    let k_currentIndex = 0;
+    let k_answers = {};
+
+    let p_currentIndex = 0;
+    let p_answers = {};
+
+    // Engine Kecermatan Var
+    let currentKolom = 0;
+    let currentSoalInKolom = 0;
+    let timerKolomInterval = null;
+    let c_secondsLeft = 60;
+    let masterKecermatanData = [];
+    let currentSoalItem = null;
+    let isWaitingPrep = false;
+
+    // -------------------------------------------------------------
+    // NAVIGATION & SECTION CONTROLLER
+    // -------------------------------------------------------------
+    function showSection(secName) {
+        document.getElementById("sec-start").style.display = "none";
+        document.getElementById("sec-kecerdasan").style.display = "none";
+        document.getElementById("sec-kepribadian").style.display = "none";
+        document.getElementById("sec-kecermatan").style.display = "none";
+        document.getElementById("sec-result").style.display = "none";
+        document.getElementById("sec-review").style.display = "none";
+
+        document.getElementById("sec-" + secName).style.display = "block";
+        currentSection = secName;
+
+        let hTitle = document.getElementById("headerMainTitle");
+        let hSub = document.getElementById("headerSubTitle");
+
+        if (secName === "kecerdasan") {
+            hTitle.innerText = "TES KECERDASAN (HOTS)";
+            hSub.innerText = "Target: 100 Soal | Waktu: 90 Menit";
+        } else if (secName === "kepribadian") {
+            hTitle.innerText = "TES KEPRIBADIAN (TKP & LIKERT)";
+            hSub.innerText = "Target: 100 Soal | Waktu: 60 Menit";
+        } else if (secName === "kecermatan") {
+            hTitle.innerText = "TES KECERMATAN (SIMBOL HEWAN)";
+            hSub.innerText = "10 Kolom x 60 Detik | Autonext Aktif";
+        } else if (secName === "result") {
+            hTitle.innerText = "REKAPITULASI HASIL SIMULASI";
+            hSub.innerText = "Persona Research & Consulting";
+            document.getElementById("timer").innerText = "SELESAI";
+        } else if (secName === "review") {
+            hTitle.innerText = "PEMBAHASAN SOAL LENGKAP";
+            hSub.innerText = "Persona Research & Consulting";
+        }
+    }
+
+    function startFullSimulation() {
+        let nameIn = document.getElementById("inputNama").value.trim();
+        if (!nameIn) {
+            alert("Siswa wajib memasukkan Nama Lengkap sebelum memulai tes!");
+            return;
+        }
+
+        initSessionOnStart(nameIn, "", "");
+
+        // Init Kecerdasan
+        initKecerdasanUI();
+        startTimer(90 * 60, finishKecerdasan);
+        showSection("kecerdasan");
+    }
+
+    // -------------------------------------------------------------
+    // TIMER MASTER
+    // -------------------------------------------------------------
+    function startTimer(durationSeconds, onComplete) {
+        clearInterval(timerInterval);
+        timerLeft = durationSeconds;
+        updateTimerDisplay();
+
+        timerInterval = setInterval(() => {
+            timerLeft--;
+            updateTimerDisplay();
+            if (timerLeft <= 0) {
+                clearInterval(timerInterval);
+                onComplete();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        let m = Math.floor(timerLeft / 60);
+        let s = timerLeft % 60;
+        document.getElementById("timer").innerText = 
+            String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+    }
+
+    // -------------------------------------------------------------
+    // ENGINE TES KECERDASAN
+    // -------------------------------------------------------------
+    function initKecerdasanUI() {
+        k_currentIndex = 0;
+        k_answers = {};
+        renderNavGrid_Kecerdasan();
+        renderQuestion_Kecerdasan();
+    }
+
+    function renderNavGrid_Kecerdasan() {
+        let grid = document.getElementById("k-navGrid");
+        grid.innerHTML = "";
+        for (let i = 0; i < rawKecerdasan.length; i++) {
+            let item = document.createElement("div");
+            item.className = "nav-item";
+            if (k_answers[i] !== undefined) item.classList.add("filled");
+            if (i === k_currentIndex) item.classList.add("active");
+            item.innerText = i + 1;
+            item.onclick = () => {
+                k_currentIndex = i;
+                renderQuestion_Kecerdasan();
+                renderNavGrid_Kecerdasan();
+            };
+            grid.appendChild(item);
+        }
+    }
+
+    function renderQuestion_Kecerdasan() {
+        let qData = rawKecerdasan[k_currentIndex];
+        document.getElementById("k-q-no").innerText = `Soal Kecerdasan #${k_currentIndex + 1} dari ${rawKecerdasan.length}`;
+        document.getElementById("k-q-text").innerText = qData.q;
+
+        let optCont = document.getElementById("k-options");
+        optCont.innerHTML = "";
+
+        const labels = ["A", "B", "C", "D", "E"];
+        qData.opts.forEach((optText, idx) => {
+            let div = document.createElement("div");
+            div.className = "opt";
+            if (k_answers[k_currentIndex] === idx) div.classList.add("selected");
+            div.innerText = `${labels[idx]}. ${optText}`;
+            
+            // TUGAS 2: Autonext pada Tes Kecerdasan
+            div.onclick = () => {
+                k_answers[k_currentIndex] = idx;
+                renderNavGrid_Kecerdasan();
+                // Otomatis pindah ke soal berikutnya
+                if (k_currentIndex < rawKecerdasan.length - 1) {
+                    k_currentIndex++;
+                    renderQuestion_Kecerdasan();
+                    renderNavGrid_Kecerdasan();
+                } else {
+                    renderQuestion_Kecerdasan();
+                }
+            };
+            optCont.appendChild(div);
+        });
+
+        document.getElementById("k-btn-next").innerText = (k_currentIndex === rawKecerdasan.length - 1) ? "SELESAI KECERDASAN" : "Selanjutnya";
+    }
+
+    function nextQ_Kecerdasan() {
+        if (k_currentIndex < rawKecerdasan.length - 1) {
+            k_currentIndex++;
+            renderQuestion_Kecerdasan();
+            renderNavGrid_Kecerdasan();
+        } else {
+            if (confirm("Apakah Anda yakin ingin menyelesaikan Tes Kecerdasan dan lanjut ke Tes Kepribadian?")) {
+                finishKecerdasan();
+            }
+        }
+    }
+
+    function prevQ_Kecerdasan() {
+        if (k_currentIndex > 0) {
+            k_currentIndex--;
+            renderQuestion_Kecerdasan();
+            renderNavGrid_Kecerdasan();
+        }
+    }
+
+    function finishKecerdasan() {
+        clearInterval(timerInterval);
+        
+        // Hitung Skor Kecerdasan
+        let benar = 0;
+        for (let i = 0; i < rawKecerdasan.length; i++) {
+            if (k_answers[i] === rawKecerdasan[i].ans) {
+                benar++;
+            }
+        }
+        let nilaiSkala100 = (benar / rawKecerdasan.length) * 100;
+
+        simulationResult.kecerdasan.userAns = k_answers;
+        simulationResult.kecerdasan.benar = benar;
+        simulationResult.kecerdasan.skor = nilaiSkala100;
+
+        // Transition ke Kepribadian
+        alert(`Tes Kecerdasan Selesai!\nSkor Anda: ${nilaiSkala100.toFixed(1)} (Benar ${benar} dari 100 Soal).\nSelanjutnya: TES KEPRIBADIAN (100 Soal, 60 Menit).`);
+        
+        initKepribadianUI();
+        startTimer(60 * 60, finishKepribadian);
+        showSection("kepribadian");
+    }
+
+    // -------------------------------------------------------------
+    // ENGINE TES KEPRIBADIAN
+    // -------------------------------------------------------------
+    function initKepribadianUI() {
+        p_currentIndex = 0;
+        p_answers = {};
+        renderNavGrid_Kepribadian();
+        renderQuestion_Kepribadian();
+    }
+
+    function renderNavGrid_Kepribadian() {
+        let grid = document.getElementById("p-navGrid");
+        grid.innerHTML = "";
+        for (let i = 0; i < rawKepribadian.length; i++) {
+            let item = document.createElement("div");
+            item.className = "nav-item";
+            if (p_answers[i] !== undefined) item.classList.add("filled");
+            if (i === p_currentIndex) item.classList.add("active");
+            item.innerText = i + 1;
+            item.onclick = () => {
+                p_currentIndex = i;
+                renderQuestion_Kepribadian();
+                renderNavGrid_Kepribadian();
+            };
+            grid.appendChild(item);
+        }
+    }
+
+    function renderQuestion_Kepribadian() {
+        let qData = rawKepribadian[p_currentIndex];
+        document.getElementById("p-q-no").innerText = `Soal Kepribadian #${p_currentIndex + 1} dari ${rawKepribadian.length}`;
+        document.getElementById("p-q-text").innerText = qData.q;
+
+        let optCont = document.getElementById("p-options");
+        optCont.innerHTML = "";
+
+        const labels = ["A", "B", "C", "D", "E"];
+        qData.opts.forEach((optObj, idx) => {
+            let div = document.createElement("div");
+            div.className = "opt";
+            if (p_answers[p_currentIndex] === idx) div.classList.add("selected");
+            div.innerText = `${labels[idx]}. ${optObj.t}`;
+            
+            // TUGAS 2: Autonext pada Tes Kepribadian
+            div.onclick = () => {
+                p_answers[p_currentIndex] = idx;
+                renderNavGrid_Kepribadian();
+                // Otomatis pindah ke soal berikutnya
+                if (p_currentIndex < rawKepribadian.length - 1) {
+                    p_currentIndex++;
+                    renderQuestion_Kepribadian();
+                    renderNavGrid_Kepribadian();
+                } else {
+                    renderQuestion_Kepribadian();
+                }
+            };
+            optCont.appendChild(div);
+        });
+
+        document.getElementById("p-btn-next").innerText = (p_currentIndex === rawKepribadian.length - 1) ? "SELESAI KEPRIBADIAN" : "Selanjutnya";
+    }
+
+    function nextQ_Kepribadian() {
+        if (p_currentIndex < rawKepribadian.length - 1) {
+            p_currentIndex++;
+            renderQuestion_Kepribadian();
+            renderNavGrid_Kepribadian();
+        } else {
+            if (confirm("Apakah Anda yakin ingin menyelesaikan Tes Kepribadian dan lanjut ke Tes Kecermatan?")) {
+                finishKepribadian();
+            }
+        }
+    }
+
+    function prevQ_Kepribadian() {
+        if (p_currentIndex > 0) {
+            p_currentIndex--;
+            renderQuestion_Kepribadian();
+            renderNavGrid_Kepribadian();
+        }
+    }
+
+    function finishKepribadian() {
+        clearInterval(timerInterval);
+
+        // Hitung Skor Kepribadian (Total Poin Maksimal = 500 -> Konversi ke Skala 100)
+        let totalPoin = 0;
+        for (let i = 0; i < rawKepribadian.length; i++) {
+            let ansIdx = p_answers[i];
+            if (ansIdx !== undefined) {
+                totalPoin += rawKepribadian[i].opts[ansIdx].s;
+            }
+        }
+        let nilaiSkala100 = (totalPoin / 500) * 100;
+
+        simulationResult.kepribadian.userAns = p_answers;
+        simulationResult.kepribadian.totalPoin = totalPoin;
+        simulationResult.kepribadian.skor = nilaiSkala100;
+
+        alert(`Tes Kepribadian Selesai!\nTotal Poin: ${totalPoin} / 500 (Skor: ${nilaiSkala100.toFixed(1)}).\nSelanjutnya: TES KECERMATAN (10 Kolom Gambar Hewan).`);
+
+        // Start Kecermatan Engine
+        startKecermatanEngine();
+    }
+
+    // -------------------------------------------------------------
+    // ENGINE TES KECERMATAN (10 KOLOM, SIMBOL GAMBAR HEWAN)
+    // -------------------------------------------------------------
+    function startKecermatanEngine() {
+        showSection("kecermatan");
+        currentKolom = 0;
+        masterKecermatanData = [];
+        
+        // Generate Data untuk 10 Kolom
+        for (let k = 0; k < 10; k++) {
+            let setSym = symbolSets[k % symbolSets.length];
+            let labels = ["A", "B", "C", "D", "E"];
+            
+            masterKecermatanData.push({
+                kolomIdx: k,
+                symbols: setSym,
+                labels: labels,
+                answersLog: []
+            });
+        }
+
+        prepareKolom(0);
+    }
+
+    function prepareKolom(kolomIdx) {
+        currentKolom = kolomIdx;
+        currentSoalInKolom = 0;
+        isWaitingPrep = true;
+
+        let prepOverlay = document.getElementById("prepOverlay");
+        let countText = document.getElementById("countdownText");
+        prepOverlay.style.display = "flex";
+        
+        let cVal = 3;
+        countText.innerText = cVal;
+
+        let pInt = setInterval(() => {
+            cVal--;
+            if (cVal > 0) {
+                countText.innerText = cVal;
+            } else {
+                clearInterval(pInt);
+                prepOverlay.style.display = "none";
+                isWaitingPrep = false;
+                runKolomTimer();
+                renderKecermatanSoal();
+            }
+        }, 1000);
+    }
+
+    function runKolomTimer() {
+        clearInterval(timerKolomInterval);
+        c_secondsLeft = 60;
+        
+        timerKolomInterval = setInterval(() => {
+            c_secondsLeft--;
+            document.getElementById("timer").innerText = `K${currentKolom+1}: ${String(c_secondsLeft).padStart(2, '0')}s`;
+
+            if (c_secondsLeft <= 0) {
+                clearInterval(timerKolomInterval);
+                nextKolomKecermatan();
+            }
+        }, 1000);
+    }
+
+    function renderKecermatanSoal() {
+        let kData = masterKecermatanData[currentKolom];
+        document.getElementById("kolomInfo").innerText = `KOLOM ${currentKolom + 1} / 10 (WAKTU: ${c_secondsLeft}s)`;
+
+        // Render Acuan
+        let rowSym = document.getElementById("rowSimbol");
+        let rowLab = document.getElementById("rowLabel");
+        rowSym.innerHTML = "";
+        rowLab.innerHTML = "";
+
+        for (let i = 0; i < 5; i++) {
+            let tdS = document.createElement("td");
+            tdS.innerHTML = `<span class="symbol-black">${kData.symbols[i]}</span>`;
+            rowSym.appendChild(tdS);
+
+            let tdL = document.createElement("td");
+            tdL.className = "label";
+            tdL.innerText = kData.labels[i];
+            rowLab.appendChild(tdL);
+        }
+
+        // Pick 4 Unik Simbol untuk Soal
+        let missingIdx = Math.floor(Math.random() * 5);
+        let soalSyms = [];
+        for (let i = 0; i < 5; i++) {
+            if (i !== missingIdx) soalSyms.push(kData.symbols[i]);
+        }
+        // Shuffle Soal Simbol
+        soalSyms.sort(() => Math.random() - 0.5);
+
+        let kunciJawabanLabel = kData.labels[missingIdx];
+
+        currentSoalItem = {
+            soalSyms: soalSyms,
+            kunci: kunciJawabanLabel,
+            missingSymbol: kData.symbols[missingIdx]
+        };
+
+        // Display Soal Box
+        let sBox = document.getElementById("soalCont");
+        sBox.innerHTML = soalSyms.map(s => `<span class="symbol-black">${s}</span>`).join(" ");
+
+        // Render Pilihan Buttons A-E
+        let pGrid = document.getElementById("pilihan");
+        pGrid.innerHTML = "";
+
+        ["A", "B", "C", "D", "E"].forEach(lab => {
+            let btn = document.createElement("button");
+            btn.className = "pilihan-btn";
+            btn.innerText = lab;
+            // TUGAS 2: Autonext pada Tes Kecermatan
+            btn.onclick = () => answerKecermatan(lab);
+            pGrid.appendChild(btn);
+        });
+    }
+
+    function answerKecermatan(chosenLabel) {
+        if (isWaitingPrep) return;
+
+        let isCorrect = (chosenLabel === currentSoalItem.kunci);
+        masterKecermatanData[currentKolom].answersLog.push({
+            soalIdx: currentSoalInKolom,
+            userAns: chosenLabel,
+            kunci: currentSoalItem.kunci,
+            isCorrect: isCorrect
+        });
+
+        currentSoalInKolom++;
+        // Langsung tampilkan soal berikutnya dalam kolom yang sama
+        renderKecermatanSoal();
+    }
+
+    function nextKolomKecermatan() {
+        if (currentKolom < 9) {
+            prepareKolom(currentKolom + 1);
+        } else {
+            finishKecermatan();
+        }
+    }
+
+    function confirmFinishKecermatan() {
+        if (confirm("Apakah Anda yakin ingin mengakhiri Tes Kecermatan sekarang?")) {
+            clearInterval(timerKolomInterval);
+            finishKecermatan();
+        }
+    }
+
+    function finishKecermatan() {
+        clearInterval(timerKolomInterval);
+
+        // Rekapitulasi Data Kecermatan
+        let totalB = 0;
+        let totalS = 0;
+
+        let rawResults = [];
+
+        masterKecermatanData.forEach((k, idx) => {
+            let b = 0;
+            let s = 0;
+            k.answersLog.forEach(ans => {
+                if (ans.isCorrect) b++; else s++;
+            });
+
+            totalB += b;
+            totalS += s;
+
+            rawResults.push({
+                kolom: idx + 1,
+                terjawab: k.answersLog.length,
+                benar: b,
+                salah: s
+            });
+        });
+
+        // Skor Kecermatan Skala 100 (Target Rata-rata 40 benar per kolom -> 400 total)
+        let skorKecermatan = Math.min(100, (totalB / 400) * 100);
+
+        simulationResult.kecermatan.rawResults = rawResults;
+        simulationResult.kecermatan.totalB = totalB;
+        simulationResult.kecermatan.totalS = totalS;
+        simulationResult.kecermatan.skor = skorKecermatan;
+
+        // Tampilkan Hasil & Kirim Data ke GS
+        renderFinalResultScreen();
+        submitToGoogleAppScript();
+    }
+
+    // -------------------------------------------------------------
+    // RENDER REKAPITULASI HASIL & ANALISIS
+    // -------------------------------------------------------------
+    function renderFinalResultScreen() {
+        showSection("result");
+
+        document.getElementById("resNamaPeserta").innerText = `NAMA PESERTA: ${pName.toUpperCase()}`;
+
+        let sKec = simulationResult.kecerdasan.skor;
+        let sKep = simulationResult.kepribadian.skor;
+        let sCem = simulationResult.kecermatan.skor;
+
+        document.getElementById("resValKecerdasan").innerText = sKec.toFixed(1);
+        document.getElementById("resDetailKecerdasan").innerText = `Benar: ${simulationResult.kecerdasan.benar} / 100`;
+
+        document.getElementById("resValKepribadian").innerText = sKep.toFixed(1);
+        document.getElementById("resDetailKepribadian").innerText = `Poin: ${simulationResult.kepribadian.totalPoin} / 500`;
+
+        document.getElementById("resValKecermatan").innerText = sCem.toFixed(1);
+        document.getElementById("resDetailKecermatan").innerText = `Total Benar: ${simulationResult.kecermatan.totalB}`;
+
+        // Formula Akumulasi Akhir: 30% Kecerdasan + 30% Kepribadian + 40% Kecermatan
+        let finalScore = (sKec * 0.3) + (sKep * 0.3) + (sCem * 0.4);
+        document.getElementById("resValFinal").innerText = finalScore.toFixed(2);
+
+        // Render Analisis Metrik Kecermatan
+        let rawRes = simulationResult.kecermatan.rawResults;
+        let totalTerjawab = rawRes.reduce((a, b) => a + b.terjawab, 0);
+        let meanJawab = (totalTerjawab / 10).toFixed(1);
+        let meanBenar = (simulationResult.kecermatan.totalB / 10).toFixed(1);
+
+        // Hitung Ketahanan/Puncak & Deviasi
+        let counts = rawRes.map(r => r.terjawab);
+        let minC = Math.min(...counts);
+        let maxC = Math.max(...counts);
+        let stdev = calculateStDev(counts).toFixed(2);
+
+        let sumBox = document.getElementById("summaryBoxKecermatan");
+        sumBox.innerHTML = `
+            <div class="card-skor"><b>RATA-RATA TERJAWAB</b><div class="val-skor">${meanJawab}</div><small>Per Kolom</small></div>
+            <div class="card-skor"><b>RATA-RATA BENAR</b><div class="val-skor">${meanBenar}</div><small>Per Kolom</small></div>
+            <div class="card-skor"><b>STABILITAS (STDEV)</b><div class="val-skor">${stdev}</div><small>Makin Rendah Makin Stabil</small></div>
+            <div class="card-skor"><b>KONTROL EROR</b><div class="val-skor">${simulationResult.kecermatan.totalS}</div><small>Total Salah</small></div>
+        `;
+
+        // Narasi Analisis
+        let narasi = `Peserta atas nama <b>${pName}</b> menyelesaikan seluruh tahapan tes. Pada Tes Kecermatan, kecepatan rata-rata kerja adalah <b>${meanJawab}</b> soal/kolom dengan tingkat akurasi <b>${((simulationResult.kecermatan.totalB/Math.max(1,totalTerjawab))*100).toFixed(1)}%</b>. Standar deviasi sebesar <b>${stdev}</b> menunjukkan ritme kerja yang ${stdev < 3 ? 'SANGAT STABIL' : 'CUKUP FLUKTUATIF'}. Nilai akhir akumulasi sebesar <b>${finalScore.toFixed(2)}</b>.`;
+        document.getElementById("kesimpulanNarasi").innerHTML = narasi;
+
+        // Render Table Kecermatan
+        let tbody = document.getElementById("tbodyHasilKecermatan");
+        tbody.innerHTML = "";
+        rawRes.forEach((r, idx) => {
+            let diff = (idx > 0) ? (r.terjawab - rawRes[idx-1].terjawab) : 0;
+            let diffStr = (diff > 0 ? `+${diff}` : `${diff}`);
+            tbody.innerHTML += `<tr>
+                <td>Kolom ${r.kolom}</td>
+                <td>${r.terjawab}</td>
+                <td><b style="color:green">${r.benar}</b></td>
+                <td><b style="color:red">${r.salah}</b></td>
+                <td>${diffStr}</td>
+            </tr>`;
+        });
+
+        // Render Chart Pauli / Kecermatan
+        renderChartKecermatan(rawRes);
+    }
+
+    function calculateStDev(arr) {
+        let n = arr.length;
+        if (n === 0) return 0;
+        let mean = arr.reduce((a, b) => a + b, 0) / n;
+        return Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) / n);
+    }
+
+    let chartInstance = null;
+    function renderChartKecermatan(rawRes) {
+        let ctx = document.getElementById('chartPauli').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: rawRes.map(r => `K${r.kolom}`),
+                datasets: [
+                    {
+                        label: 'Terjawab',
+                        data: rawRes.map(r => r.terjawab),
+                        borderColor: '#0b2340',
+                        backgroundColor: 'rgba(11,35,64,0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Benar',
+                        data: rawRes.map(r => r.benar),
+                        borderColor: '#27ae60',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------
+    // TUGAS 1: SUBMIT PAYLOAD TO GOOGLE APPS SCRIPT
+    // -------------------------------------------------------------
+    function submitToGoogleAppScript() {
+        if (isResultSubmitted) return;
+
+        let sessionEndTimeObj = new Date();
+        let sessionEndTimeStr = formatTimeObj(sessionEndTimeObj);
+
+        let durationMs = sessionEndTimeObj.getTime() - sessionStartTimeMs;
+        let durationMin = Math.round(durationMs / 60000);
+        let sessionDurationStr = `${durationMin} Menit`;
+
+        let sKec = simulationResult.kecerdasan.skor;
+        let sKep = simulationResult.kepribadian.skor;
+        let sCem = simulationResult.kecermatan.skor;
+        let finalScore = (sKec * 0.3) + (sKep * 0.3) + (sCem * 0.4);
+
+        // PAYLOAD TERBAIK SESUAI SPESIFIKASI GS MASTER PRC
+        let payload = {
+            sessionId: currentSessionId,
+            namaSiswa: pName,
+            program: "POLRI",
+            namaTryout: "SIMULASI CAT SELEKSI POLRI - PAKET LENGKAP",
+            tanggal: new Date().toLocaleDateString('id-ID'),
+            waktuMulai: sessionStartTimeStr,
+            waktuSelesai: sessionEndTimeStr,
+            durasi: sessionDurationStr,
+
+            kecerdasan: sKec.toFixed(2),
+            kepribadian: sKep.toFixed(2),
+            kecermatan: sCem.toFixed(2),
+
+            tiu: "",
+            twk: "",
+            tkp: "",
+
+            pengetahuanUmum: "",
+
+            nilaiAkhir: finalScore.toFixed(2)
+        };
+
+        fetch(APP_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            isResultSubmitted = true;
+            console.log("Submit to GS Master success.");
+        })
+        .catch(err => {
+            console.error("Error submitting to GS Master:", err);
+        });
+    }
+
+    // -------------------------------------------------------------
+    // RENDER REVIEW & PEMBAHASAN SECTION
+    // -------------------------------------------------------------
+    function showReviewSection() {
+        showSection("review");
+        document.getElementById("reviewNamaPeserta").innerText = `PESERTA: ${pName.toUpperCase()} | SESSION ID: ${currentSessionId}`;
+
+        // Render Review Kecerdasan
+        let kCont = document.getElementById("reviewContainerKecerdasan");
+        kCont.innerHTML = "";
+
+        rawKecerdasan.forEach((q, i) => {
+            let uAns = simulationResult.kecerdasan.userAns[i];
+            let isCorrect = (uAns === q.ans);
+
+            let div = document.createElement("div");
+            div.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
+
+            let optsHtml = q.opts.map((o, idx) => {
+                let style = "";
+                if (idx === q.ans) style = "color:green; font-weight:bold;";
+                if (idx === uAns && !isCorrect) style = "color:red; text-decoration:line-through;";
+                return `<div style="${style}">${String.fromCharCode(65+idx)}. ${o} ${idx === q.ans ? '✓ (Kunci)' : ''} ${idx === uAns ? '(Jawaban Anda)' : ''}</div>`;
+            }).join("");
+
+            div.innerHTML = `
+                <b>Soal #${i+1}:</b> ${q.q}
+                <div style="margin:10px 0; font-size:13px;">${optsHtml}</div>
+                <div class="pembahasan-box"><b>Pembahasan:</b> ${q.exp}</div>
+            `;
+            kCont.appendChild(div);
+        });
+
+        // Render Review Kepribadian
+        let pCont = document.getElementById("reviewContainerKepribadian");
+        pCont.innerHTML = "";
+
+        rawKepribadian.forEach((q, i) => {
+            let uAns = simulationResult.kepribadian.userAns[i];
+            let chosenScore = (uAns !== undefined) ? q.opts[uAns].s : 0;
+
+            let div = document.createElement("div");
+            div.className = `review-item ${chosenScore >= 4 ? 'correct' : 'incorrect'}`;
+
+            let optsHtml = q.opts.map((o, idx) => {
+                let style = (idx === uAns) ? "font-weight:bold; color:var(--navy);" : "";
+                return `<div style="${style}">${String.fromCharCode(65+idx)}. ${o.t} <b style="color:var(--gold);">[Poin: ${o.s}]</b> ${idx === uAns ? '👈 (Jawaban Anda)' : ''}</div>`;
+            }).join("");
+
+            div.innerHTML = `
+                <b>Soal #${i+1}:</b> ${q.q}
+                <div style="margin:10px 0; font-size:13px;">${optsHtml}</div>
+            `;
+            pCont.appendChild(div);
+        });
+    }
+
+    // -------------------------------------------------------------
+    // EXPORT TO PDF FUNCTIONS
+    // -------------------------------------------------------------
+    function downloadFullPDF() {
+        const { jsPDF } = window.jspdf;
+        let element = document.getElementById("captureArea");
+        
+        let btnDownload = document.getElementById("btnDownload");
+        btnDownload.innerText = "⏳ MEMPROSES PDF...";
+
+        html2canvas(element, { scale: 1.5, useCORS: true }).then(canvas => {
+            let imgData = canvas.toDataURL('image/jpeg', 0.85);
+            let pdf = new jsPDF('p', 'mm', 'a4');
+            let imgWidth = 210;
+            let pageHeight = 295;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            pdf.save(`Hasil_Simulasi_POLRI_${pName.replace(/\s+/g, '_')}.pdf`);
+            btnDownload.innerText = "📥 DOWNLOAD HASIL (PDF)";
+        }).catch(err => {
+            alert("Gagal mengunduh PDF. Silahkan coba lagi.");
+            btnDownload.innerText = "📥 DOWNLOAD HASIL (PDF)";
+        });
+    }
+
+    function downloadReviewPDF() {
+        const { jsPDF } = window.jspdf;
+        let element = document.getElementById("reviewCaptureArea");
+        
+        let btn = document.getElementById("btnDownloadReview");
+        btn.innerText = "⏳ MEMPROSES PDF...";
+
+        html2canvas(element, { scale: 1.2, useCORS: true }).then(canvas => {
+            let imgData = canvas.toDataURL('image/jpeg', 0.8);
+            let pdf = new jsPDF('p', 'mm', 'a4');
+            let imgWidth = 210;
+            let pageHeight = 295;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            pdf.save(`Pembahasan_Simulasi_POLRI_${pName.replace(/\s+/g, '_')}.pdf`);
+            btn.innerText = "📥 DOWNLOAD PEMBAHASAN (PDF)";
+        }).catch(err => {
+            alert("Gagal mengunduh PDF Pembahasan.");
+            btn.innerText = "📥 DOWNLOAD PEMBAHASAN (PDF)";
+        });
+    }
+</script>
+
+</body>
+</html>
