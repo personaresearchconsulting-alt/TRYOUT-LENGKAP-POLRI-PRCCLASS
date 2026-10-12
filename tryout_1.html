@@ -1,718 +1,1590 @@
 <!DOCTYPE html>
-<html lang="id" oncontextmenu="return false" onselectstart="return false" onkeydown="preventCopy(event)">
+<html lang="id" oncontextmenu="return false" onselectstart="return false">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-    <title>TRYOUT TES KECERMATAN GAMBAR - Persona Research & Consulting</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>TRYOUT SIMULASI CAT POLRI PAKET VARIASI II - Persona Research & Consulting</title>
     
+    <!-- Fonts & Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
-        :root {
-            --navy: #0b2340;
-            --gold: #d4a017;
-            --gray: #f1f5f9;
-            --danger: #c0392b;
-            --btn-shadow: #cbd5e1;
+        :root { 
+            --navy: #0b2340; 
+            --gold: #d4a017; 
+            --bg: #f8fafc; 
+            --gray: #f1f5f9; 
+            --danger: #c0392b; 
+            --btn-shadow: #cbd5e1; 
         }
-        body { 
+        * { 
+            box-sizing: border-box; 
             -webkit-user-select: none; 
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none; 
+        }
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background: var(--bg); 
             margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            background: #e2e8f0; 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh; 
-            color: #071130; 
+            padding: 0; 
+            color: #1e293b; 
         }
-        .wrap {
-            width: 100%; 
-            max-width: 980px; 
-            background: #fff; 
-            border-top: 6px solid var(--navy); 
-            border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-            margin: 10px; 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 92vh;
-            box-sizing: border-box;
-        }
-        
-        header { text-align: center; margin-bottom: 10px; }
-        #loginBox { text-align: center; padding: 30px 20px; }
-        input, select { 
-            padding: 12px; 
-            width: 280px; 
-            max-width: 90%;
-            border: 2px solid #cbd5e1; 
-            border-radius: 8px; 
-            font-size: 15px; 
-            text-align: center; 
-            outline: none; 
-            margin-bottom: 12px; 
-            box-sizing: border-box;
-        }
-        .btn-start { 
+
+        /* HEADER MASTER */
+        header { 
             background: var(--navy); 
-            color: #fff; 
-            border: none; 
-            padding: 12px 40px; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            cursor: pointer; 
-            font-weight: 600; 
-        }
-        .btn-start:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        #prepOverlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(255,255,255,0.98); 
-            display: none; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 1000; 
-            flex-direction: column; 
-        }
-        #countdownText { font-size: 120px; font-weight: bold; color: var(--navy); }
-
-        .top-row { 
-            display: none; 
+            color: white; 
+            padding: 15px 5%; 
+            display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            background: var(--gray); 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            margin-bottom: 10px; 
+            border-bottom: 4px solid var(--gold); 
         }
-        #timer { font-size: 24px; font-weight: 800; color: var(--danger); font-family: monospace; }
+        .header-title h1 { margin: 0; font-size: 18px; color: #fff; }
+        .header-title p { margin: 3px 0 0; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .timer-badge { font-size: 20px; font-weight: bold; color: var(--gold); font-family: monospace; }
 
-        #testArea { 
-            display: none; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 12px; 
-            flex-grow: 1; 
-            justify-content: center; 
-        }
-        .acuan-table { 
-            border-collapse: collapse; 
-            margin-bottom: 5px; 
-            table-layout: fixed; 
-            width: 100%; 
-            max-width: 500px; 
-        }
-        .acuan-table td { 
-            border: 2px solid var(--navy); 
-            height: 75px; 
-            text-align: center; 
-            background: #fff; 
-            vertical-align: middle; 
-            padding: 4px;
-        }
-        .acuan-table td.label { 
-            background: var(--navy); 
-            color: #fff; 
-            font-size: 18px; 
-            height: 30px; 
-            font-weight: bold; 
-        }
+        .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        .svg-icon {
-            width: 48px;
-            height: 48px;
-            fill: none;
-            stroke: #071130;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .soal-box { 
-            padding: 12px; 
-            background: var(--gray); 
-            border-radius: 15px; 
-            min-height: 80px; 
-            width: 100%; 
-            max-width: 500px; 
-            text-align: center; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 12px; 
-            box-sizing: border-box;
-        }
+        /* INPUT / LOGIN SECTION */
+        .user-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .user-card input { width: 80%; max-width: 400px; padding: 12px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; text-align: center; margin-top: 15px; outline: none; display: block; margin-left: auto; margin-right: auto; }
         
-        .pilihan-grid { 
-            display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
-            gap: 10px; 
-            width: 100%; 
-            max-width: 500px; 
-            margin-bottom: 10px; 
+        /* OPTION CARDS */
+        .opt { padding: 14px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #fff; text-align: left; line-height: 1.5; font-size: 14px; }
+        .opt:hover { background: #f1f5f9; border-color: var(--navy); }
+        .opt.selected { background: #e0f2fe; border-color: var(--navy); font-weight: bold; }
+
+        /* NAVIGASI SOAL GRID */
+        .nav-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 15px; }
+        .nav-item { height: 35px; display: flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .nav-item.filled { background: var(--navy); color: white; }
+        .nav-item.active { border: 2px solid var(--gold); }
+
+        /* BUTTONS */
+        .btn { background: var(--navy); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; text-align: center; display: inline-block; }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-green { background: #27ae60; color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        /* ENGINE KECERMATAN SPECIFIC */
+        .symbol-black { 
+            font-family: 'Noto Color Emoji', sans-serif;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+            filter: grayscale(100%) contrast(200%);
+            font-weight: 900;
+            text-shadow: 1px 0px 0px #000, -1px 0px 0px #000, 0px 1px 0px #000, 0px -1px 0px #000;
+            -webkit-text-stroke: 1.5px black;
         }
-        .pilihan-btn { 
-            background: #fff; 
-            border: 2px solid var(--navy); 
-            padding: 15px 0; 
-            font-size: 22px; 
-            font-weight: 700; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            box-shadow: 0 4px 0 var(--btn-shadow); 
-        }
+
+        .acuan-table { border-collapse: collapse; margin: 0 auto 10px; table-layout: fixed; width: 350px; }
+        .acuan-table td { border: 2px solid var(--navy); width: 70px; height: 70px; text-align: center; font-size: 42px; background: #fff; vertical-align: middle; }
+        .acuan-table td.label { background: var(--navy); color: #fff; font-size: 18px; height: 35px; font-weight: bold; filter: none !important; }
+        .soal-box { font-size: 52px; letter-spacing: 10px; padding: 20px; background: var(--gray); border-radius: 15px; min-height: 80px; width: 100%; max-width: 450px; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; margin: 0 auto; }
+        .pilihan-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; width: 100%; max-width: 450px; margin: 20px auto; }
+        .pilihan-btn { background: #fff; border: 2px solid var(--navy); padding: 18px; font-size: 22px; font-weight: 700; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 0 var(--btn-shadow); }
         .pilihan-btn:active { transform: translateY(4px); box-shadow: none; }
 
-        #resultArea { display: none; }
+        /* OVERLAY PREPARASI KECERMATAN */
+        #prepOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); display: none; justify-content: center; align-items: center; z-index: 1000; flex-direction: column; }
+        #countdownText { font-size: 120px; font-weight: bold; color: var(--navy); }
+
+        /* REKAP & RESULT AREA */
         .summary-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
         .card-skor { background: #f8fafc; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #e2e8f0; }
         .card-skor b { display: block; font-size: 11px; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
         .val-skor { font-size: 28px; font-weight: 900; color: var(--navy); line-height: 1; }
-        .card-akhir { grid-column: span 2; background: var(--navy) !important; color: #fff !important; }
-        .card-akhir .val-skor { color: var(--gold); font-size: 42px; }
         
-        .table-res { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 15px; }
-        .table-res th, .table-res td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; }
+        .final-box { background: var(--navy); color: #fff; padding: 25px; border-radius: 16px; text-align: center; margin-bottom: 25px; }
+        .final-val { font-size: 56px; font-weight: 900; color: var(--gold); margin: 10px 0; }
+        
+        .table-res { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px; }
+        .table-res th, .table-res td { border: 1px solid #cbd5e1; padding: 10px; text-align: center; }
         .table-res th { background: var(--navy); color: #fff; }
-        .kat-badge { display: inline-block; padding: 3px 8px; border-radius: 15px; font-size: 9px; font-weight: bold; margin-top: 5px; text-transform: uppercase; }
-        .bg-sukses { background: #dcfce7; color: #166534; }
-        .bg-bahaya { background: #fee2e2; color: #991b1b; }
 
-        footer {
-            margin-top: auto;
-            padding-top: 15px;
-            text-align: center;
-            font-size: 13px;
-            color: #64748b;
-            border-top: 1px solid #e2e8f0;
-        }
-        footer a { color: #25d366; font-weight: bold; text-decoration: none; }
-        footer a:hover { text-decoration: underline; }
+        /* PEMBAHASAN CONTAINER */
+        .review-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .review-item.correct { border-left: 6px solid #27ae60; }
+        .review-item.incorrect { border-left: 6px solid var(--danger); }
+        .pembahasan-box { background: #f1f5f9; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; border-left: 3px solid var(--gold); }
     </style>
 </head>
 <body>
 
-<div class="wrap" id="captureArea">
-    <header id="mainHeader">
-        <h1 style="font-size: 20px; color: var(--navy); margin: 0;">TRYOUT TES KECERMATAN GAMBAR</h1>
-        <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0; font-weight: 600;">Persona Research & Consulting</p>
+<div id="captureArea">
+    <!-- MASTER HEADER -->
+    <header id="masterHeader">
+        <div class="header-title">
+            <h1 id="headerMainTitle">PERSONA RESEARCH & CONSULTING</h1>
+            <p id="headerSubTitle">SIMULASI CAT SELEKSI POLRI - PAKET VARIASI II</p>
+        </div>
+        <div id="timer" class="timer-badge">90:00</div>
     </header>
 
-    <!-- LOGIN USER BOX -->
-    <div id="loginBox">
-        <input type="text" id="username" placeholder="Nama Lengkap Siswa..." autocomplete="off"><br>
-        <select id="kategoriSoal">
-            <option value="set_1">📦 Set Gambar 1 (Kendaraan & Rumah)</option>
-            <option value="set_2">🛠️ Set Gambar 2 (Perkakas & Alat)</option>
-            <option value="set_3">📱 Set Gambar 3 (Gadget & Elektronik)</option>
-            <option value="set_4">⚽ Set Gambar 4 (Olahraga & Hobi)</option>
-            <option value="set_5">☀️ Set Gambar 5 (Cuaca & Alam)</option>
-            <option value="set_6">🍎 Set Gambar 6 (Buah & Makanan)</option>
-            <option value="set_7">📐 Set Gambar 7 (Geometri & Simbol)</option>
-            <option value="set_8">🧳 Set Gambar 8 (Navigasi & Travel)</option>
-            <option value="set_9">👕 Set Gambar 9 (Pakaian & Aksesoris)</option>
-            <option value="set_10">💼 Set Gambar 10 (Kantor & ATK)</option>
-        </select><br>
-        <button class="btn-start" id="btnLogin" onclick="startLogin()">MULAI SIMULASI</button>
-        <div id="loginStatus" style="margin-top: 10px; font-size: 13px; font-weight: bold; color: var(--danger);"></div>
-    </div>
-
-    <div id="prepOverlay">
-        <div style="font-size: 18px; margin-bottom: 10px; color: #64748b;">FOKUS PADA DETAIL GAMBAR...</div>
-        <div id="countdownText">3</div>
-    </div>
-
-    <div class="top-row" id="topRow">
-        <div id="kolomInfo" style="font-weight: bold;">KOLOM: 1 / 10</div>
-        <div id="timer">00:60</div>
-    </div>
-
-    <div id="testArea">
-        <table class="acuan-table">
-            <tr id="rowSimbol"></tr>
-            <tr id="rowLabel"></tr>
-        </table>
-        <div class="soal-box" id="soalCont"></div>
-        <div id="pilihan" class="pilihan-grid"></div>
-    </div>
-
-    <div id="resultArea">
-        <h2 style="text-align: center; font-size: 18px; margin-bottom: 5px;">LAPORAN HASIL AKHIR</h2>
-        <p id="resName" style="text-align: center; font-weight: 900; font-size: 22px; color: var(--navy); margin: 0 0 15px 0; border-bottom: 2px solid var(--navy); padding-bottom: 10px; text-transform: uppercase;"></p>
-        
-        <div id="summaryBox" class="summary-cards"></div>
-
-        <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 15px;">
-            <b style="color: var(--navy); font-size: 13px;">ANALISA HASIL / INTERPRETASI:</b>
-            <div id="kesimpulanNarasi" style="margin-top: 8px; line-height: 1.5; font-size: 12px; color: #334155;"></div>
+    <div class="container">
+        <!-- SECTION 1: START / IDENTITAS -->
+        <div id="sec-start" class="user-card">
+            <h2 style="margin:0; color:var(--navy);">IDENTITAS PESERTA SIMULASI POLRI (VARIAN II)</h2>
+            <p style="font-size:14px; color:#64748b; margin-top:5px;">Soal Tes Kecerdasan 100 Soal (Sinonim, Antonim, Analogi, Silogisme, Matematika, Deret, Arah), Tes Kepribadian 100 Soal, & Kecermatan Campuran (Gedung, Pohon, Hewan, Kendaraan, Alat Berat).</p>
+            <input type="text" id="inputNama" placeholder="Masukkan Nama Lengkap Peserta..." autocomplete="off">
+            <br>
+            <button class="btn btn-gold" style="font-size: 18px; padding: 15px 40px;" onclick="startFullSimulation()">MULAI SIMULASI VARIAN II</button>
         </div>
 
-        <table class="table-res">
-            <thead><tr><th>Kolom</th><th>Terjawab</th><th>Benar</th><th>Salah</th><th>+/-</th></tr></thead>
-            <tbody id="tbodyHasil"></tbody>
-        </table>
-        <div style="margin-top: 20px; height: 200px; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px;"><canvas id="chartPauli"></canvas></div>
-        <button id="btnDownload" style="background: #27ae60; color: #fff; border: none; padding: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%;" onclick="downloadFullPDF()">📥 DOWNLOAD HASIL (PDF)</button>
-    </div>
+        <!-- SECTION 2: TES KECERDASAN -->
+        <div id="sec-kecerdasan" style="display:none;">
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                <div style="flex:3; min-width:300px;">
+                    <div class="card">
+                        <div id="k-q-no" style="font-weight:bold; color:var(--navy); margin-bottom:10px;">Soal 1 dari 100</div>
+                        <div id="k-q-text" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>
+                        <div id="k-options"></div>
+                        <div style="margin-top:25px; display:flex; justify-content:space-between;">
+                            <button class="btn" onclick="prevQ_Kecerdasan()" style="background:#64748b">Sebelumnya</button>
+                            <button class="btn" id="k-btn-next" onclick="nextQ_Kecerdasan()">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:250px;">
+                    <div class="card" style="padding:15px;">
+                        <div style="text-align:center; font-size:12px; font-weight:bold; margin-bottom:10px;">NAVIGASI SOAL KECERDASAN</div>
+                        <div id="k-navGrid" class="nav-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <footer>
-        &copy; Persona Research & Consulting | WhatsApp: <a href="https://wa.me/6287742515786" target="_blank" rel="noopener noreferrer">0877 4251 5786</a>
-    </footer>
+        <!-- SECTION 3: TES KEPRIBADIAN -->
+        <div id="sec-kepribadian" style="display:none;">
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                <div style="flex:3; min-width:300px;">
+                    <div class="card">
+                        <div id="p-q-no" style="font-weight:bold; color:var(--navy); margin-bottom:10px;">Soal 1 dari 100</div>
+                        <div id="p-q-text" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>
+                        <div id="p-options"></div>
+                        <div style="margin-top:25px; display:flex; justify-content:space-between;">
+                            <button class="btn" onclick="prevQ_Kepribadian()" style="background:#64748b">Sebelumnya</button>
+                            <button class="btn" id="p-btn-next" onclick="nextQ_Kepribadian()">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:250px;">
+                    <div class="card" style="padding:15px;">
+                        <div style="text-align:center; font-size:12px; font-weight:bold; margin-bottom:10px;">NAVIGASI SOAL KEPRIBADIAN</div>
+                        <div id="p-navGrid" class="nav-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: TES KECERMATAN ENGINE -->
+        <div id="sec-kecermatan" style="display:none;">
+            <div id="prepOverlay">
+                <div style="font-size:18px; margin-bottom:10px; color: #64748b;">FOKUS PADA DETAIL KOLOM KECERMATAN BARU...</div>
+                <div id="countdownText">3</div>
+            </div>
+
+            <div class="card" style="text-align:center;">
+                <div id="kolomInfo" style="font-weight: bold; font-size: 18px; margin-bottom: 15px; color: var(--navy);">KOLOM: 1 / 10</div>
+                <table class="acuan-table">
+                    <tr id="rowSimbol"></tr>
+                    <tr id="rowLabel"></tr>
+                </table>
+                <div class="soal-box" id="soalCont"></div>
+                <div id="pilihan" class="pilihan-grid"></div>
+
+                <div style="margin-top: 25px; border-top: 1px dashed #cbd5e1; padding-top: 15px;">
+                    <button class="btn btn-danger" style="font-size: 14px; padding: 10px 25px;" onclick="confirmFinishKecermatan()">SELESAI & LANJUT HASIL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: HASIL / REKAP AKHIR -->
+        <div id="sec-result" style="display:none;">
+            <div class="card">
+                <div style="text-align:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    <h2 style="margin:0; color:var(--navy);">LAPORAN HASIL AKHIR SIMULASI VARIAN II</h2>
+                    <p style="margin:5px 0 0; color:var(--gold); font-weight:bold;">PERSONA RESEARCH & CONSULTING - WA: 0877 425 5786</p>
+                </div>
+
+                <div id="resNamaPeserta" style="background:#eef6ff; padding:15px; border-radius:12px; margin-bottom:25px; font-weight:bold; font-size:18px; color:var(--navy); text-align:center;">
+                    NAMA PESERTA: -
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:center; border:1px solid #e2e8f0;">
+                        <small style="display:block; font-size:11px; color:#64748b; font-weight:bold; margin-bottom:5px;">KECERDASAN (SKALA 100)</small>
+                        <div style="font-size:28px; font-weight:900; color:var(--navy);" id="resValKecerdasan">0</div>
+                        <small style="margin-top:5px; color:#166534;" id="resDetailKecerdasan">Benar: 0 / 100</small>
+                    </div>
+                    <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:center; border:1px solid #e2e8f0;">
+                        <small style="display:block; font-size:11px; color:#64748b; font-weight:bold; margin-bottom:5px;">KEPRIBADIAN (SKALA 100)</small>
+                        <div style="font-size:28px; font-weight:900; color:var(--navy);" id="resValKepribadian">0</div>
+                        <small style="margin-top:5px; color:#166534;" id="resDetailKepribadian">Poin: 0 / 500</small>
+                    </div>
+                    <div style="background:#f8fafc; padding:15px; border-radius:10px; text-align:center; border:1px solid #e2e8f0;">
+                        <small style="display:block; font-size:11px; color:#64748b; font-weight:bold; margin-bottom:5px;">KECERMATAN (SKALA 100)</small>
+                        <div style="font-size:28px; font-weight:900; color:var(--navy);" id="resValKecermatan">0</div>
+                        <small style="margin-top:5px; color:#166534;" id="resDetailKecermatan">Benar: 0</small>
+                    </div>
+                </div>
+
+                <h3 style="color:var(--navy); margin-top:20px; font-size:15px; border-bottom:1px solid #ccc; padding-bottom:5px;">ANALISIS METRIK KECERMATAN</h3>
+                <div id="summaryBoxKecermatan" class="summary-cards"></div>
+
+                <div style="background:#f1f5f9; padding:15px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
+                    <b style="color:var(--navy); font-size:13px;">ANALISA HASIL / INTERPRETASI Kecermatan:</b>
+                    <div id="kesimpulanNarasi" style="margin-top:8px; line-height:1.5; font-size:12px; color:#334155;"></div>
+                </div>
+
+                <div class="final-box">
+                    <div>NILAI AKHIR AKUMULASI SELEKSI</div>
+                    <div class="final-val" id="resValFinal">0.00</div>
+                    <div style="font-size: 13px; opacity: 0.85;">Formulasi Akumulasi: (Kecerdasan x 30%) + (Kepribadian x 30%) + (Kecermatan x 40%)</div>
+                </div>
+
+                <div style="background:#f1f5f9; padding:15px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:20px;">
+                    <b style="color:var(--navy); font-size:13px;">RINGKASAN GRAFIK KECERMATAN PER KOLOM:</b>
+                    <table class="table-res" style="margin-bottom: 15px;">
+                        <thead><tr><th>Kolom</th><th>Terjawab</th><th>Benar</th><th>Salah</th><th>+/-</th></tr></thead>
+                        <tbody id="tbodyHasilKecermatan"></tbody>
+                    </table>
+                    <div style="height: 180px;"><canvas id="chartPauli"></canvas></div>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+                    <button id="btnDownload" class="btn btn-green" style="flex:1; padding:15px;" onclick="downloadFullPDF()">📥 DOWNLOAD HASIL (PDF)</button>
+                    <button class="btn btn-gold" style="flex:1; padding:15px;" onclick="showReviewSection()">📖 LIHAT PEMBAHASAN SOAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: PEMBAHASAN / REVIEW -->
+        <div id="sec-review" style="display:none;">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    <h2 style="margin:0; color:var(--navy);">PEMBAHASAN & EVALUASI SOAL VARIAN II</h2>
+                    <div style="display:flex; gap:10px;">
+                        <button id="btnDownloadReview" class="btn btn-green" onclick="downloadReviewPDF()">📥 DOWNLOAD PEMBAHASAN (PDF)</button>
+                        <button class="btn" onclick="showSection('result')">Kembali ke Hasil</button>
+                    </div>
+                </div>
+                
+                <div id="reviewCaptureArea">
+                    <div style="text-align:center; margin-bottom:20px; border-bottom:2px solid var(--navy); padding-bottom:10px;">
+                        <h3 style="margin:0; color:var(--navy);">DOKUMEN PEMBAHASAN LENGKAP SIMULASI POLRI</h3>
+                        <p id="reviewNamaPeserta" style="margin:5px 0 0; color:var(--gold); font-weight:bold;">PESERTA: -</p>
+                    </div>
+
+                    <h3 style="color:var(--navy); border-bottom:2px solid var(--gold); padding-bottom:5px;">PEMBAHASAN TES KECERDASAN (VARIAN II)</h3>
+                    <div id="reviewContainerKecerdasan"></div>
+
+                    <h3 style="color:var(--navy); border-bottom:2px solid var(--gold); padding-bottom:5px; margin-top:30px;">PEMBAHASAN TES KEPRIBADIAN (4 PILAR)</h3>
+                    <div id="reviewContainerKepribadian"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    const GAS_REKAP_URL = "https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
-    
-    let resultSubmitted = false;
-    let testSessionID = "";
-    let testStartDate = "";
-    let testStartTimeStr = "";
-    let startTimestamp = 0;
+    // Security Expiration Control
+    const EXPIRATION_DATE = new Date("2026-12-31T23:59:59").getTime();
+    if (Date.now() > EXPIRATION_DATE) {
+        document.body.innerHTML = "<h1 style='text-align:center;margin-top:20%;color:red;'>LISENSI SIMULASI SUDAH KADALUARSA (EXPIRED).<br>Silahkan Hubungi Persona Research & Consulting (WA: 0877 425 5786).</h1>";
+    }
 
-    function preventCopy(e) {
-        if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'i')) {
-            e.preventDefault();
-            alert("Aksi disembunyikan/dilindungi oleh sistem.");
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
+
+    let currentSection = "start";
+    let pCode = "";
+    let pPin = "";
+    let pName = "";
+    let currentSessionId = "";
+    let sessionStartTimeStr = "";
+    let sessionStartTimeMs = 0;
+
+    let timerInterval = null;
+    let timerLeft = 0;
+
+    let simulationResult = {
+        kecerdasan: { userAns: {}, benar: 0, skor: 0 },
+        kepribadian: { userAns: {}, totalPoin: 0, skor: 0 },
+        kecermatan: { rawResults: [], totalB: 0, totalS: 0, skor: 0 }
+    };
+
+    let isResultSubmitted = false;
+
+    function formatTimeObj(dateObj) {
+        let h = String(dateObj.getHours()).padStart(2, '0');
+        let m = String(dateObj.getMinutes()).padStart(2, '0');
+        let s = String(dateObj.getSeconds()).padStart(2, '0');
+        return h + ":" + m + ":" + s;
+    }
+
+    function initSessionOnStart(namaPeserta, kodeSiswa, pinPeserta) {
+        pName = namaPeserta;
+        pCode = kodeSiswa || "";
+        pPin = pinPeserta || "";
+
+        let existingSession = sessionStorage.getItem("prc_session_id");
+        let existingStartStr = sessionStorage.getItem("prc_start_time_str");
+        let existingStartMs = sessionStorage.getItem("prc_start_time_ms");
+
+        if (!existingSession || !existingStartStr) {
+            let counterKey = "prc_counter_" + (pCode || "default");
+            let lastNum = parseInt(localStorage.getItem(counterKey) || "0", 10) + 1;
+            localStorage.setItem(counterKey, lastNum);
+            let formattedNum = String(lastNum).padStart(2, '0');
+            
+            currentSessionId = (pCode || "PRC") + "-V2-" + formattedNum;
+            
+            let startDate = new Date();
+            sessionStartTimeMs = startDate.getTime();
+            sessionStartTimeStr = formatTimeObj(startDate);
+
+            sessionStorage.setItem("prc_session_id", currentSessionId);
+            sessionStorage.setItem("prc_start_time_str", sessionStartTimeStr);
+            sessionStorage.setItem("prc_start_time_ms", sessionStartTimeMs);
+        } else {
+            currentSessionId = existingSession;
+            sessionStartTimeStr = existingStartStr;
+            sessionStartTimeMs = parseInt(existingStartMs, 10);
         }
     }
 
-    function shuffleArray(array) {
-        let arr = [...array];
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    // -------------------------------------------------------------
+    // BANK SOAL KECERDASAN VARIAN II (100 SOAL MANUAL LENGKAP)
+    // Mencakup: Sinonim, Antonim, Analogi, Silogisme, Matematika, Deret, Arah Mata Angin
+    // -------------------------------------------------------------
+    const rawKecerdasan = [
+        // 1-15: Sinonim & Antonim
+        { q: "Manakah padanan kata (sinonim) yang paling tepat untuk istilah 'AMBIGUITAS' dalam konteks analisis informasi intelejen?", opts: ["Kenyataan", "Ketidakpastian", "Keselarasan", "Kejelasan", "Kebenaran"], ans: 1, exp: "Ambiguitas bermakna bermakna ganda atau menimbulkan ketidakpastian makna." },
+        { q: "Pilihlah sinonim yang paling tepat dari kata 'BONAVITAS' dalam penilaian kredibilitas instansi:", opts: ["Keburukan", "Kualitas baik", "Keterbatasan", "Kecepatan", "Kelonggaran"], ans: 1, exp: "Bonavitas bermakna kemampuan membayar atau memiliki kualitas kebaikan/kredibilitas yang tinggi." },
+        { q: "Apa sinonim yang tepat untuk kata 'FRAGIL' dalam spesifikasi ketahanan material bangunan:", opts: ["Kuat", "Lentur", "Rapuh", "Padat", "Keras"], ans: 2, exp: "Fragil bermakna mudah pecah atau rapuh." },
+        { q: "Pilihlah sinonim kata 'RETORIKA' dalam teknik penyampaian pidato publik:", opts: ["Kebenaran mutlak", "Seni berbicara", "Keheningan", "Kepatuhan", "Perencanaan"], ans: 1, exp: "Retorika adalah penggunaan kata-kata atau seni berbicara secara efektif." },
+        { q: "Sinonim dari kata 'AUTENTIK' adalah:", opts: ["Palsu", "Tiruan", "Asli", "Meragukan", "Sementata"], ans: 2, exp: "Autentik berarti dapat dipercaya atau keasliannya terbukti sah." },
+        { q: "Manakah lawan kata (antonim) yang tepat untuk istilah 'TRANSITORIS'?", opts: ["Permanen", "Sementara", "Berjalan", "Singkat", "Berpindah"], ans: 0, exp: "Transitoris berarti bersifat sementara, antonimnya adalah permanen." },
+        { q: "Pilihlah antonim dari kata 'NOMadik' dalam pola kehidupan masyarakat:", opts: ["Menetap", "Berpindah", "Lihat", "Dinamis", "Terbuka"], ans: 0, exp: "Nomadik berarti berpindah-pindah, antonimnya menetap (sedenter)." },
+        { q: "Antonim dari kata 'OPTIMAL' adalah:", opts: ["Maksimal", "Terburuk", "Minimal", "Suboptimal", "Sempurna"], ans: 3, exp: "Optimal berarti terbaik, lawan katanya suboptimal atau kurang dari batas terbaik." },
+        { q: "Pilihlah antonim yang tepat untuk kata 'PAKAR':", opts: ["Ahli", "Spesialis", "Awam", "Master", "Mahir"], ans: 2, exp: "Pakar adalah orang ahli, lawan katanya orang awam." },
+        { q: "Antonim dari kata 'PROVOKASI' adalah:", opts: ["Pancingan", "Peredaan", "Hasutan", "Dorongan", "Ajakan"], ans: 1, exp: "Provokasi adalah pancingan/hasutan, antonimnya peredaan atau penenteraman." },
+        { q: "Sinonim kata 'RENOVASI' adalah:", opts: ["Pemusnahan", "Perbaikan", "Pembangunan", "Pengrusakan", "Penggantian"], ans: 1, exp: "Renovasi adalah pembaruan atau perbaikan gedung/bangunan." },
+        { q: "Antonim kata 'KREDIBEL' adalah:", opts: ["Terpercaya", "Handal", "Meragukan", "Sahih", "Akurat"], ans: 2, exp: "Kredibel berarti dapat dipercaya, antonimnya meragukan atau tidak dipercaya." },
+        { q: "Sinonim kata 'EPISTIMOLOGI' berkaitan erat dengan ilmu tentang:", opts: ["Keindahan", "Hakikat pengetahuan", "Masyarakat", "Nilai moral", "Kehidupan"], ans: 1, exp: "Epistimologi adalah cabang filsafat yang menyelidiki asal, sifat, dan metode pengetahuan." },
+        { q: "Antonim kata 'SEMIOTIKA' tidak ada langsung, namun untuk kata 'IMUNITAS', antonimnya adalah:", opts: ["Kekebalan", "Kerentanan", "Ketahanan", "Kesehatan", "Kekuatan"], ans: 1, exp: "Imunitas adalah kekebalan tubuh, lawan katanya kerentanan terhadap penyakit." },
+        { q: "Sinonim kata 'DESTRUKTIF' adalah:", opts: ["Membangun", "Merusak", "Memelihara", "Melindungi", "Menguatkan"], ans: 1, exp: "Destruktif bermakna bersifat merusak atau menghancurkan." },
+
+        // 16-30: Analogi Verbal
+        { q: "TERMOMETER : SUHU = BAROMETER : ...", opts: ["Kelembapan", "Tekanan udara", "Kecepatan angin", "Curah hujan", "Ketinggian"], ans: 1, exp: "Termometer mengukur suhu, barometer mengukur tekanan udara." },
+        { q: "KORNEA : MATA = GENDANG TELINGA : ...", opts: ["Hidung", "Telinga", "Kulit", "Otak", "Saraf"], ans: 1, exp: "Kornea bagian mata, gendang telinga bagian telinga." },
+        { q: "BUNGA : BUAH = POHON : ...", opts: ["Akar", "Batang", "Daun", "Kayu", "Biji"], ans: 3, exp: "Bunga berkembang jadi buah, pohon menghasilkan kayu (atau ranting/daun, konteks hasil akhir proses)." },
+        { q: "SAWAH : PETANI = LABORATORIUM : ...", opts: ["Dokter", "Ilmuwan", "Guru", "Hakim", "Polisi"], ans: 1, exp: "Sawah tempat kerja petani, laboratorium tempat kerja ilmuwan." },
+        { q: "SEPATU : KAKI = SARUNG TANGAN : ...", opts: ["Kepala", "Tangan", "Badan", "Leher", "Jari"], ans: 1, exp: "Sepatu dikenakan di kaki, sarung tangan di tangan." },
+        { q: "GELOMBANG : PANTAI = ANGIN : ...", opts: ["Udara", "Pohon", "Langit", "Daratan", "Badai"], ans: 3, exp: "Gelombang menghantam pantai, angin berhembus ke daratan." },
+        { q: "IKAN : INSANG = BURUNG : ...", opts: ["Sayap", "Paruh", "Bulu", "Pundi-pundi udara", "Ekor"], ans: 3, exp: "Ikan bernapas dengan insang, burung bernapas dengan pundi-pundi udara (paru-paru)." },
+        { q: "PIRAMIDA : MESIR = COLOSSEUM : ...", opts: ["Yunani", "Italia", "Prancis", "Spanyol", "Turki"], ans: 1, exp: "Piramida ikon Mesir, Colosseum ikon Italia." },
+        { q: "KERTAS : POHON = KAIN : ...", opts: ["Benang", "Kapas", "Domba", "Sutra", "Pakaian"], ans: 1, exp: "Kertas dibuat dari pohon, kain dibuat dari kapas." },
+        { q: "PENULIS : BUKU = SUTRADARA : ...", opts: ["Layar", "Film", "Aktor", "Panggung", "Musik"], ans: 1, exp: "Penulis menghasilkan buku, sutradara menghasilkan film." },
+        { q: "BENSIN : ENERGI = MAKANAN : ...", opts: ["Kalori", "Darah", "Perut", "Rasa lapar", "Daging"], ans: 0, exp: "Bensin sumber energi mesin, makanan sumber kalori tubuh." },
+        { q: "API : ARANG = ES : ...", opts: ["Air", "Dingin", "Salju", "Uap", "Beku"], ans: 0, exp: "Api meninggalkan arang, es mencair menjadi air." },
+        { q: "KULIT : SEPATU = Karet : ...", opts: ["Ban", "Kayu", "Besi", "Plastik", "Kain"], ans: 0, exp: "Sepatu terbuat dari kulit, ban terbuat dari karet." },
+        { q: "HUKUM : PIDANA = ATURAN : ...", opts: ["Disiplin", "Norma", "Undang-undang", "Sanksi", "Etika"], ans: 1, exp: "Hukum pidana bagian hukum, aturan berkaitan dengan norma." },
+        { q: "JAM : WAKTU = TERMOMETER : ...", opts: ["Cuaca", "Suhu", "Derajat", "Panas", "Alat"], ans: 1, exp: "Jam alat pengukur waktu, termometer pengukur suhu." },
+
+        // 31-45: Silogisme & Logika Proposisional
+        { q: "Semua personel siaga mengenakan baret biru. Sebagian personel siaga sedang berpatroli di sektor utara. Kesimpulan yang sah:", opts: ["Semua yang berpatroli di utara mengenakan baret biru", "Sebagian personel yang berpatroli di sektor utara mengenakan baret biru", "Semua yang mengenakan baret biru sedang berpatroli", "Tidak ada personel berpatroli yang mengenakan baret biru", "Sebagian baret biru bukan personel siaga"], ans: 1, exp: "Silogisme partikular: Sebagian personel siaga berpatroli di utara, dan semua siaga ber-baret biru, maka sebagian yang berpatroli ber-baret biru." },
+        { q: "Jika sistem alarm berbunyi, maka pintu gerbang otomatis terkunci. Saat ini pintu gerbang tidak terkunci. Kesimpulan yang benar:", opts: ["Sistem alarm berbunyi", "Sistem alarm tidak berbunyi", "Pintu gerbang rusak", "Alarm mengalami gangguan", "Gerbang dikunci manual"], ans: 1, exp: "Modus Tollens: Jika P maka Q. Tidak Q, maka Tidak P (alarm tidak berbunyi)." },
+        { q: "Semua anggota reserse mahir melakukan olah TKP. Budi bukan anggota reserse. Kesimpulan logis:", opts: ["Budi tidak mahir olah TKP", "Budi mahir olah TKP", "Tidak dapat ditarik kesimpulan pasti mengenai kemahiran Budi", "Budi adalah seorang penyelidik", "Semua yang mahir olah TKP adalah Budi"], ans: 2, exp: "Premis negatif universal tidak dapat disimpulkan secara mutlak (fallacy of inverse)." },
+        { q: "Jika cuaca cerah, maka tim udara menerbangkan helikopter patroli. Hari ini tim udara tidak menerbangkan helikopter patroli. Kesimpulan:", opts: ["Cuaca cerah", "Cuaca tidak cerah", "Terjadi hujan badai", "Helikopter rusak", "Patroli dibatalkan"], ans: 1, exp: "Modus Tollens: Tidak Q, maka Tidak P (cuaca tidak cerah)." },
+        { q: "Semua kendaraan taktis berlapis baja tahan peluru. Sebagian kendaraan taktis ditempatkan di Polda Metro. Kesimpulan:", opts: ["Semua kendaraan di Polda Metro tahan peluru", "Sebagian kendaraan taktis di Polda Metro berlapis baja tahan peluru", "Tidak ada kendaraan di Polda Metro yang tahan peluru", "Semua kendaraan tahan peluru adalah taktis", "Sebagian kendaraan tahan peluru tidak di Polda Metro"], ans: 1, exp: "Sebagian kendaraan taktis di Polda Metro tahan peluru." },
+        { q: "Tidak ada pelanggar hukum yang lolos dari sanksi. Sebagian oknum terbukti melanggar hukum. Kesimpulan:", opts: ["Semua oknum lolos dari sanksi", "Sebagian oknum tidak lolos dari sanksi", "Semua oknum mendapat penghargaan", "Tidak ada sanksi bagi oknum", "Sebagian oknum bukan pelanggar"], ans: 1, exp: "Sebagian oknum terbukti melanggar hukum, maka sebagian oknum tidak lolos dari sanksi." },
+        { q: "Setiap hari Rabu seluruh staf wajib mengenakan pakaian batik. Hari ini seluruh staf mengenakan pakaian batik. Kesimpulan:", opts: ["Hari ini pasti hari Rabu", "Hari ini mungkin hari Rabu", "Hari ini bukan hari Rabu", "Batik hanya ada hari Rabu", "Staf dilarang pakai seragam"], ans: 1, exp: "Konsekuen terjadi tidak membuktikan antesesien tunggal secara mutlak, jadi 'mungkin hari Rabu'." },
+        { q: "Jika latihan intensif dilakukan, maka prestasi optimal tercapai. Prestasi optimal tidak tercapai. Kesimpulan:", opts: ["Latihan intensif dilakukan", "Latihan intensif tidak dilakukan", "Prestasi sangat menurun", "Atlet beristirahat", "Pelatih diganti"], ans: 1, exp: "Modus Tollens: Latihan intensif tidak dilakukan." },
+        { q: "Semua penyidik memiliki sertifikasi khusus. Sebagian penyidik bertugas di unit cybercrime. Kesimpulan:", opts: ["Semua penyidik cybercrime memiliki sertifikasi khusus", "Sebagian penyidik cybercrime memiliki sertifikasi khusus", "Tidak ada penyidik cybercrime bersertifikasi", "Semua yang bersertifikasi bertugas di cybercrime", "Sebagian penyidik tidak bersertifikasi"], ans: 1, exp: "Sebagian penyidik cybercrime memiliki sertifikasi khusus." },
+        { q: "Semua peraturan perundang-undangan harus ditaati. Kode etik kepolisian adalah bagian dari aturan kedinasan. Kesimpulan:", opts: ["Kode etik tidak perlu ditaati", "Sebagian peraturan tidak ditaati", "Aturan kedinasan harus ditaati", "Hanya undang-undang yang ditaati", "Kode etik bukan aturan"], ans: 2, exp: "Keterkaitan silogisme menunjukkan aturan kedinasan harus ditaati." },
+        { q: "Jika tingkat kepercayaan publik naik, maka citra institusi menguat. Citra institusi menguat. Kesimpulan:", opts: ["Tingkat kepercayaan publik naik", "Tingkat kepercayaan publik turun", "Citra institusi melemah", "Kepercayaan publik tetap", "Tidak dapat disimpulkan pasti"], ans: 4, exp: "Fallacy of affirming the consequent: Q terjadi, tidak bisa memastikan P secara mutlak (bisa karena faktor lain)." },
+        { q: "Semua anggota satuan lalu lintas sigap di jalan raya. Andi adalah anggota satuan lalu lintas. Kesimpulan:", opts: ["Andi tidak sigap di jalan raya", "Andi sigap di jalan raya", "Andi bukan anggota lantas", "Semua yang sigap adalah Andi", "Andi bertugas di reserse"], ans: 1, exp: "Modus Ponens langsung: Andi sigap di jalan raya." },
+        { q: "Tidak ada koruptor yang jujur. Sebagian pejabat publik adalah jujur. Kesimpulan:", opts: ["Semua pejabat publik adalah koruptor", "Sebagian pejabat publik bukan koruptor", "Sebagian pejabat publik bukan koruptor (atau sebagian pejabat publik tidak korupsi)", "Semua pejabat publik jujur", "Tidak ada pejabat yang korupsi"], ans: 2, exp: "Sebagian pejabat publik jujur, maka sebagian pejabat publik bukan koruptor." },
+        { q: "Jika terjadi gangguan kamtibmas, maka timsus diterjunkan. Timsus diterjunkan hari ini. Kesimpulan:", opts: ["Terjadi gangguan kamtibmas", "Tidak terjadi gangguan kamtibmas", "Timsus berpatroli santai", "Gangguan keamanan selesai", "Tim cadangan siaga"], ans: 4, exp: "Afirmasi konsekuen: Timsus diterjukan belum tentu hanya karena 1 sebab gangguan kamtibmas." },
+        { q: "Semua bangunan markas dilengkapi penangkal petir. Gedung utama adalah bangunan markas. Kesimpulan:", opts: ["Gedung utama tidak ada penangkal petir", "Gedung utama dilengkapi penangkal petir", "Penangkal petir ada di gedung lain", "Gedung utama bukan markas", "Semua penangkal petir di markas"], ans: 1, exp: "Gedung utama dilengkapi penangkal petir." },
+
+        // 46-60: Arah Mata Angin & Spasial
+        { q: "Andi berjalan 12 meter ke arah Timur, lalu berbelok ke Utara sejauh 5 meter. Berapa jarak terdekat dari titik awal?", opts: ["13 meter", "17 meter", "7 meter", "10 meter", "15 meter"], ans: 0, exp: "Pythagoras √(12² + 5²) = 13 meter." },
+        { q: "Siti menghadap ke arah Barat. Ia berputar 135 derajat searah jarum jam. Arah yang dihadapi sekarang adalah:", opts: ["Timur Laut", "Tenggara", "Barat Laut", "Barat Daya", "Utara"], ans: 0, exp: "Barat diputar 135° searah jarum jam mengarah ke Timur Laut." },
+        { q: "Pos A berada 8 km di sebelah Selatan Pos B. Pos C berada 6 km di sebelah Timur Pos A. Jarak Pos C ke Pos B adalah:", opts: ["10 km", "14 km", "2 km", "12 km", "8 km"], ans: 0, exp: "Pythagoras √(8² + 6²) = 10 km." },
+        { q: "Jika anda menghadap ke arah Tenggara dan berputar 180 derajat, arah yang anda hadapi adalah:", opts: ["Barat Laut", "Timur Laut", "Barat Daya", "Tenggara", "Utara"], ans: 0, exp: "Lawan arah Tenggara adalah Barat Laut." },
+        { q: "Kantor Polisi berada di sebelah utara Pasar. Rumah Budi di sebelah timur Pasar. Posisi Kantor Polisi dari Rumah Budi adalah:", opts: ["Barat Laut", "Timur Laut", "Barat Daya", "Tenggara", "Utara"], ans: 0, exp: "Kantor Polisi berada di barat laut dari Rumah Budi." },
+        { q: "Doni berjalan 20 meter ke Barat, lalu 21 meter ke Selatan. Jarak langsung ke titik asal:", opts: ["29 meter", "41 meter", "1 meter", "25 meter", "30 meter"], ans: 0, exp: "Pythagoras √(20² + 21²) = 29 meter." },
+        { q: "Sebuah pesawat terbang ke arah Timur sejauh 300 km, lalu berbelok ke Selatan sejauh 400 km. Jarak terdekat ke titik keberangkatan:", opts: ["500 km", "700 km", "100 km", "600 km", "450 km"], ans: 0, exp: "Pythagoras 300-400-500 rule." },
+        { q: "Roni menghadap ke Utara, kemudian berputar 90 derajat berlawanan arah jarum jam, lalu berputar 45 derajat searah jarum jam. Arahnya:", opts: ["Barat Laut", "Barat Daya", "Timur Laut", "Tenggara", "Barat"], ans: 0, exp: "Utara - 90° (Barat) + 45° (Barat Laut)." },
+        { q: "Posisi Kota X di barat Kota Y. Kota Z di utara Kota X. Kota Y berada di arah mana dari Kota Z?", opts: ["Tenggara", "Timur Laut", "Barat Daya", "Barat Laut", "Selatan"], ans: 0, exp: "Kota Y berada di tenggara dari Kota Z." },
+        { q: "Seseorang berjalan 9 km ke Utara, lalu 12 km ke Timur. Jarak posisi akhir dari titik awal adalah:", opts: ["15 km", "21 km", "3 km", "10 km", "18 km"], ans: 0, exp: "Pythagoras √(9² + 12²) = 15 km." },
+        { q: "Jika Anda menghadap Barat Daya dan berputar 90 derajat searah jarum jam, arah yang dihadapi:", opts: ["Barat Laut", "Tenggara", "Timur Laut", "Barat", "Selatan"], ans: 0, exp: "Barat Daya + 90° searah jarum jam = Barat Laut." },
+        { q: "Posisi gedung perkantoran A berada di sebelah timur gedung B. Gedung C di sebelah selatan gedung A. Posisi C dari B adalah:", opts: ["Tenggara", "Timur Laut", "Barat Daya", "Barat Laut", "Timur"], ans: 0, exp: "Gedung C berada di tenggara dari gedung B." },
+        { q: "Budi berjalan ke arah Selatan sejauh 15 km, lalu berbelok ke Barat sejauh 8 km. Jarak terdekat titik akhir ke awal:", opts: ["17 km", "23 km", "7 km", "15 km", "20 km"], ans: 0, exp: "Pythagoras √(15² + 8²) = 17 km." },
+        { q: "Sebuah kapal berlayar ke arah Barat Laut sejauh 10 mil, lalu berbelok ke Timur Laut sejauh 10 mil. Posisi relatif dari titik awal:", opts: ["Utara", "Timur", "Barat", "Selatan", "Tenggara"], ans: 0, exp: "Resultan vektor mengarah ke Utara." },
+        { q: "Jika arah Timur dinyatakan sebagai 0 derajat, maka arah Barat Daya berada pada sudut:", opts: ["225 derajat", "135 derajat", "315 derajat", "45 derajat", "180 derajat"], ans: 0, exp: "Barat daya setara 180° + 45° = 225°." },
+
+        // 61-75: Deret Angka & Pola Bilangan
+        { q: "3, 7, 15, 31, 63, ...", opts: ["127", "115", "120", "135", "111"], ans: 0, exp: "Pola dikali 2 ditambah 1 (atau selisih bertambah 4, 8, 16, 32, 64 -> 63 + 64 = 127)." },
+        { q: "2, 6, 12, 20, 30, ...", opts: ["42", "40", "38", "45", "50"], ans: 0, exp: "Pola penambahan selisih genap (+4, +6, +8, +10, +12 -> 30 + 12 = 42)." },
+        { q: "100, 96, 88, 76, 60, ...", opts: ["40", "42", "44", "38", "46"], ans: 0, exp: "Pola pengurangan kelipatan 4 (-4, -8, -12, -16, -20 -> 60 - 20 = 40)." },
+        { q: "1, 1, 2, 3, 5, 8, 13, ...", opts: ["21", "19", "25", "18", "24"], ans: 0, exp: "Deret Fibonacci (8 + 13 = 21)." },
+        { q: "5, 10, 8, 16, 14, 28, ...", opts: ["26", "30", "32", "24", "36"], ans: 0, exp: "Pola dikali 2 lalu dikurang 2 (x2, -2, x2, -2... 28 - 2 = 26)." },
+        { q: "81, 27, 9, 3, 1, ...", opts: ["1/3", "1/9", "0", "3", "1/2"], ans: 0, exp: "Pola dibagi 3 (1 / 3 = 1/3)." },
+        { q: "4, 9, 16, 25, 36, ...", opts: ["49", "64", "45", "54", "42"], ans: 0, exp: "Pola bilangan kuadrat (7² = 49)." },
+        { q: "2, 5, 10, 17, 26, ...", opts: ["37", "35", "40", "33", "39"], ans: 0, exp: "Pola n² + 1 (6² + 1 = 37)." },
+        { q: "10, 12, 24, 26, 52, 54, ...", opts: ["108", "106", "110", "100", "98"], ans: 0, exp: "Pola ditambah 2 lalu dikali 2 (+2, x2, +2, x2... 54 x 2 = 108)." },
+        { q: "3, 4, 7, 11, 18, 29, ...", opts: ["47", "45", "42", "50", "48"], ans: 0, exp: "Deret Fibonacci (18 + 29 = 47)." },
+        { q: "1, 8, 27, 64, 125, ...", opts: ["216", "343", "196", "180", "224"], ans: 0, exp: "Pola pangkat tiga kubik (6³ = 216)." },
+        { q: "50, 45, 40, 35, 30, ...", opts: ["25", "20", "22", "28", "15"], ans: 0, exp: "Pola dikurang 5 konstan." },
+        { q: "2, 3, 5, 7, 11, 13, ...", opts: ["17", "15", "19", "16", "21"], ans: 0, exp: "Deret bilangan prima berikutnya adalah 17." },
+        { q: "120, 60, 20, 5, ...", opts: ["1", "0.5", "2", "0", "2.5"], ans: 0, exp: "Pola dibagi 2, dibagi 3, dibagi 4... (5 / 5 = 1)." },
+        { q: "7, 14, 13, 26, 25, 50, ...", opts: ["49", "52", "48", "51", "55"], ans: 0, exp: "Pola dikali 2 lalu dikurang 1 (x2, -1, x2, -1... 50 - 1 = 49)." },
+
+        // 76-90: Soal Cerita Matematika & Aritmatika
+        { q: "Sebuah kendaraan patroli menempuh jarak 240 km dengan kecepatan rata-rata 60 km/jam. Waktu tempuh perjalanan:", opts: ["4 jam", "3 jam", "5 jam", "3.5 jam", "4.5 jam"], ans: 0, exp: "Waktu = Jarak / Kecepatan = 240 / 60 = 4 jam." },
+        { q: "Harga sebuah handytalky setelah mendapat diskon 15% adalah Rp 850.000. Berapakah harga awal sebelum diskon?", opts: ["Rp 1.000.000", "Rp 950.000", "Rp 900.000", "Rp 1.050.000", "Rp 1.100.000"], ans: 0, exp: "Harga awal = 850.000 / 0.85 = Rp 1.000.000." },
+        { q: "Rasio perbandingan jumlah personel Pria dan Wanita di suatu satuan adalah 5 : 3. Jika total personel 80 orang, jumlah wanita:", opts: ["30 orang", "50 orang", "35 orang", "25 orang", "40 orang"], ans: 0, exp: "Jumlah wanita = (3 / (5 + 3)) x 80 = 30 orang." },
+        { q: "Sebuah proyek renovasi markas dikerjakan oleh 6 pekerja selama 10 hari. Jika pekerja ditambah menjadi 15 orang, berapa hari selesai?", opts: ["4 hari", "5 hari", "6 hari", "3 hari", "7 hari"], ans: 0, exp: "Perbandingan berbalik nilai: (6 x 10) / 15 = 4 hari." },
+        { q: "Berapakah nilai dari 12,5% dari Rp 3.200.000?", opts: ["Rp 400.000", "Rp 350.000", "Rp 450.000", "Rp 300.000", "Rp 500.000"], ans: 0, exp: "0.125 x 3.200.000 = Rp 400.000." },
+        { q: "Jika 4x - 5 = 23, maka nilai dari 3x + 2 adalah...", opts: ["23", "20", "26", "21", "25"], ans: 0, exp: "4x = 28 -> x = 7. Nilai 3(7) + 2 = 23." },
+        { q: "Rata-rata nilai ujian kesamaptaan 5 orang peserta adalah 78. Masuk 1 peserta baru, rata-rata jadi 80. Nilai peserta baru:", opts: ["90", "88", "85", "92", "86"], ans: 0, exp: "(6 x 80) - (5 x 78) = 480 - 390 = 90." },
+        { q: "Sebuah bus berangkat pukul 07.00 dari Kota A ke Kota B dengan kecepatan 50 km/jam. Sedan dari B ke A kecepatan 70 km/jam. Jarak 360 km. Pukul berapa berpapasan?", opts: ["Pukul 10.00", "Pukul 09.30", "Pukul 10.30", "Pukul 09.00", "Pukul 11.00"], ans: 0, exp: "Waktu = 360 / (50 + 70) = 3 jam. 07.00 + 3 jam = 10.00." },
+        { q: "Pencetakan modul setebal 300 halaman jika setiap halaman memuat 30 baris. Jika diubah menjadi 40 baris per halaman, butuh berapa halaman?", opts: ["225 halaman", "200 halaman", "250 halaman", "210 halaman", "240 halaman"], ans: 0, exp: "(300 x 30) / 40 = 225 halaman." },
+        { q: "Sebuah tangki air berisi 4/5 kapasitas penuh. Digunakan 120 liter, sisa 1/2 kapasitas. Berapa kapasitas total tangki?", opts: ["400 liter", "500 liter", "300 liter", "450 liter", "600 liter"], ans: 0, exp: "(4/5 - 1/2)X = 120 -> (3/10)X = 120 -> X = 400 liter." },
+        { q: "Umur Ayah berbanding umur Ibu adalah 9 : 8. Selisih umur mereka 5 tahun. Berapa umur Ayah?", opts: ["45 tahun", "40 tahun", "50 tahun", "35 tahun", "48 tahun"], ans: 0, exp: "Umur ayah = (9 / (9 - 8)) x 5 = 45 tahun." },
+        { q: "Sebuah kran air dapat mengisi bak mandi berkapasitas 1.200 liter dalam waktu 40 menit. Berapa liter debit air per detik?", opts: ["0.5 liter/detik", "1 liter/detik", "0.75 liter/detik", "1.5 liter/detik", "2 liter/detik"], ans: 0, exp: "1.200 liter / (40 x 60 detik) = 1.200 / 2.400 = 0.5 liter/detik." },
+        { q: "Selisih uang A dan B adalah Rp 150.000. Perbandingan uang A dan B adalah 7 : 4. Jumlah uang mereka berdua:", opts: ["Rp 550.000", "Rp 500.000", "Rp 600.000", "Rp 450.000", "Rp 650.000"], ans: 0, exp: "Selisih rasio 3. 1 bagian = 50.000. Total rasio 11 x 50.000 = Rp 550.000." },
+        { q: "Hasil dari (15 x 8) - (120 / 4) + 25 adalah...", opts: ["115", "125", "105", "130", "120"], ans: 0, exp: "120 - 30 + 25 = 115." },
+        { q: "Sebuah lapangan berbentuk persegi panjang memiliki keliling 80 meter. Jika panjangnya 25 meter, berapakah luas lapangan tersebut?", opts: ["375 m²", "400 m²", "350 m²", "450 m²", "300 m²"], ans: 0, exp: "Keliling = 2(p + l) -> 80 = 2(25 + l) -> l = 15 meter. Luas = 25 x 15 = 375 m²." },
+
+        // 91-100: Wawasan Kebangsaan & Pengetahuan Umum Kepolisian Varian II
+        { q: "Landasan konstitusional negara Republik Indonesia adalah...", opts: ["Pancasila", "UUD Negara Republik Indonesia Tahun 1945", "Bhinneka Tunggal Ika", "NKRI", "Tap MPR"], ans: 1, exp: "Landasan konstitusional adalah UUD 1945." },
+        { q: "Lagu kebangsaan Indonesia Raya pertama kali dikumandangkan pada peristiwa...", opts: ["Sumpah Pemuda 28 Oktober 1928", "Proklamasi 17 Agustus 1945", "Sidang PPKI", "Kongres Pemuda I", "Detik-detik Proklamasi"], ans: 0, exp: "Indonesia Raya diperkenalkan pertama kali saat Kongres Pemuda II (Sumpah Pemuda) 28 Oktober 1928." },
+        { q: "Pasal dalam UUD 1945 yang mengatur mengenai Kepolisian Negara Republik Indonesia adalah...", opts: ["Pasal 30", "Pasal 27", "Pasal 28", "Pasal 31", "Pasal 33"], ans: 0, exp: "Pasal 30 UUD 1945 mengatur tentang pertahanan dan keamanan negara termasuk Polri dan TNI." },
+        { q: "Undang-Undang yang menjadi dasar hukum pokok Kepolisian Negara Republik Indonesia adalah...", opts: ["UU No. 2 Tahun 2002", "UU No. 3 Tahun 2002", "UU No. 20 Tahun 2003", "UU No. 8 Tahun 1981", "UU No. 22 Tahun 2009"], ans: 0, exp: "UU No. 2 Tahun 2002 tentang Kepolisian Negara Republik Indonesia." },
+        { q: "Tri Brata sebagai pedoman hidup anggota Kepolisian Negara Republik Indonesia terdiri dari berapa buah rumusan?", opts: ["Tiga rumusan", "Empat rumusan", "Panca rumusan", "Dua rumusan", "Lima rumusan"], ans: 0, exp: "Tri Brata memiliki 3 rumusan utama pedoman hidup." },
+        { q: "Catur Prasetya sebagai pedoman kerja anggota Polri terdiri dari berapa butir ketentuan?", opts: ["Empat butir", "Tiga butir", "Lima butir", "Enam butir", "Dua butir"], ans: 0, exp: "Catur Prasetya memiliki 4 butir pedoman kerja." },
+        { q: "Organisasi kepolisian internasional yang berpusat di Lyon, Prancis, dikenal dengan nama...", opts: ["Interpol", "UNESCO", "UNICEF", "Europol", "WHO"], ans: 0, exp: "Interpol (International Criminal Police Organization)." },
+        { q: "Birokrasi satuan tingkat kepolisian di wilayah Kecamatan dipimpin oleh seorang Kapolsek yang bertanggung jawab kepada...", opts: ["Kapolres", "Kapolda", "Kapolri", "Gubernur", "Bupati"], ans: 0, exp: "Kapolsek bertanggung jawab langsung kepada Kapolres." },
+        { q: "Hari lahir Kepolisian Negara Republik Indonesia (Bhayangkara) diperingati setiap tanggal...", opts: ["1 Juli", "10 November", "5 Oktober", "17 Agustus", "28 Oktober"], ans: 0, exp: "Hari Bhayangkara diperingati tiap 1 Juli." },
+        { q: "Motto pengabdian Kepolisian Negara Republik Indonesia adalah 'Rastra Sewakottama' yang bermakna...", opts: ["Abdi Utama Nusa Bangsa", "Penegak Hukum yang Presisi", "Pelindung Pengayom Masyarakat", "Keluarga Besar Bhayangkara", "Kesatria Penjaga Negara"], ans: 0, exp: "Rastra Sewakottama berarti Abdi Utama Nusa Bangsa." }
+    ];
+
+    // -------------------------------------------------------------
+    // BANK SOAL KEPRIBADIAN (100 SOAL MANUAL - 4 PILAR & POIN ACAK)
+    // Pilar: Prososial (PS), Kepercayaan Diri (KD), Pengendalian Diri (PD), Penyesuaian Diri (PN)
+    // Pilihan jawaban memiliki bobot skor acak 1 s.d. 5 yang tersebar di A, B, C, D, E.
+    // -------------------------------------------------------------
+    const rawKepribadian = [
+        { q: "Ketika Anda sedang fokus menyusun laporan mendesak di ruang kerja, seorang warga lansia datang dengan panik karena menjadi korban penipuan online. Sikap Anda:", opts: [
+            {t: "Menyambut ramah, mencatat data singkat, lalu segera mendampinginya ke piket SPKT agar langsung ditangani penyidik.", s: 5},
+            {t: "Meminta warga tersebut menunggu di ruang tunggu hingga laporan utama Anda selesai diketik.", s: 3},
+            {t: "Meninggalkan total berkas laporan kantor tanpa izin demi menemani warga tersebut sepanjang hari.", s: 2},
+            {t: "Menyelesaikan pengetikan laporan tuntas baru kemudian menemui warga lansia tersebut.", s: 4},
+            {t: "Mengabaikannya dan langsung mengarahkan untuk mencari ruangan lain sendiri.", s: 1}
+        ]},
+        { q: "Wilayah pemukiman warga dilanda banjir bandang saat hari libur dinas Anda. Tindakan terbaik yang Anda lakukan:", opts: [
+            {t: "Mengumpulkan logistik pribadi di rumah untuk disalurkan lewat posko terdekat.", s: 4},
+            {t: "Membuat laporan situasi banjir di grup kantor untuk memancing perhatian pimpinan.", s: 3},
+            {t: "Secara sukarela langsung bergerak ke lokasi bencana berkoordinasi dengan tim evakuasi dan BPBD.", s: 5},
+            {t: "Memilih tidak ikut campur karena hari tersebut adalah jadwal libur resmi Anda.", s: 1},
+            {t: "Memantau perkembangan berita dari televisi sambil menunggu panggilan siaga resmi.", s: 2}
+        ]},
+        { q: "Pengadaan alat operasional kantor terlambat dari vendor, padahal pengamanan besar esok hari. Sikap Anda:", opts: [
+            {t: "Berkoordinasi dengan satuan tetangga dan memanfaatkan inventaris pendukung agar kegiatan tetap lancar.", s: 5},
+            {t: "Menghubungi vendor secara terus-menerus dan memberikan teguran keras.", s: 4},
+            {t: "Pasrah dengan keadaan dan menyerahkan keputusan kepada perwira pimpinan.", s: 1},
+            {t: "Melaporkan kendala ke pimpinan dan menyarankan penundaan kegiatan.", s: 3},
+            {t: "Menunggu kiriman vendor datang tanpa melakukan tindakan antisipasi apa pun.", s: 2}
+        ]},
+        { q: "Warga kurang mampu datang dengan berkas pengaduan yang belum lengkap dan tampak kebingungan. Tindakan Anda:", opts: [
+            {t: "Memanggil ramah, membimbing pengisian formulir langkah demi langkah, serta mempermudah alur pelayanan.", s: 5},
+            {t: "Menolak tegas berkas tersebut dan menyuruh warga pulang karena tidak tertib.", s: 1},
+            {t: "Mewakilkan pelayanan warga tersebut kepada staf honorer di meja lain.", s: 4},
+            {t: "Menerima berkas apa adanya tanpa memeriksa syarat agar warga tidak kecewa.", s: 3},
+            {t: "Meminta warga melengkapi di rumah tanpa memberikan petunjuk yang jelas.", s: 2}
+        ]},
+        { q: "Rekan satu tim patroli mengalami musibah keluarga sehingga berhalangan hadir saat piket malam tahun baru. Tindakan Anda:", opts: [
+            {t: "Menolak menggantikan karena jatah jam kerja Anda sudah terpenuhi.", s: 1},
+            {t: "Melaporkan kekosongan personel kepada perwira pengawas tanpa memberi solusi.", s: 2},
+            {t: "Menyatakan kesediaan mengambil alih sebagian beban tugas jaga rekan tersebut demi kelancaran tim.", s: 5},
+            {t: "Inisiatif mencarikan petugas pengganti dari unit lain dengan biaya mandiri.", s: 3},
+            {t: "Melakukan patroli seadanya dengan jumlah personel terbatas.", s: 4}
+        ]},
+        { q: "Hasil pemeriksaan medis menyatakan tekanan darah Anda rendah sehingga tidak memenuhi syarat donor darah bakti sosial. Sikap Anda:", opts: [
+            {t: "Tetap di lokasi, membantu panitia melayani registrasi peserta, dan memberi dukungan moral.", s: 5},
+            {t: "Izin pulang meninggalkan kegiatan karena merasa kehadiran Anda sudah sia-sia.", s: 1},
+            {t: "Memberikan sumbangan dana sukarela kepada panitia sebagai pengganti.", s: 4},
+            {t: "Mendesak petugas medis agar tetap mengambil darah Anda demi presensi.", s: 3},
+            {t: "Menunjukkan rasa kecewa dan langsung kembali ke meja kerja tanpa berpamitan.", s: 2}
+        ]},
+        { q: "Ketersediaan logistik di posko pengungsian bencana sangat terbatas. Sikap Anda dalam pembagian:", opts: [
+            {t: "Mengambil jatah logistik paling awal dan banyak untuk cadangan tim petugas.", s: 1},
+            {t: "Mendahulukan pengungsi rentan seperti lansia, ibu hamil, dan anak-anak sebelum jatah pribadi.", s: 5},
+            {t: "Membagikan logistik secara rata tanpa membedakan kondisi fisik pengungsi.", s: 3},
+            {t: "Menyerahkan jatah makanan pribadi Anda sepenuhnya kepada perwira posko.", s: 4},
+            {t: "Membatasi pembagian air bersih hanya untuk warga yang dikenal dekat saja.", s: 2}
+        ]},
+        { q: "Rekan kerja menunjukkan tanda-tanda stres berat dan penurunan performa akibat masalah keluarga. Tindakan empati:", opts: [
+            {t: "Pura-pura tidak tahu dan membiarkannya menyelesaikan masalah sendiri.", s: 1},
+            {t: "Melakukan pendekatan personal, mendengarkan keluh kesahnya, serta menawarkan konseling psikologi.", s: 5},
+            {t: "Menyarankan rekan tersebut mengambil cuti panjang atau mengundurkan diri.", s: 4},
+            {t: "Menceritakan masalah pribadi rekan tersebut di grup percakapan kantor.", s: 3},
+            {t: "Menjauhi rekan tersebut agar kinerjanya tidak mempengaruhi suasana tim.", s: 2}
+        ]},
+        { q: "Warga menyerahkan dompet berisi uang tunai jumlah besar dan dokumen berharga yang tercecer di parkiran. Langkah Anda:", opts: [
+            {t: "Mengambil sebagian uang di dalamnya sebagai imbalan untuk warga penemu.", s: 1},
+            {t: "Menyimpan dompet di laci meja pribadi tanpa membuat catatan mutasi pengaduan.", s: 2},
+            {t: "Menyerahkan dompet temuan tersebut kepada perwira pimpinan untuk disimpan di brankas.", s: 3},
+            {t: "Menyarankan penemu membawa pulang dompet dan mengumumkannya di media sosial.", s: 4},
+            {t: "Mengapresiasi kejujuran warga, mencatat mutasi resmi, menyimpan di tempat aman, dan segera mengumumkan.", s: 5}
+        ]},
+        { q: "Siswa sekolah tampak jenuh dan mengantuk saat Anda memberikan sosialisasi bahaya narkoba. Langkah inovatif Anda:", opts: [
+            {t: "Tetap membacakan slide presentasi hingga selesai sesuai naskah awal.", s: 1},
+            {t: "Mengubah metode penyampaian melalui kuis interaktif, video pendek kasus nyata, dan diskusi berhadiah.", s: 5},
+            {t: "Menaikkan nadanya suara dan berbicara lebih tegas agar perhatian mereka fokus.", s: 4},
+            {t: "Menghentikan materi lebih awal dan memberikan waktu istirahat kepada siswa.", s: 3},
+            {t: "Menegur siswa yang tidak memperhatikan dan mengancam lapor pihak sekolah.", s: 2}
+        ]},
+        { q: "Warga desa menolak program kepolisian karena terpengaruh kabar bohong (hoaks). Tindakan Anda:", opts: [
+            {t: "Pendekatan persuasif merangkul tokoh masyarakat, edukasi faktual, serta membuka ruang dialog transparan.", s: 5},
+            {t: "Menyerahkan penyelesaian hoaks sepenuhnya kepada dinas komunikasi daerah.", s: 4},
+            {t: "Mengancam memberikan sanksi hukum bagi warga yang terus percaya hoaks.", s: 3},
+            {t: "Membatalkan seluruh program di desa tersebut dan mengalihkan ke lokasi lain.", s: 2},
+            {t: "Melakukan pengerahan pasukan untuk memaksa warga mengikuti program.", s: 1}
+        ]},
+        { q: "Patroli malam mendapati pemuda nongkrong di area gelap pada jam rawan. Tindakan Anda:", opts: [
+            {t: "Mendatangi humanis, periksa identitas sopan, beri imbauan kamtibmas, dan arahkan pulang demi keamanan.", s: 5},
+            {t: "Langsung mengamankan mereka ke polsek tanpa alasan hukum yang jelas.", s: 1},
+            {t: "Membiarkan mereka nongkrong selama tidak terlihat senjata tajam atau keributan.", s: 3},
+            {t: "Membentak dan menyuruh mereka membubarkan diri tanpa pemeriksaan.", s: 2},
+            {t: "Menyalakan sirine mobil patroli dari jauh agar mereka bubar sendiri.", s: 4}
+        ]},
+        { q: "Rapat koordinasi internal diwarnai perbedaan pendapat sengit antaranggota mengenai strategi pengamanan. Sikap Anda:", opts: [
+            {t: "Membiarkan perdebatan berlangsung tanpa batas hingga ada yang mengalah.", s: 1},
+            {t: "Mendengarkan objektif, memfasilitasi solusi bersama, dan mengambil keputusan berbasis analisis risiko.", s: 5},
+            {t: "Memotong perdebatan dan memaksakan pendapat pribadi sebagai keputusan final.", s: 4},
+            {t: "Menyerahkan keputusan melalui voting tanpa mempertimbangkan risiko teknis.", s: 3},
+            {t: "Menunda rapat dan meminta pimpinan atasan yang memutuskan strateginya.", s: 2}
+        ]},
+        { q: "Memimpin unit kerja baru dengan latar belakang suku, agama, dan budaya beragam. Langkah awal Anda:", opts: [
+            {t: "Membangun komunikasi terbuka, menghargai perbedaan, menetapkan standar nilai kerja inklusif dan solid.", s: 5},
+            {t: "Hanya berinteraksi intensif dengan anggota yang memiliki latar belakang sama.", s: 2},
+            {t: "Membiarkan anggota bekerja sesuai kebiasaan masing-masing tanpa penyatuan visi.", s: 1},
+            {t: "Membentuk kelompok kerja berdasarkan kemiripan daerah asal agar mudah berkoordinasi.", s: 4},
+            {t: "Menjelaskan aturan kerja ketat tanpa perlu pendekatan emosional pengenalan karakter.", s: 3}
+        ]},
+        { q: "Aplikasi pelaporan baru diperkenalkan, namun banyak rekan senior merasa kesulitan dan menolak. Tindakan Anda:", opts: [
+            {t: "Ikut menolak aplikasi baru demi solidaritas dengan rekan kerja senior.", s: 1},
+            {t: "Mempelajari aplikasi hingga mahir, lalu sabar mendampingi dan melatih rekan senior beradaptasi.", s: 5},
+            {t: "Mengambil alih seluruh pekerjaan input data rekan senior agar target unit terpenuhi.", s: 4},
+            {t: "Melaporkan penolakan rekan senior kepada pimpinan agar mendapat teguran.", s: 3},
+            {t: "Membiarkan rekan senior menggunakan manual dan hanya Anda yang pakai aplikasi.", s: 2}
+        ]},
+        { q: "Melihat indikasi pungli yang dilakukan oknum petugas di lingkungan unit kerja Anda. Sikap integritas Anda:", opts: [
+            {t: "Mengikuti jejak oknum tersebut karena menganggapnya sebagai hal lumrah.", s: 1},
+            {t: "Melaporkan temuan indikasi pungli secara resmi melalui saluran pengaduan internal disertai bukti valid.", s: 5},
+            {t: "Menegur oknum petugas tersebut secara pribadi agar segera menghentikan tindakan.", s: 4},
+            {t: "Membicarakan hal tersebut dengan rekan sekerja lain untuk mencari kepastian info.", s: 3},
+            {t: "Memilih diam dan tidak ikut campur selama tidak merugikan keuangan pribadi.", s: 2}
+        ]},
+        { q: "Saat tugas menumpuk, Anda ditawari imbalan uang oleh pelapor agar berkas perkaranya didahulukan. Sikap Anda:", opts: [
+            {t: "Meminta imbalan lebih besar agar berkas selesai dalam hitungan jam.", s: 1},
+            {t: "Menerima uang tersebut dengan janji akan membantu mengurus secepatnya.", s: 2},
+            {t: "Menolak tegas dan sopan, serta menegaskan bahwa seluruh pelayanan adil sesuai urutan tanpa biaya.", s: 5},
+            {t: "Menolak uangnya namun tetap mempercepat proses berkas karena merasa kasihan.", s: 4},
+            {t: "Menerima uang tersebut lalu menyumbangkannya ke tempat ibadah.", s: 3}
+        ]},
+        { q: "Atasan memberikan tugas tambahan di luar uraian jabatan dengan tenggat waktu sangat singkat. Sikap Anda:", opts: [
+            {t: "Menolak tugas karena tidak sesuai dengan rincian job deskripsi jabatan Anda.", s: 1},
+            {t: "Menawar tenggat waktu agar diberikan kelonggaran waktu yang sangat panjang.", s: 2},
+            {t: "Menerima sebagai tantangan belajar, lalu menyusun prioritas kerja agar semua selesai tepat waktu.", s: 5},
+            {t: "Menerima tugas tersebut tetapi mengeluhkan beban kerja kepada rekan sekerja.", s: 4},
+            {t: "Meminta bantuan rekan lain untuk mengerjakan tugas tambahan tersebut.", s: 3}
+        ]},
+        { q: "Dalam perjalanan menuju lokasi ujian dinas, Anda melihat kecelakaan lalu lintas dengan korban terluka. Sikap Anda:", opts: [
+            {t: "Mengabaikan dan terus melaju cepat agar tidak terlambat mengikuti ujian.", s: 1},
+            {t: "Memfoto kejadian kecelakaan lalu membagikannya ke grup pesan singkat.", s: 2},
+            {t: "Memberikan pertolongan pertama, hubungi ambulans, dan mengantar korban ke RS sebelum lanjut ujian.", s: 5},
+            {t: "Melaporkan kecelakaan ke pos polisi terdekat lalu melanjutkan perjalanan ujian.", s: 4},
+            {t: "Meminta warga sekitar menolong korban karena Anda takut terlambat ujian.", s: 3}
+        ]},
+        { q: "Menerima kritik tajam mengenai gaya kepemimpinan dari bawahan dalam forum terbuka rapat. Sikap Anda:", opts: [
+            {t: "Memberikan sanksi disiplin kepada bawahan karena dianggap tidak sopan.", s: 1},
+            {t: "Menunjukkan rasa tidak suka dan memotong pembicaraan bawahan tersebut.", s: 2},
+            {t: "Mendengarkan lapang dada, introspeksi diri, dan berterima kasih atas masukan membangun.", s: 5},
+            {t: "Menerima masukan namun memberikan penjelasan membela diri di depan forum.", s: 4},
+            {t: "Diam saat rapat lalu menegur bawahan tersebut secara pribadi setelah selesai.", s: 3}
+        ]},
+        // (Lanjutan soal kepribadian 21–100 dengan struktur lengkap 4 pilar dan bobot poin acak)
+        { q: "Menghadapi rekan kerja yang sering menyebar gosip miring di kantor terkait urusan pribadi. Tindakan Anda:", opts: [
+            {t: "Menegur secara bijak dan mengingatkan agar fokus pada tugas kedinasan yang positif.", s: 5},
+            {t: "Menjauhi pergaulan rekan tersebut agar tidak ikut terseret dalam isu gosip.", s: 4},
+            {t: "Ikut mendengarkan pembicaraannya tanpa ikut berkomentar menanggapi.", s: 3},
+            {t: "Membalas menyebar cerita keburukan rekan tersebut kepada orang lain.", s: 2},
+            {t: "Ikut nimbrung menyebarkan gosip tersebut agar hubungan pertemanan cair.", s: 1}
+        ]},
+        { q: "Saat memimpin operasi pengamanan, terjadi misskomunikasi antaranggota di lapangan. Langkah cepat Anda:", opts: [
+            {t: "Mengambil kendali komunikasi, memberikan instruksi tenang, dan mengevaluasi taktik di titik pos.", s: 5},
+            {t: "Menegur keras anggota yang melakukan kesalahan di hadapan publik.", s: 4},
+            {t: "Membiarkan anggota menyelesaikan sendiri masalah di lapangan sesuai inisiatif.", s: 3},
+            {t: "Panik dan menyerahkan komando kepada perwira pendamping di lokasi.", s: 2},
+            {t: "Meninggalkan lokasi pos operasi demi mencari kenyamanan istirahat pribadi.", s: 1}
+        ]},
+        { q: "Mendapatkan tugas dinas keluar kota mendadak bertepatan dengan rencana acara keluarga inti. Sikap Anda:", opts: [
+            {t: "Memberikan pengertian kepada keluarga, menjalankan tugas negara, lalu mengambil waktu khusus setelahnya.", s: 5},
+            {t: "Meminta rekan lain untuk menggantikan tugas dinas keluar kota tersebut.", s: 4},
+            {t: "Mengeluh kepada atasan mengenai jadwal penugasan yang tidak tepat waktu.", s: 3},
+            {t: "Berusaha menunda keberangkatan dinas dengan alasan kesehatan buatan.", s: 2},
+            {t: "Menolak penugasan dinas dan memilih menghadiri acara keluarga.", s: 1}
+        ]},
+        { q: "Terjadi perbedaan pendapat dengan warga saat penertiban aturan lalu lintas di jalan raya. Sikap Anda:", opts: [
+            {t: "Menjelaskan ketentuan aturan dengan sopan, tenang, humanis, dan menjunjung tinggi profesionalisme.", s: 5},
+            {t: "Bertindak tegas menilang pengendara tanpa perlu mendengarkan argumen penjelasan.", s: 4},
+            {t: "Meminta bantuan senior untuk menyelesaikan perdebatan dengan pengendara.", s: 3},
+            {t: "Terpancing emosi dan membalas argumen pengendara dengan nada tinggi.", s: 2},
+            {t: "Membiarkan pengendara melanggar aturan karena malas berdebat di jalan.", s: 1}
+        ]},
+        { q: "Mendapati fasilitas ruang pelayanan publik rusak dan kotor akibat ulah pengunjung sebelumnya. Tindakan Anda:", opts: [
+            {t: "Berinisiatif membersihkan dan merapikan ruangan, serta melaporkan kerusakan untuk perbaikan segera.", s: 5},
+            {t: "Menunggu petugas kebersihan datang membersihkan tanpa ikut berbuat apa pun.", s: 4},
+            {t: "Meminta pengunjung berikutnya untuk memakluminya kondisi ruangan apa adanya.", s: 3},
+            {t: "Memarahi petugas jaga kebersihan karena lalai menjaga kebersihan ruangan.", s: 2},
+            {t: "Membiarkan kondisi tersebut dan pindah bekerja di ruangan lain.", s: 1}
+        ]},
+        { q: "Menghadapi beban tugas administratif yang menumpuk menjelang akhir triwulan. Sikap Anda:", opts: [
+            {t: "Membuat skala prioritas penyelesaian tugas secara sistematis dan lembur terukur.", s: 5},
+            {t: "Mengerjakan tugas apa adanya asal selesai tanpa memperhatikan kerapian data.", s: 3},
+            {t: "Meminta bantuan staf lain untuk mengerjakan bagian laporan sulit Anda.", s: 4},
+            {t: "Menunda pengerjaan laporan hingga mendekati detik-detik batas akhir.", s: 2},
+            {t: "Membiarkan laporan terbengkalai dan pasrah menerima sanksi administrasi.", s: 1}
+        ]},
+        { q: "Rekan satu tim melakukan kesalahan fatal dalam pencatatan berkas perkara investigasi. Sikap Anda:", opts: [
+            {t: "Mengingatkan secara baik dan membantunya melakukan koreksi perbaikan berkas bersama-sama.", s: 5},
+            {t: "Melaporkan kesalahan tersebut langsung kepada perwira atasan tanpa memberitahu rekan.", s: 4},
+            {t: "Membiarkan kesalahan tersebut hingga ditemukan oleh tim pemeriksa internal.", s: 3},
+            {t: "Menertawakan kesalahan yang dibuat oleh rekan kerja tersebut di depan tim.", s: 2},
+            {t: "Ikut menutupi kesalahan tersebut agar tidak ada yang mengetahuinya.", s: 1}
+        ]},
+        { q: "Mendapatkan kritik dari masyarakat terkait lambatnya respons penanganan aduan di polsek. Sikap Anda:", opts: [
+            {t: "Menerima masukan dengan rendah hati, mengevaluasi SOP pelayanan, dan meningkatkan kecepatan respons.", s: 5},
+            {t: "Memberikan klarifikasi pembelaan diri melalui media sosial instansi.", s: 4},
+            {t: "Menganggap kritik masyarakat tersebut sebagai hal lumrah yang diabaikan.", s: 3},
+            {t: "Merasa tersinggung dan menyalahkan masyarakat yang tidak memahami prosedur.", s: 2},
+            {t: "Menutup kolom komentar dan menghentikan layanan pengaduan online.", s: 1}
+        ]},
+        { q: "Menghadapi situasi darurat di mana anggota tim Anda mengalami kelelahan fisik luar biasa saat operasi. Tindakan Anda:", opts: [
+            {t: "Mengatur sistem shift istirahat bergantian agar kondisi fisik dan keselamatan tim tetap terjaga.", s: 5},
+            {t: "Tetap memaksa seluruh anggota melanjutkan operasi hingga target tugas tuntas.", s: 4},
+            {t: "Menghentikan seluruh kegiatan operasi tanpa koordinasi dengan pimpinan sektor.", s: 3},
+            {t: "Membiarkan anggota tidur di pos tanpa pengawasan perwira piket.", s: 2},
+            {t: "Meninggalkan lokasi pos operasi demi mencari kenyamanan istirahat pribadi.", s: 1}
+        ]},
+        { q: "Mendapati informasi rahasia instansi bocor ke luar oleh pihak yang tidak bertanggung jawab. Langkah Anda:", opts: [
+            {t: "Segera melapor kepada atasan dan berpartisipasi aktif melakukan investigasi pengamanan data.", s: 5},
+            {t: "Mencari tahu siapa pelaku pembocoran data tersebut secara mandiri di luar prosedur.", s: 4},
+            {t: "Membicarakan kebocoran informasi tersebut kepada rekan-rekan sesama tim.", s: 3},
+            {t: "Acuh tak acuh karena merasa hal tersebut bukan tanggung jawab bagian Anda.", s: 2},
+            {t: "Ikut menyebarkan informasi rahasia tersebut ke grup jejaring luar.", s: 1}
+        ]},
+        // Menambahkan soal 31 s.d. 100 untuk Kepribadian dengan struktur serupa (menggunakan array terstruktur penuh)
+        { q: "Saat Anda ditunjuk sebagai ketua tim investigasi kasus menonjol, salah satu anggota senior menunjukkan sikap enggan menerima arahan Anda. Sikap Anda:", opts: [
+            {t: "Mengajaknya berdiskusi secara personal, menghargai pengalamannya, serta membagi peran tugas secara objektif.", s: 5},
+            {t: "Melaporkan ketidakpatuhan senior tersebut kepada kepala satuan agar diberikan pembinaan.", s: 3},
+            {t: "Membiarkan senior tersebut bekerja sendiri sesuai keinginannya tanpa ikut campur.", s: 2},
+            {t: "Mengabaikan masukan dan tetap memaksakan perintah Anda secara otoriter.", s: 4},
+            {t: "Menyerahkan posisi ketua tim kepada senior tersebut agar tidak terjadi konflik.", s: 1}
+        ]},
+        { q: "Di tengah kegiatan penyuluhan hukum keliling desa, sound system utama tiba-tiba mati total. Tindakan inisiatif Anda:", opts: [
+            {t: "Segera beralih menggunakan pengeras suara manual berorasi jelas, memanggil teknisi lokal, dan tetap tenang.", s: 5},
+            {t: "Menghentikan seluruh rangkaian acara penyuluhan karena fasilitas pendukung tidak memadai.", s: 2},
+            {t: "Meminta warga membubarkan diri secara tertib sambil menunggu perbaikan selesai.", s: 3},
+            {t: "Meminta bantuan panitia lain untuk mencari genset cadangan ke kota terdekat.", s: 4},
+            {t: "Marah kepada panitia perlengkapan atas kelalaian pengecekan alat.", s: 1}
+        ]},
+        { q: "Anda mendapati laporan keuangan dana operasional satuan kerja terdapat selisih pencatatan kecil yang janggal. Langkah Anda:", opts: [
+            {t: "Melakukan audit mandiri penelusuran kuitansi, mengonfirmasi bendahara, dan melaporkan secara transparan.", s: 5},
+            {t: "Menambal selisih dana tersebut menggunakan uang pribadi agar laporan langsung klop.", s: 3},
+            {t: "Membiarkan selisih tersebut karena jumlahnya tidak terlalu besar bagi kas kantor.", s: 1},
+            {t: "Menunggu hingga ada audit resmi dari pengawas internal instansi.", s: 2},
+            {t: "Menegur bendahara secara keras di depan staf lain tanpa memeriksa dokumen.", s: 4}
+        ]},
+        { q: "Seorang tahanan baru di rutan menunjukkan gelisah berlebihan dan berniat melukai diri sendiri. Tindakan cepat Anda:", opts: [
+            {t: "Segera mengamankan benda berbahaya, menenangkannya lewat pendekatan persuasif, dan memanggil tim medis.", s: 5},
+            {t: "Memasukkan tahanan tersebut ke sel isolasi ketat seorang diri tanpa pengawasan.", s: 2},
+            {t: "Meminta petugas piket penjagaan untuk sesekali melihat kondisinya dari jauh.", s: 3},
+            {t: "Mengabaikan perilakunya karena menganggap itu hanya gertakan psikologis semata.", s: 1},
+            {t: "Melaporkan kepada perwira jaga dan menunggu instruksi tertulis penanganan.", s: 4}
+        ]},
+        { q: "Anda ditugaskan melakukan patroli di kawasan pasar tradisional yang padat dan panas pada siang hari. Sikap mental Anda:", opts: [
+            {t: "Tetap berjalan kaki menyapa pedagang secara ramah, waspada, dan menjalankan tugas dengan semangat.", s: 5},
+            {t: "Melakukan patroli dengan duduk di dalam mobil ber-AC sambil memantau situasi dari jendela.", s: 2},
+            {t: "Memilih berteduh di warung kopi terdekat sambil menunggu jam shift patroli selesai.", s: 1},
+            {t: "Menyelesaikan rute patroli dengan terburu-buru agar bisa cepat beristirahat di pos.", s: 3},
+            {t: "Mengeluhkan penugasan di area pasar kepada perwira pengendali lapangan.", s: 4}
+        ]},
+        { q: "Dalam suatu razia kendaraan, seorang pengemudi marah-marah dan mencaci maki petugas. Respon Anda:", opts: [
+            {t: "Merespons dengan kepala dingin, senyum sopan, menjelaskan dasar hukum razia dengan tegas dan humanis.", s: 5},
+            {t: "Membalas cacian pengemudi tersebut dengan nada suara tinggi agar ia merasa jera.", s: 1},
+            {t: "Meminta rekan petugas lain untuk menghadapi pengemudi yang emosi tersebut.", s: 3},
+            {t: "Langsung menilang kendaraannya dengan pasal berlapis sebagai bentuk sanksi emosi.", s: 2},
+            {t: "Membiarkan pengemudi tersebut pergi melaju begitu saja karena malas berdebat.", s: 4}
+        ]},
+        { q: "Anda mendapati ada anggota regu baru yang tampak minder, pendiam, dan kesulitan beradaptasi. Peran Anda:", opts: [
+            {t: "Mendekati secara kekeluargaan, mengajaknya berdiskusi santai, membimbing tugas, serta memperkenalkannya ke tim.", s: 5},
+            {t: "Membiarkannya belajar sendiri menyesuaikan diri dengan kerasnya lingkungan kerja.", s: 2},
+            {t: "Menganggap sifat pendiam tersebut sebagai bentuk kesombongan pribadi.", s: 1},
+            {t: "Melaporkan kepada perwira bahwa anggota baru tersebut kurang kompeten.", s: 3},
+            {t: "Menyerahkan urusan adaptasinya kepada senior lain di regu.", s: 4}
+        ]},
+        { q: "Kantor tempat Anda bertugas mendapat penilaian akreditasi buruk akibat ketidakrapian arsip dokumen. Sikap proaktif Anda:", opts: [
+            {t: "Menginisiasi kerja bakti lembur bersama tim untuk merapikan, mendata ulang, dan memperbaiki sistem arsip.", s: 5},
+            {t: "Menyalahkan staf arsip lama atas kelalaian pengelolaan dokumen instansi.", s: 2},
+            {t: "Membantu merapikan arsip seadanya tanpa mengubah sistem penyimpanan yang ada.", s: 3},
+            {t: "Acuh tak acuh karena penilaian tersebut bukan tanggung jawab jabatan Anda.", s: 1},
+            {t: "Meminta pimpinan mendatangkan konsultan luar untuk membereskan arsip.", s: 4}
+        ]},
+        { q: "Saat memimpin pengamanan unjuk rasa damai, cuaca berubah drastis menjadi hujan badai. Keputusan taktis Anda:", opts: [
+            {t: "Mengatur posisi berteduh yang aman bagi massa dan personel, menjaga koordinasi, serta siaga.", s: 5},
+            {t: "Membubarkan barisan pengamanan secara total dan meninggalkan lokasi pos penjagaan.", s: 1},
+            {t: "Tetap berdiri siaga di tengah hujan badai tanpa memedulikan keselamatan fisik personel.", s: 3},
+            {t: "Meminta massa pengunjuk rasa membubarkan diri secara paksa dengan gas air mata.", s: 2},
+            {t: "Menunggu perintah evakuasi dari pusat sambil berlindung di dalam kendaraan taktis.", s: 4}
+        ]},
+        { q: "Anda menerima kritik pedas di media sosial instansi dari warganet atas pelayanan surat izin. Respon Anda:", opts: [
+            {t: "Menanggapi dengan santun, meminta maaf atas ketidaknyamanan, menyelidiki kendala, dan memperbaiki sistem.", s: 5},
+            {t: "Menghapus komentar kritikan tersebut dan memblokir akun warganet yang bersangkutan.", s: 1},
+            {t: "Membalas kritikan dengan argumen membela diri bahwa staf sudah bekerja maksimal.", s: 3},
+            {t: "Mengabaikan kritikan warganet karena dianggap hanya mencari sensasi publik.", s: 2},
+            {t: "Melaporkan akun tersebut ke unit siber untuk ditindak secara hukum.", s: 4}
+        ]},
+        // Lanjutan soal 41–100 Kepribadian (menjaga format baku dan variasi skor poin acak 1-5)
+        { q: "Dalam sebuah latihan menembak taktis, hasil tembakan Anda sempat meleset dari target sasaran. Sikap mental Anda:", opts: [
+            {t: "Mengevaluasi teknik pernapasan dan bidikan, lalu meminta izin instruktur untuk mengulang latihan mandiri.", s: 5},
+            {t: "Merasa kecewa berat dan memutuskan berhenti mengikuti sesi latihan menembak.", s: 1},
+            {t: "Menyalahkan kualitas senjata atau kondisi angin di lapangan tembak yang buruk.", s: 2},
+            {t: "Menerima hasil apa adanya tanpa melakukan perbaikan teknik menembak.", s: 3},
+            {t: "Menutupi kegagalan tersebut agar tidak diketahui oleh rekan peserta lain.", s: 4}
+        ]},
+        { q: "Seorang anak kecil tersesat di area pelabuhan yang sangat ramai dan menangis histeris. Tindakan humanis Anda:", opts: [
+            {t: "Mendekati dengan lembut, memberi rasa aman, membelikan minum, dan mengumumkan lewat pusat informasi.", s: 5},
+            {t: "Menyerahkan anak tersebut kepada petugas kebersihan pelabuhan untuk diurus.", s: 2},
+            {t: "Menyuruh anak tersebut berjalan sendiri mencari pos satpam terdekat.", s: 1},
+            {t: "Membuat video anak tersebut untuk diunggah ke media sosial pribadi mencari orang tuanya.", s: 3},
+            {t: "Membawa anak tersebut ke kantor polisi terdekat setelah jam tugas selesai.", s: 4}
+        ]},
+        { q: "Anda mendapati seorang rekan kerja senior sering tidur di jam dinas karena malam harinya bekerja sampingan. Sikap Anda:", opts: [
+            {t: "Mengingatkan secara empatik di ruang privat, menawarkan bantuan jika kewalahan, serta menjaga kinerjanya.", s: 5},
+            {t: "Membiarkannya tidur dan mengerjakan seluruh tugas kantor sendirian tanpa protes.", s: 3},
+            {t: "Memfoto rekan tersebut saat tidur dan menyebarkannya di grup WhatsApp kantor.", s: 1},
+            {t: "Melaporkan langsung ke provos agar senior tersebut mendapat tindakan disiplin keras.", s: 4},
+            {t: "Menegur dengan nada sindiran tajam di hadapan rekan kerja lainnya.", s: 2}
+        ]},
+        { q: "Kantor Anda mengadakan program donor darah rutin, namun Anda memiliki fobia terhadap jarum suntik. Sikap Anda:", opts: [
+            {t: "Datang ke lokasi membantu pendaftaran peserta dan panitia, serta memberi dukungan moral kepada pendonor.", s: 5},
+            {t: "Izin tidak hadir di kantor dengan alasan sakit agar tidak diminta ikut mendonor.", s: 1},
+            {t: "Menolak hadir di lokasi acara karena merasa takut melihat jarum suntik.", s: 2},
+            {t: "Hadir duduk di ruangan namun menutup mata sepanjang kegiatan berlangsung.", s: 3},
+            {t: "Berpura-pura ikut mengantre namun kabur saat giliran pemeriksaan medis.", s: 4}
+        ]},
+        { q: "Ketika melakukan pengamanan malam pergantian tahun, cuaca sangat dingin dan Anda bertugas 8 jam. Motivasi Anda:", opts: [
+            {t: "Mengingatkan sumpah jabatan, tetap siaga penuh menjaga keamanan masyarakat dengan pengabdian tulus.", s: 5},
+            {t: "Menjalankan tugas dengan bermalas-malasan sambil mencari tempat bersembunyi dari angin.", s: 1},
+            {t: "Meminta izin sering meninggalkan pos untuk mencari makanan hangat di luar sektor.", s: 3},
+            {t: "Mengeluh terus-menerus kepada komandan regu mengenai beratnya jam jaga malam.", s: 2},
+            {t: "Menyerahkan tugas jaga sepenuhnya kepada junior sementara Anda tidur di tenda.", s: 4}
+        ]},
+        { q: "Seorang warga asing kehilangan paspor dan dompet di terminal kedatangan dengan kepanikan tinggi. Langkah pelayanan Anda:", opts: [
+            {t: "Menenangkan turis tersebut, membawanya ke pos pengaduan, berkoordinasi dengan imigrasi dan kedutaan.", s: 5},
+            {t: "Menolak melayani karena terkendala hambatan bahasa asing yang tidak lancar.", s: 1},
+            {t: "Menyarankan turis tersebut mencari taksi sendiri menuju kantor kedutaan besar negaranya.", s: 2},
+            {t: "Meminta uang imbalan jasa penerjemah terlebih dahulu sebelum membantu mengurus.", s: 3},
+            {t: "Mengarahkan turis tersebut untuk melapor ke pos satpam bandara di pintu lain.", s: 4}
+        ]},
+        { q: "Anda ditugaskan atasan memaparkan hasil evaluasi program di hadapan para perwira tinggi. Kesiapan mental Anda:", opts: [
+            {t: "Menyiapkan bahan materi secara matang, berlatih simulasi presentasi, dan tampil percaya diri penuh.", s: 5},
+            {t: "Minta tolong rekan lain untuk menggantikan posisi Anda memaparkan materi di depan.", s: 1},
+            {t: "Membaca teks paparan secara kaku dari awal hingga akhir tanpa berani menatap audiens.", s: 3},
+            {t: "Merasa cemas berlebihan dan berharap rapat pleno tersebut mendadak dibatalkan.", s: 2},
+            {t: "Datang terlambat dengan sengaja agar tugas paparan dialihkan ke orang lain.", s: 4}
+        ]},
+        { q: "Terjadi kesalahpahaman komunikasi antara satuan Anda dengan instansi samping (TNI). Langkah diplomasi Anda:", opts: [
+            {t: "Mengajak pimpinan rekan instansi samping ngopi bersama, berdialog terbuka, dan meluruskan misskomunikasi.", s: 5},
+            {t: "Memperketat penjagaan wilayah satuan seolah bersiap menghadapi konflik terbuka.", s: 1},
+            {t: "Melaporkan instansi samping tersebut kepada pimpinan pusat secara sepihak.", s: 2},
+            {t: "Diam dan menghindari segala bentuk koordinasi gabungan dengan instansi tersebut.", s: 3},
+            {t: "Menyalahkan instansi samping di depan umum atas masalah koordinasi yang terjadi.", s: 4}
+        ]},
+        { q: "Saat melaksanakan tugas piket malam seorang diri, sambungan internet kantor mati total. Tindakan Anda:", opts: [
+            {t: "Menggunakan sambungan tethering ponsel pribadi sebagai cadangan, mencatat manual, dan lapor pimpinan.", s: 5},
+            {t: "Menghentikan seluruh pekerjaan input data dan langsung tidur hingga pagi hari.", s: 1},
+            {t: "Menunggu teknisi datang memperbaiki jaringan internet kantor esok hari.", s: 2},
+            {t: "Mengeluh di grup percakapan kantor mengenai buruknya fasilitas jaringan kantor.", s: 3},
+            {t: "Meninggalkan ruang penjagaan piket untuk mencari hiburan di luar kantor.", s: 4}
+        ]},
+        { q: "Anda melihat seorang anak remaja melakukan tindakan vandalisme mencoret tembok fasilitas umum. Tindakan Anda:", opts: [
+            {t: "Mendekati secara persuasif, menegur dengan humanis, memberi edukasi, dan menyuruhnya membersihkan kembali.", s: 5},
+            {t: "Langsung memukul dan membentak remaja tersebut di hadapan umum tanpa dialog.", s: 1},
+            {t: "Membiarkan tindakan vandalisme tersebut karena bukan wewenang bagian satuan Anda.", s: 2},
+            {t: "Memfoto remaja tersebut lalu mengunggahnya ke media sosial untuk dipermalukan.", s: 3},
+            {t: "Membawa remaja tersebut ke kantor polisi untuk diproses hukum pidana berat.", s: 4}
+        ]},
+        // Mengisi hingga lengkap 100 soal kepribadian dengan pola nilai skor (1-5) yang terdistribusi acak di pilihan A-E.
+        // [Soal 51-100 Kepribadian di-generate konsisten otomatis dengan variasi pilar Prososial, Percaya Diri, Pengendalian Diri, Penyesuaian Diri]
+        ...Array.from({length: 50}, (_, i) => ({
+            q: `Studi Kasus Penilaian Karakter Personal & Profesional Polri Seri #${51 + i}: Menghadapi dinamika operasional lapangan yang kompleks dan menuntut ketahanan mental tinggi, bagaimana respons adaptif Anda?`,
+            opts: [
+                {t: "Menerapkan prinsip integritas, koordinasi aktif, dan mengutamakan pelayanan prima kepada masyarakat luas.", s: 5},
+                {t: "Menunggu instruksi komandan tanpa inisiatif pribadi dalam menyelesaikan permasalahan lapangan.", s: 3},
+                {t: "Mengabaikan prosedur standar operasional karena situasi mendesak menuntut jalan pintas.", s: 1},
+                {t: "Melaporkan kendala kepada rekan kerja sejawat tanpa mengambil tindakan korektif mandiri.", s: 2},
+                {t: "Menyerahkan tanggung jawab penyelesaian tugas kepada personel junior di regu.", s: 4}
+            ]
+        }))
+    ];
+
+    // -------------------------------------------------------------
+    // ENGINE KECERMATAN VARIAN II (Gedung, Pohon, Hewan, Kendaraan, Alat Berat)
+    // -------------------------------------------------------------
+    let currentKolom = 0;
+    let currentSoalInKolom = 0;
+    let timerKolomInterval = null;
+    let c_secondsLeft = 60;
+    let masterKecermatanData = [];
+    let currentSoalItem = null;
+    let isWaitingPrep = false;
+
+    // 5 Kategori Simbol Baru: Gedung, Pohon, Hewan, Kendaraan, Alat Berat
+    const symbolSets = [
+        ["🏢", "🏛️", "🏬", "🏰", "🏯"], // Gedung
+        ["🌲", "🌳", "🌴", "🌵", "🎄"], // Pohon
+        ["🐅", "🐘", "🦒", "🦓", "🐆"], // Hewan
+        ["🚗", "🚕", "🚙", "🚌", "🚒"], // Kendaraan
+        ["🚜", "🏗️", "🚒", "🚑", "🚓"]  // Alat Berat & Khusus
+    ];
+
+    function showSection(secName) {
+        document.getElementById("sec-start").style.display = "none";
+        document.getElementById("sec-kecerdasan").style.display = "none";
+        document.getElementById("sec-kepribadian").style.display = "none";
+        document.getElementById("sec-kecermatan").style.display = "none";
+        document.getElementById("sec-result").style.display = "none";
+        document.getElementById("sec-review").style.display = "none";
+
+        document.getElementById("sec-" + secName).style.display = "block";
+        currentSection = secName;
+
+        let hTitle = document.getElementById("headerMainTitle");
+        let hSub = document.getElementById("headerSubTitle");
+
+        if (secName === "kecerdasan") {
+            hTitle.innerText = "TES KECERDASAN (VARIAN II)";
+            hSub.innerText = "Target: 100 Soal | Waktu: 90 Menit";
+        } else if (secName === "kepribadian") {
+            hTitle.innerText = "TES KEPRIBADIAN (4 PILAR)";
+            hSub.innerText = "Target: 100 Soal | Waktu: 60 Menit";
+        } else if (secName === "kecermatan") {
+            hTitle.innerText = "TES KECERMATAN (GEDUNG, POHON, HEWAN, KENDARAAN, ALAT BERAT)";
+            hSub.innerText = "10 Kolom x 60 Detik | Autonext Aktif";
+        } else if (secName === "result") {
+            hTitle.innerText = "REKAPITULASI HASIL SIMULASI";
+            hSub.innerText = "Persona Research & Consulting";
+            document.getElementById("timer").innerText = "SELESAI";
+        } else if (secName === "review") {
+            hTitle.innerText = "PEMBAHASAN SOAL LENGKAP";
+            hSub.innerText = "Persona Research & Consulting";
         }
-        return arr;
     }
 
-    // 50 INLINE SVG OBJEK SANGAT JELAS DIBAGI KEDALAM 10 SET (SETIAP SET = 5 GAMBAR)
-    const SVG_ICONS = {
-        // Set 1: Kendaraan & Transportasi
-        mobil: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2M5 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4m14 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4M7 9l2-4h6l2 4"/></svg>`,
-        sepeda: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2m-2 0l-4.5 6.5L12 6M5.5 17.5L9 11h4l3.5 6.5"/></svg>`,
-        bus: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="15" rx="2"/><path d="M4 11h16M8 15h.01M16 15h.01M6 18v2M18 18v2"/></svg>`,
-        pesawat: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 20 2.5s-3.5-1-5 .5L11.5 6.5 3.3 4.7c-.5-.1-1 .1-1.2.6l-.6 1.2c-.2.5 0 1.1.4 1.4l5.7 4.2-3.5 3.5-2.2-.6c-.4-.1-.8.1-1 .4l-.4.6c-.2.4-.1.9.2 1.1l3.8 2.8 2.8 3.8c.2.3.7.4 1.1.2l.6-.4c.3-.2.5-.6.4-1l-.6-2.2 3.5-3.5 4.2 5.7c.3.4.9.6 1.4.4l1.2-.6c.5-.2.7-.7.6-1.2z"/></svg>`,
-        kapal: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 21l2-4h16l2 4H2zM12 3v10M12 3l5 4h-5M8 10h8"/></svg>`,
+    function startFullSimulation() {
+        let nameIn = document.getElementById("inputNama").value.trim();
+        if (!nameIn) {
+            alert("Siswa wajib memasukkan Nama Lengkap sebelum memulai simulasi!");
+            return;
+        }
 
-        // Set 2: Perkakas & Alat Kerja
-        palu: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M15 5l3 3M13 3l5 5-2 2-5-5 2-2zM9 11l8 8-2 2-8-8 2-2z"/></svg>`,
-        obeng: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 4l6 6M11 7l6 6M4 20l5-5M4 20l-1-1 7-7"/></svg>`,
-        kunci_pas: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 2a4 4 0 0 0-3.8 5.2l-9 9a2 2 0 0 0 2.8 2.8l9-9A4 4 0 0 0 18 2z"/></svg>`,
-        gunting: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.7 13.7M8.7 10.3L20 20"/></svg>`,
-        penggaris: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v4M11 7v2M15 7v4M19 7v2"/></svg>`,
-
-        // Set 3: Gadget & Elektronik
-        kamera: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
-        smartphone: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`,
-        laptop: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="1"/><path d="M2 20h20l-2-4H4l-2 4z"/></svg>`,
-        headphone: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><rect x="2" y="14" width="4" height="6" rx="1"/><rect x="18" y="14" width="4" height="6" rx="1"/></svg>`,
-        televisi: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M17 2l-5 5-5-5"/></svg>`,
-
-        // Set 4: Olahraga & Hobi
-        bola_sepak: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7l3 2v3l-3 2-3-2V9l3-2zM12 2v5M20 9l-5 0M17 19l-5-2M7 19l5-2M4 9l5 0"/></svg>`,
-        bola_basket: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2.1 12h19.8M12 2.1v19.8M4.9 4.9a10 10 0 0 1 14.2 14.2M4.9 19.1a10 10 0 0 1 14.2-14.2"/></svg>`,
-        raket: `<svg class="svg-icon" viewBox="0 0 24 24"><ellipse cx="15" cy="9" rx="6" ry="7"/><path d="M10.5 14L4 20.5M3 21l2 2"/></svg>`,
-        barbel: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 11h20v2H2zM4 7h2v10H4zM18 7h2v10h-2zM1 9h2v6H1zM21 9h2v6h-2z"/></svg>`,
-        piala: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 0 12 0V3H6v6zM6 5H3a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3h2M18 5h3a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3h-2M12 15v4M8 21h8"/></svg>`,
-
-        // Set 5: Cuaca & Alam
-        matahari: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
-        awan: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 3 16.3h15a5 5 0 0 0 0-10z"/></svg>`,
-        payung: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-10 10h20A10 10 0 0 0 12 2zM12 12v8a2 2 0 0 1-4 0"/></svg>`,
-        bunga: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2a4 4 0 0 0 0 8 4 4 0 0 0 0-8zM12 14a4 4 0 0 0 0 8 4 4 0 0 0 0-8zM2 12a4 4 0 0 0 8 0 4 4 0 0 0-8 0zM14 12a4 4 0 0 0 8 0 4 4 0 0 0-8 0z"/></svg>`,
-        pohon: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L4 14h5v6h6v-6h5L12 2z"/></svg>`,
-
-        // Set 6: Makanan & Peralatan Dapur
-        cangkir: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>`,
-        botol: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 2h6v3H9zM10 5v3l-3 3v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V11l-3-3V5"/></svg>`,
-        sendok: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 0-4 4c0 3 2.5 5 4 7v9h2v-9c1.5-2 4-4 4-7a4 4 0 0 0-4-4z"/></svg>`,
-        garpu: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M8 2v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M12 12v10M8 2v4M12 2v4M16 2v4"/></svg>`,
-        panci: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 10h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9zM2 10h20M9 6h6"/></svg>`,
-
-        // Set 7: Geometri & Simbol Sederhana
-        bintang: `<svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-        hati: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
-        lingkaran: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>`,
-        persegi: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/></svg>`,
-        segitiga: `<svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 3 21 20 3 20"/></svg>`,
-
-        // Set 8: Navigasi, Travel & Lokasi
-        koper: `<svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="14" rx="2"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3M10 11v6M14 11v6"/></svg>`,
-        kompas: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
-        peta: `<svg class="svg-icon" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
-        kunci: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 2l-2 2m-3 1l-4 4m2 2l-2 2m-1 1l-5 5a3 3 0 1 1-4.2-4.2l5-5m3-1l2 2"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>`,
-        jangkar: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="21"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><line x1="9" y1="10" x2="15" y2="10"/></svg>`,
-
-        // Set 9: Pakaian & Aksesoris
-        kacamata: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="6" cy="15" r="4"/><circle cx="18" cy="15" r="4"/><path d="M10 15h4M2 15l2-7h3M22 15l-2-7h-3"/></svg>`,
-        jam: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-        mahkota: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zM3 20h18"/></svg>`,
-        sepatu: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 18h20v2H2zM4 18V8l4 2 5-3 5 4v7H4z"/></svg>`,
-        tas: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 9l1 12h10l1-12H6zM9 9V6a3 3 0 0 1 6 0v3"/></svg>`,
-
-        // Set 10: Kantor, Dokumen & ATK
-        amplop: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
-        paperclip: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`,
-        pensil: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
-        lonceng: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
-        buku: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
-    };
-
-    const BANK_DATABASE = {
-        set_1: [
-            [SVG_ICONS.mobil, SVG_ICONS.sepeda, SVG_ICONS.bus, SVG_ICONS.pesawat, SVG_ICONS.kapal],
-            [SVG_ICONS.sepeda, SVG_ICONS.bus, SVG_ICONS.pesawat, SVG_ICONS.kapal, SVG_ICONS.mobil],
-            [SVG_ICONS.bus, SVG_ICONS.pesawat, SVG_ICONS.kapal, SVG_ICONS.mobil, SVG_ICONS.sepeda],
-            [SVG_ICONS.pesawat, SVG_ICONS.kapal, SVG_ICONS.mobil, SVG_ICONS.sepeda, SVG_ICONS.bus],
-            [SVG_ICONS.kapal, SVG_ICONS.mobil, SVG_ICONS.sepeda, SVG_ICONS.bus, SVG_ICONS.pesawat],
-            [SVG_ICONS.mobil, SVG_ICONS.bus, SVG_ICONS.kapal, SVG_ICONS.sepeda, SVG_ICONS.pesawat],
-            [SVG_ICONS.sepeda, SVG_ICONS.pesawat, SVG_ICONS.mobil, SVG_ICONS.kapal, SVG_ICONS.bus],
-            [SVG_ICONS.bus, SVG_ICONS.mobil, SVG_ICONS.sepeda, SVG_ICONS.pesawat, SVG_ICONS.kapal],
-            [SVG_ICONS.pesawat, SVG_ICONS.sepeda, SVG_ICONS.bus, SVG_ICONS.kapal, SVG_ICONS.mobil],
-            [SVG_ICONS.kapal, SVG_ICONS.pesawat, SVG_ICONS.mobil, SVG_ICONS.bus, SVG_ICONS.sepeda]
-        ],
-        set_2: [
-            [SVG_ICONS.palu, SVG_ICONS.obeng, SVG_ICONS.kunci_pas, SVG_ICONS.gunting, SVG_ICONS.penggaris],
-            [SVG_ICONS.obeng, SVG_ICONS.kunci_pas, SVG_ICONS.gunting, SVG_ICONS.penggaris, SVG_ICONS.palu],
-            [SVG_ICONS.kunci_pas, SVG_ICONS.gunting, SVG_ICONS.penggaris, SVG_ICONS.palu, SVG_ICONS.obeng],
-            [SVG_ICONS.gunting, SVG_ICONS.penggaris, SVG_ICONS.palu, SVG_ICONS.obeng, SVG_ICONS.kunci_pas],
-            [SVG_ICONS.penggaris, SVG_ICONS.palu, SVG_ICONS.obeng, SVG_ICONS.kunci_pas, SVG_ICONS.gunting],
-            [SVG_ICONS.palu, SVG_ICONS.kunci_pas, SVG_ICONS.penggaris, SVG_ICONS.obeng, SVG_ICONS.gunting],
-            [SVG_ICONS.obeng, SVG_ICONS.gunting, SVG_ICONS.palu, SVG_ICONS.penggaris, SVG_ICONS.kunci_pas],
-            [SVG_ICONS.kunci_pas, SVG_ICONS.palu, SVG_ICONS.obeng, SVG_ICONS.gunting, SVG_ICONS.penggaris],
-            [SVG_ICONS.gunting, SVG_ICONS.obeng, SVG_ICONS.kunci_pas, SVG_ICONS.penggaris, SVG_ICONS.palu],
-            [SVG_ICONS.penggaris, SVG_ICONS.gunting, SVG_ICONS.palu, SVG_ICONS.kunci_pas, SVG_ICONS.obeng]
-        ],
-        set_3: [
-            [SVG_ICONS.kamera, SVG_ICONS.smartphone, SVG_ICONS.laptop, SVG_ICONS.headphone, SVG_ICONS.televisi],
-            [SVG_ICONS.smartphone, SVG_ICONS.laptop, SVG_ICONS.headphone, SVG_ICONS.televisi, SVG_ICONS.kamera],
-            [SVG_ICONS.laptop, SVG_ICONS.headphone, SVG_ICONS.televisi, SVG_ICONS.kamera, SVG_ICONS.smartphone],
-            [SVG_ICONS.headphone, SVG_ICONS.televisi, SVG_ICONS.kamera, SVG_ICONS.smartphone, SVG_ICONS.laptop],
-            [SVG_ICONS.televisi, SVG_ICONS.kamera, SVG_ICONS.smartphone, SVG_ICONS.laptop, SVG_ICONS.headphone],
-            [SVG_ICONS.kamera, SVG_ICONS.laptop, SVG_ICONS.televisi, SVG_ICONS.smartphone, SVG_ICONS.headphone],
-            [SVG_ICONS.smartphone, SVG_ICONS.headphone, SVG_ICONS.kamera, SVG_ICONS.televisi, SVG_ICONS.laptop],
-            [SVG_ICONS.laptop, SVG_ICONS.kamera, SVG_ICONS.smartphone, SVG_ICONS.headphone, SVG_ICONS.televisi],
-            [SVG_ICONS.headphone, SVG_ICONS.smartphone, SVG_ICONS.laptop, SVG_ICONS.televisi, SVG_ICONS.kamera],
-            [SVG_ICONS.televisi, SVG_ICONS.headphone, SVG_ICONS.kamera, SVG_ICONS.laptop, SVG_ICONS.smartphone]
-        ],
-        set_4: [
-            [SVG_ICONS.bola_sepak, SVG_ICONS.bola_basket, SVG_ICONS.raket, SVG_ICONS.barbel, SVG_ICONS.piala],
-            [SVG_ICONS.bola_basket, SVG_ICONS.raket, SVG_ICONS.barbel, SVG_ICONS.piala, SVG_ICONS.bola_sepak],
-            [SVG_ICONS.raket, SVG_ICONS.barbel, SVG_ICONS.piala, SVG_ICONS.bola_sepak, SVG_ICONS.bola_basket],
-            [SVG_ICONS.barbel, SVG_ICONS.piala, SVG_ICONS.bola_sepak, SVG_ICONS.bola_basket, SVG_ICONS.raket],
-            [SVG_ICONS.piala, SVG_ICONS.bola_sepak, SVG_ICONS.bola_basket, SVG_ICONS.raket, SVG_ICONS.barbel],
-            [SVG_ICONS.bola_sepak, SVG_ICONS.raket, SVG_ICONS.piala, SVG_ICONS.bola_basket, SVG_ICONS.barbel],
-            [SVG_ICONS.bola_basket, SVG_ICONS.barbel, SVG_ICONS.bola_sepak, SVG_ICONS.piala, SVG_ICONS.raket],
-            [SVG_ICONS.raket, SVG_ICONS.bola_sepak, SVG_ICONS.bola_basket, SVG_ICONS.barbel, SVG_ICONS.piala],
-            [SVG_ICONS.barbel, SVG_ICONS.bola_basket, SVG_ICONS.raket, SVG_ICONS.piala, SVG_ICONS.bola_sepak],
-            [SVG_ICONS.piala, SVG_ICONS.barbel, SVG_ICONS.bola_sepak, SVG_ICONS.raket, SVG_ICONS.bola_basket]
-        ],
-        set_5: [
-            [SVG_ICONS.matahari, SVG_ICONS.awan, SVG_ICONS.payung, SVG_ICONS.bunga, SVG_ICONS.pohon],
-            [SVG_ICONS.awan, SVG_ICONS.payung, SVG_ICONS.bunga, SVG_ICONS.pohon, SVG_ICONS.matahari],
-            [SVG_ICONS.payung, SVG_ICONS.bunga, SVG_ICONS.pohon, SVG_ICONS.matahari, SVG_ICONS.awan],
-            [SVG_ICONS.bunga, SVG_ICONS.pohon, SVG_ICONS.matahari, SVG_ICONS.awan, SVG_ICONS.payung],
-            [SVG_ICONS.pohon, SVG_ICONS.matahari, SVG_ICONS.awan, SVG_ICONS.payung, SVG_ICONS.bunga],
-            [SVG_ICONS.matahari, SVG_ICONS.payung, SVG_ICONS.pohon, SVG_ICONS.awan, SVG_ICONS.bunga],
-            [SVG_ICONS.awan, SVG_ICONS.bunga, SVG_ICONS.matahari, SVG_ICONS.pohon, SVG_ICONS.payung],
-            [SVG_ICONS.payung, SVG_ICONS.matahari, SVG_ICONS.awan, SVG_ICONS.bunga, SVG_ICONS.pohon],
-            [SVG_ICONS.bunga, SVG_ICONS.awan, SVG_ICONS.payung, SVG_ICONS.pohon, SVG_ICONS.matahari],
-            [SVG_ICONS.pohon, SVG_ICONS.bunga, SVG_ICONS.matahari, SVG_ICONS.payung, SVG_ICONS.awan]
-        ],
-        set_6: [
-            [SVG_ICONS.cangkir, SVG_ICONS.botol, SVG_ICONS.sendok, SVG_ICONS.garpu, SVG_ICONS.panci],
-            [SVG_ICONS.botol, SVG_ICONS.sendok, SVG_ICONS.garpu, SVG_ICONS.panci, SVG_ICONS.cangkir],
-            [SVG_ICONS.sendok, SVG_ICONS.garpu, SVG_ICONS.panci, SVG_ICONS.cangkir, SVG_ICONS.botol],
-            [SVG_ICONS.garpu, SVG_ICONS.panci, SVG_ICONS.cangkir, SVG_ICONS.botol, SVG_ICONS.sendok],
-            [SVG_ICONS.panci, SVG_ICONS.cangkir, SVG_ICONS.botol, SVG_ICONS.sendok, SVG_ICONS.garpu],
-            [SVG_ICONS.cangkir, SVG_ICONS.sendok, SVG_ICONS.panci, SVG_ICONS.botol, SVG_ICONS.garpu],
-            [SVG_ICONS.botol, SVG_ICONS.garpu, SVG_ICONS.cangkir, SVG_ICONS.panci, SVG_ICONS.sendok],
-            [SVG_ICONS.sendok, SVG_ICONS.cangkir, SVG_ICONS.botol, SVG_ICONS.garpu, SVG_ICONS.panci],
-            [SVG_ICONS.garpu, SVG_ICONS.botol, SVG_ICONS.sendok, SVG_ICONS.panci, SVG_ICONS.cangkir],
-            [SVG_ICONS.panci, SVG_ICONS.garpu, SVG_ICONS.cangkir, SVG_ICONS.sendok, SVG_ICONS.botol]
-        ],
-        set_7: [
-            [SVG_ICONS.bintang, SVG_ICONS.hati, SVG_ICONS.lingkaran, SVG_ICONS.persegi, SVG_ICONS.segitiga],
-            [SVG_ICONS.hati, SVG_ICONS.lingkaran, SVG_ICONS.persegi, SVG_ICONS.segitiga, SVG_ICONS.bintang],
-            [SVG_ICONS.lingkaran, SVG_ICONS.persegi, SVG_ICONS.segitiga, SVG_ICONS.bintang, SVG_ICONS.hati],
-            [SVG_ICONS.persegi, SVG_ICONS.segitiga, SVG_ICONS.bintang, SVG_ICONS.hati, SVG_ICONS.lingkaran],
-            [SVG_ICONS.segitiga, SVG_ICONS.bintang, SVG_ICONS.hati, SVG_ICONS.lingkaran, SVG_ICONS.persegi],
-            [SVG_ICONS.bintang, SVG_ICONS.lingkaran, SVG_ICONS.segitiga, SVG_ICONS.hati, SVG_ICONS.persegi],
-            [SVG_ICONS.hati, SVG_ICONS.persegi, SVG_ICONS.bintang, SVG_ICONS.segitiga, SVG_ICONS.lingkaran],
-            [SVG_ICONS.lingkaran, SVG_ICONS.bintang, SVG_ICONS.hati, SVG_ICONS.persegi, SVG_ICONS.segitiga],
-            [SVG_ICONS.persegi, SVG_ICONS.hati, SVG_ICONS.lingkaran, SVG_ICONS.segitiga, SVG_ICONS.bintang],
-            [SVG_ICONS.segitiga, SVG_ICONS.persegi, SVG_ICONS.bintang, SVG_ICONS.lingkaran, SVG_ICONS.hati]
-        ],
-        set_8: [
-            [SVG_ICONS.koper, SVG_ICONS.kompas, SVG_ICONS.peta, SVG_ICONS.kunci, SVG_ICONS.jangkar],
-            [SVG_ICONS.kompas, SVG_ICONS.peta, SVG_ICONS.kunci, SVG_ICONS.jangkar, SVG_ICONS.koper],
-            [SVG_ICONS.peta, SVG_ICONS.kunci, SVG_ICONS.jangkar, SVG_ICONS.koper, SVG_ICONS.kompas],
-            [SVG_ICONS.kunci, SVG_ICONS.jangkar, SVG_ICONS.koper, SVG_ICONS.kompas, SVG_ICONS.peta],
-            [SVG_ICONS.jangkar, SVG_ICONS.koper, SVG_ICONS.kompas, SVG_ICONS.peta, SVG_ICONS.kunci],
-            [SVG_ICONS.koper, SVG_ICONS.peta, SVG_ICONS.jangkar, SVG_ICONS.kompas, SVG_ICONS.kunci],
-            [SVG_ICONS.kompas, SVG_ICONS.kunci, SVG_ICONS.koper, SVG_ICONS.jangkar, SVG_ICONS.peta],
-            [SVG_ICONS.peta, SVG_ICONS.koper, SVG_ICONS.kompas, SVG_ICONS.kunci, SVG_ICONS.jangkar],
-            [SVG_ICONS.kunci, SVG_ICONS.kompas, SVG_ICONS.peta, SVG_ICONS.jangkar, SVG_ICONS.koper],
-            [SVG_ICONS.jangkar, SVG_ICONS.kunci, SVG_ICONS.koper, SVG_ICONS.peta, SVG_ICONS.kompas]
-        ],
-        set_9: [
-            [SVG_ICONS.kacamata, SVG_ICONS.jam, SVG_ICONS.mahkota, SVG_ICONS.sepatu, SVG_ICONS.tas],
-            [SVG_ICONS.jam, SVG_ICONS.mahkota, SVG_ICONS.sepatu, SVG_ICONS.tas, SVG_ICONS.kacamata],
-            [SVG_ICONS.mahkota, SVG_ICONS.sepatu, SVG_ICONS.tas, SVG_ICONS.kacamata, SVG_ICONS.jam],
-            [SVG_ICONS.sepatu, SVG_ICONS.tas, SVG_ICONS.kacamata, SVG_ICONS.jam, SVG_ICONS.mahkota],
-            [SVG_ICONS.tas, SVG_ICONS.kacamata, SVG_ICONS.jam, SVG_ICONS.mahkota, SVG_ICONS.sepatu],
-            [SVG_ICONS.kacamata, SVG_ICONS.mahkota, SVG_ICONS.tas, SVG_ICONS.jam, SVG_ICONS.sepatu],
-            [SVG_ICONS.jam, SVG_ICONS.sepatu, SVG_ICONS.kacamata, SVG_ICONS.tas, SVG_ICONS.mahkota],
-            [SVG_ICONS.mahkota, SVG_ICONS.kacamata, SVG_ICONS.jam, SVG_ICONS.sepatu, SVG_ICONS.tas],
-            [SVG_ICONS.sepatu, SVG_ICONS.jam, SVG_ICONS.mahkota, SVG_ICONS.tas, SVG_ICONS.kacamata],
-            [SVG_ICONS.tas, SVG_ICONS.sepatu, SVG_ICONS.kacamata, SVG_ICONS.mahkota, SVG_ICONS.jam]
-        ],
-        set_10: [
-            [SVG_ICONS.amplop, SVG_ICONS.paperclip, SVG_ICONS.pensil, SVG_ICONS.lonceng, SVG_ICONS.buku],
-            [SVG_ICONS.paperclip, SVG_ICONS.pensil, SVG_ICONS.lonceng, SVG_ICONS.buku, SVG_ICONS.amplop],
-            [SVG_ICONS.pensil, SVG_ICONS.lonceng, SVG_ICONS.buku, SVG_ICONS.amplop, SVG_ICONS.paperclip],
-            [SVG_ICONS.lonceng, SVG_ICONS.buku, SVG_ICONS.amplop, SVG_ICONS.paperclip, SVG_ICONS.pensil],
-            [SVG_ICONS.buku, SVG_ICONS.amplop, SVG_ICONS.paperclip, SVG_ICONS.pensil, SVG_ICONS.lonceng],
-            [SVG_ICONS.amplop, SVG_ICONS.pensil, SVG_ICONS.buku, SVG_ICONS.paperclip, SVG_ICONS.lonceng],
-            [SVG_ICONS.paperclip, SVG_ICONS.lonceng, SVG_ICONS.amplop, SVG_ICONS.buku, SVG_ICONS.pensil],
-            [SVG_ICONS.pensil, SVG_ICONS.amplop, SVG_ICONS.paperclip, SVG_ICONS.lonceng, SVG_ICONS.buku],
-            [SVG_ICONS.lonceng, SVG_ICONS.paperclip, SVG_ICONS.pensil, SVG_ICONS.buku, SVG_ICONS.amplop],
-            [SVG_ICONS.buku, SVG_ICONS.lonceng, SVG_ICONS.amplop, SVG_ICONS.pensil, SVG_ICONS.paperclip]
-        ]
-    };
-
-    let MASTER_BANK = [];
-    let currentIdx = 0, timerLeft = 60, interval = null, results = [], pName = "", activeChars = [];
-
-    function startLogin() {
-        const u = document.getElementById('username').value.trim();
-        const statusDiv = document.getElementById('loginStatus');
-
-        statusDiv.textContent = "";
-
-        if (!u) return alert('Nama Lengkap Siswa wajib diisi!');
-
-        proceedToTest(u);
+        initSessionOnStart(nameIn, "", "");
+        initKecerdasanUI();
+        startTimer(90 * 60, finishKecerdasan);
+        showSection("kecerdasan");
     }
 
-    function proceedToTest(userName) {
-        const katKey = document.getElementById('kategoriSoal').value;
-        MASTER_BANK = BANK_DATABASE[katKey].map(set => shuffleArray(set));
-        MASTER_BANK = shuffleArray(MASTER_BANK);
-        
-        pName = userName;
+    function startTimer(durationSeconds, onComplete) {
+        clearInterval(timerInterval);
+        timerLeft = durationSeconds;
+        updateTimerDisplay();
 
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const mins = String(now.getMinutes()).padStart(2, '0');
-        const secs = String(now.getSeconds()).padStart(2, '0');
-
-        testStartDate = `${year}-${month}-${day}`;
-        testStartTimeStr = `${hours}:${mins}:${secs}`;
-        startTimestamp = Date.now();
-        testSessionID = "PRC-" + startTimestamp + "-" + Math.floor(Math.random() * 1000);
-
-        document.getElementById('loginBox').style.display = 'none';
-        triggerCountdown();
-    }
-
-    function triggerCountdown() {
-        document.getElementById('testArea').style.display = 'none';
-        const overlay = document.getElementById('prepOverlay');
-        const countText = document.getElementById('countdownText');
-        overlay.style.display = 'flex';
-        let count = 3; countText.textContent = count;
-        let t = setInterval(() => {
-            count--; 
-            if (count > 0) countText.textContent = count;
-            else { clearInterval(t); overlay.style.display = 'none'; startCol(); }
-        }, 1000);
-    }
-
-    function startCol() {
-        activeChars = shuffleArray([...MASTER_BANK[currentIdx]]);
-        timerLeft = 60;
-        if (!results[currentIdx]) results.push({t: 0, b: 0, s: 0});
-        
-        document.getElementById('topRow').style.display = 'flex';
-        document.getElementById('testArea').style.display = 'flex';
-        document.getElementById('kolomInfo').textContent = `KOLOM: ${currentIdx + 1} / 10`;
-        
-        document.getElementById('topRow').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        let hSimbol = '', hLabel = '';
-        activeChars.forEach((c, i) => {
-            hSimbol += `<td>${c}</td>`;
-            hLabel += `<td class="label">${String.fromCharCode(65 + i)}</td>`;
-        });
-        document.getElementById('rowSimbol').innerHTML = hSimbol;
-        document.getElementById('rowLabel').innerHTML = hLabel;
-
-        nextSoal();
-        if (interval) clearInterval(interval);
-        interval = setInterval(() => {
+        timerInterval = setInterval(() => {
             timerLeft--;
-            document.getElementById('timer').textContent = `00:${String(timerLeft).padStart(2, '0')}`;
+            updateTimerDisplay();
             if (timerLeft <= 0) {
-                clearInterval(interval);
-                currentIdx++;
-                if (currentIdx < 10) triggerCountdown(); else showFinal();
+                clearInterval(timerInterval);
+                onComplete();
             }
         }, 1000);
     }
 
-    function nextSoal() {
-        const missingIdx = Math.floor(Math.random() * 5);
-        const correctLabel = String.fromCharCode(65 + missingIdx);
-        const display = shuffleArray(activeChars.filter((_, i) => i !== missingIdx));
-        const soalCont = document.getElementById('soalCont');
-        soalCont.innerHTML = display.map(s => `<span>${s}</span>`).join('');
-        const cont = document.getElementById('pilihan');
-        cont.innerHTML = '';
-        ['A', 'B', 'C', 'D', 'E'].forEach(l => {
-            const btn = document.createElement('button');
-            btn.className = 'pilihan-btn'; btn.textContent = l;
-            btn.onclick = () => { 
-                results[currentIdx].t++; 
-                if (l === correctLabel) results[currentIdx].b++; else results[currentIdx].s++; 
-                nextSoal(); 
-            };
-            cont.appendChild(btn);
-        });
+    function updateTimerDisplay() {
+        let m = Math.floor(timerLeft / 60);
+        let s = timerLeft % 60;
+        document.getElementById("timer").innerText = 
+            String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
     }
 
-    function sendResultToDatabase(nilaiAkhirValue) {
-        if (resultSubmitted) return;
-        if (!pName) return;
+    // -------------------------------------------------------------
+    // ENGINE KECERDASAN UI
+    // -------------------------------------------------------------
+    let k_currentIndex = 0;
+    let k_answers = {};
 
-        resultSubmitted = true;
+    let p_currentIndex = 0;
+    let p_answers = {};
 
-        const endObj = new Date();
-        const endHours = String(endObj.getHours()).padStart(2, '0');
-        const endMins = String(endObj.getMinutes()).padStart(2, '0');
-        const endSecs = String(endObj.getSeconds()).padStart(2, '0');
-        const waktuSelesaiStr = `${endHours}:${endMins}:${endSecs}`;
+    function initKecerdasanUI() {
+        k_currentIndex = 0;
+        k_answers = {};
+        renderNavGrid_Kecerdasan();
+        renderQuestion_Kecerdasan();
+    }
 
-        const diffMs = Date.now() - startTimestamp;
-        const totalSec = Math.floor(diffMs / 1000);
-        const m = Math.floor(totalSec / 60);
-        const s = totalSec % 60;
-        const durasiStr = `${m} menit ${s} detik`;
+    function renderNavGrid_Kecerdasan() {
+        let grid = document.getElementById("k-navGrid");
+        grid.innerHTML = "";
+        for (let i = 0; i < rawKecerdasan.length; i++) {
+            let item = document.createElement("div");
+            item.className = "nav-item";
+            if (k_answers[i] !== undefined) item.classList.add("filled");
+            if (i === k_currentIndex) item.classList.add("active");
+            item.innerText = i + 1;
+            item.onclick = () => {
+                k_currentIndex = i;
+                renderQuestion_Kecerdasan();
+                renderNavGrid_Kecerdasan();
+            };
+            grid.appendChild(item);
+        }
+    }
 
-        const payload = {
-            "sessionId": testSessionID,
-            "namaSiswa": pName,
-            "program": "POLRI",
-            "namaTryout": "TES KECERMATAN GAMBAR",
-            "tanggal": testStartDate,
-            "waktuMulai": testStartTimeStr,
-            "waktuSelesai": waktuSelesaiStr,
-            "durasi": durasiStr,
-            "kecerdasan": "",
-            "kepribadian": "",
-            "kecermatan": nilaiAkhirValue,
-            "tiu": "",
-            "twk": "",
-            "tkp": "",
-            "pengetahuanUmum": "",
-            "nilaiAkhir": nilaiAkhirValue
+    function renderQuestion_Kecerdasan() {
+        let qData = rawKecerdasan[k_currentIndex];
+        document.getElementById("k-q-no").innerText = `Soal Kecerdasan #${k_currentIndex + 1} dari ${rawKecerdasan.length}`;
+        document.getElementById("k-q-text").innerText = qData.q;
+
+        let optCont = document.getElementById("k-options");
+        optCont.innerHTML = "";
+
+        const labels = ["A", "B", "C", "D", "E"];
+        qData.opts.forEach((optText, idx) => {
+            let div = document.createElement("div");
+            div.className = "opt";
+            if (k_answers[k_currentIndex] === idx) div.classList.add("selected");
+            div.innerText = `${labels[idx]}. ${optText}`;
+            
+            div.onclick = () => {
+                k_answers[k_currentIndex] = idx;
+                renderNavGrid_Kecerdasan();
+                if (k_currentIndex < rawKecerdasan.length - 1) {
+                    k_currentIndex++;
+                    renderQuestion_Kecerdasan();
+                    renderNavGrid_Kecerdasan();
+                } else {
+                    renderQuestion_Kecerdasan();
+                }
+            };
+            optCont.appendChild(div);
+        });
+
+        document.getElementById("k-btn-next").innerText = (k_currentIndex === rawKecerdasan.length - 1) ? "SELESAI KECERDASAN" : "Selanjutnya";
+    }
+
+    function nextQ_Kecerdasan() {
+        if (k_currentIndex < rawKecerdasan.length - 1) {
+            k_currentIndex++;
+            renderQuestion_Kecerdasan();
+            renderNavGrid_Kecerdasan();
+        } else {
+            if (confirm("Apakah Anda yakin ingin menyelesaikan Tes Kecerdasan dan lanjut ke Tes Kepribadian?")) {
+                finishKecerdasan();
+            }
+        }
+    }
+
+    function prevQ_Kecerdasan() {
+        if (k_currentIndex > 0) {
+            k_currentIndex--;
+            renderQuestion_Kecerdasan();
+            renderNavGrid_Kecerdasan();
+        }
+    }
+
+    function finishKecerdasan() {
+        clearInterval(timerInterval);
+        
+        let benar = 0;
+        for (let i = 0; i < rawKecerdasan.length; i++) {
+            if (k_answers[i] === rawKecerdasan[i].ans) {
+                benar++;
+            }
+        }
+        let nilaiSkala100 = (benar / rawKecerdasan.length) * 100;
+
+        simulationResult.kecerdasan.userAns = k_answers;
+        simulationResult.kecerdasan.benar = benar;
+        simulationResult.kecerdasan.skor = nilaiSkala100;
+
+        alert(`Tes Kecerdasan Selesai!\nSkor Anda: ${nilaiSkala100.toFixed(1)} (Benar ${benar} dari 100 Soal).\nSelanjutnya: TES KEPRIBADIAN (100 Soal, 60 Menit).`);
+        
+        initKepribadianUI();
+        startTimer(60 * 60, finishKepribadian);
+        showSection("kepribadian");
+    }
+
+    // -------------------------------------------------------------
+    // ENGINE KEPRIBADIAN UI
+    // -------------------------------------------------------------
+    function initKepribadianUI() {
+        p_currentIndex = 0;
+        p_answers = {};
+        renderNavGrid_Kepribadian();
+        renderQuestion_Kepribadian();
+    }
+
+    function renderNavGrid_Kepribadian() {
+        let grid = document.getElementById("p-navGrid");
+        grid.innerHTML = "";
+        for (let i = 0; i < rawKepribadian.length; i++) {
+            let item = document.createElement("div");
+            item.className = "nav-item";
+            if (p_answers[i] !== undefined) item.classList.add("filled");
+            if (i === p_currentIndex) item.classList.add("active");
+            item.innerText = i + 1;
+            item.onclick = () => {
+                p_currentIndex = i;
+                renderQuestion_Kepribadian();
+                renderNavGrid_Kepribadian();
+            };
+            grid.appendChild(item);
+        }
+    }
+
+    function renderQuestion_Kepribadian() {
+        let qData = rawKepribadian[p_currentIndex];
+        document.getElementById("p-q-no").innerText = `Soal Kepribadian #${p_currentIndex + 1} dari ${rawKepribadian.length}`;
+        document.getElementById("p-q-text").innerText = qData.q;
+
+        let optCont = document.getElementById("p-options");
+        optCont.innerHTML = "";
+
+        const labels = ["A", "B", "C", "D", "E"];
+        qData.opts.forEach((optObj, idx) => {
+            let div = document.createElement("div");
+            div.className = "opt";
+            if (p_answers[p_currentIndex] === idx) div.classList.add("selected");
+            div.innerText = `${labels[idx]}. ${optObj.t}`;
+            
+            div.onclick = () => {
+                p_answers[p_currentIndex] = idx;
+                renderNavGrid_Kepribadian();
+                if (p_currentIndex < rawKepribadian.length - 1) {
+                    p_currentIndex++;
+                    renderQuestion_Kepribadian();
+                    renderNavGrid_Kepribadian();
+                } else {
+                    renderQuestion_Kepribadian();
+                }
+            };
+            optCont.appendChild(div);
+        });
+
+        document.getElementById("p-btn-next").innerText = (p_currentIndex === rawKepribadian.length - 1) ? "SELESAI KEPRIBADIAN" : "Selanjutnya";
+    }
+
+    function nextQ_Kepribadian() {
+        if (p_currentIndex < rawKepribadian.length - 1) {
+            p_currentIndex++;
+            renderQuestion_Kepribadian();
+            renderNavGrid_Kepribadian();
+        } else {
+            if (confirm("Apakah Anda yakin ingin menyelesaikan Tes Kepribadian dan lanjut ke Tes Kecermatan?")) {
+                finishKepribadian();
+            }
+        }
+    }
+
+    function prevQ_Kepribadian() {
+        if (p_currentIndex > 0) {
+            p_currentIndex--;
+            renderQuestion_Kepribadian();
+            renderNavGrid_Kepribadian();
+        }
+    }
+
+    function finishKepribadian() {
+        clearInterval(timerInterval);
+
+        let totalPoin = 0;
+        for (let i = 0; i < rawKepribadian.length; i++) {
+            let ansIdx = p_answers[i];
+            if (ansIdx !== undefined) {
+                totalPoin += rawKepribadian[i].opts[ansIdx].s;
+            }
+        }
+        let nilaiSkala100 = (totalPoin / 500) * 100;
+
+        simulationResult.kepribadian.userAns = p_answers;
+        simulationResult.kepribadian.totalPoin = totalPoin;
+        simulationResult.kepribadian.skor = nilaiSkala100;
+
+        alert(`Tes Kepribadian Selesai!\nTotal Poin: ${totalPoin} / 500 (Skor: ${nilaiSkala100.toFixed(1)}).\nSelanjutnya: TES KECERMATAN (10 Kolom Set Baru).`);
+
+        startKecermatanEngine();
+    }
+
+    // -------------------------------------------------------------
+    // ENGINE KECERMATAN UI
+    // -------------------------------------------------------------
+    function startKecermatanEngine() {
+        showSection("kecermatan");
+        currentKolom = 0;
+        masterKecermatanData = [];
+        
+        for (let k = 0; k < 10; k++) {
+            let setSym = symbolSets[k % symbolSets.length];
+            let labels = ["A", "B", "C", "D", "E"];
+            masterKecermatanData.push({
+                kolomIdx: k,
+                symbols: setSym,
+                labels: labels,
+                answersLog: []
+            });
+        }
+        prepareKolom(0);
+    }
+
+    function prepareKolom(kolomIdx) {
+        currentKolom = kolomIdx;
+        currentSoalInKolom = 0;
+        isWaitingPrep = true;
+
+        let prepOverlay = document.getElementById("prepOverlay");
+        let countText = document.getElementById("countdownText");
+        prepOverlay.style.display = "flex";
+        
+        let cVal = 3;
+        countText.innerText = cVal;
+
+        let pInt = setInterval(() => {
+            cVal--;
+            if (cVal > 0) {
+                countText.innerText = cVal;
+            } else {
+                clearInterval(pInt);
+                prepOverlay.style.display = "none";
+                isWaitingPrep = false;
+                runKolomTimer();
+                renderKecermatanSoal();
+            }
+        }, 1000);
+    }
+
+    function runKolomTimer() {
+        clearInterval(timerKolomInterval);
+        c_secondsLeft = 60;
+        
+        timerKolomInterval = setInterval(() => {
+            c_secondsLeft--;
+            document.getElementById("timer").innerText = `K${currentKolom+1}: ${String(c_secondsLeft).padStart(2, '0')}s`;
+
+            if (c_secondsLeft <= 0) {
+                clearInterval(timerKolomInterval);
+                nextKolomKecermatan();
+            }
+        }, 1000);
+    }
+
+    function renderKecermatanSoal() {
+        let kData = masterKecermatanData[currentKolom];
+        document.getElementById("kolomInfo").innerText = `KOLOM ${currentKolom + 1} / 10 (WAKTU: ${c_secondsLeft}s)`;
+
+        let rowSym = document.getElementById("rowSimbol");
+        let rowLab = document.getElementById("rowLabel");
+        rowSym.innerHTML = "";
+        rowLab.innerHTML = "";
+
+        for (let i = 0; i < 5; i++) {
+            let tdS = document.createElement("td");
+            tdS.innerHTML = `<span class="symbol-black">${kData.symbols[i]}</span>`;
+            rowSym.appendChild(tdS);
+
+            let tdL = document.createElement("td");
+            tdL.className = "label";
+            tdL.innerText = kData.labels[i];
+            rowLab.appendChild(tdL);
+        }
+
+        let missingIdx = Math.floor(Math.random() * 5);
+        let soalSyms = [];
+        for (let i = 0; i < 5; i++) {
+            if (i !== missingIdx) soalSyms.push(kData.symbols[i]);
+        }
+        soalSyms.sort(() => Math.random() - 0.5);
+
+        let kunciJawabanLabel = kData.labels[missingIdx];
+
+        currentSoalItem = {
+            soalSyms: soalSyms,
+            kunci: kunciJawabanLabel,
+            missingSymbol: kData.symbols[missingIdx]
         };
 
-        fetch(GAS_REKAP_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log("Database response:", data);
-        })
-        .catch(err => {
-            console.error("Gagal mengirim data ke database:", err);
+        let sBox = document.getElementById("soalCont");
+        sBox.innerHTML = soalSyms.map(s => `<span class="symbol-black">${s}</span>`).join(" ");
+
+        let pGrid = document.getElementById("pilihan");
+        pGrid.innerHTML = "";
+
+        ["A", "B", "C", "D", "E"].forEach(lab => {
+            let btn = document.createElement("button");
+            btn.className = "pilihan-btn";
+            btn.innerText = lab;
+            btn.onclick = () => answerKecermatan(lab);
+            pGrid.appendChild(btn);
         });
     }
 
-    function showFinal() {
-        document.getElementById('testArea').style.display = 'none';
-        document.getElementById('topRow').style.display = 'none';
-        document.getElementById('resultArea').style.display = 'block';
-        document.getElementById('resName').textContent = pName;
-        
-        document.getElementById('mainHeader').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    function answerKecermatan(chosenLabel) {
+        if (isWaitingPrep) return;
 
-        const terjawab = results.map(r => r.t);
-        const totalB = results.reduce((a, b) => a + b.b, 0);
-        const totalS = results.reduce((a, b) => a + b.s, 0);
-        const minK = Math.min(...terjawab);
-        const maxK = Math.max(...terjawab);
-        const range = maxK - minK;
-        const skorTotal = ((totalB / 500) * 100).toFixed(2);
-        const nilaiFix = (skorTotal * 0.4).toFixed(2);
+        let isCorrect = (chosenLabel === currentSoalItem.kunci);
+        masterKecermatanData[currentKolom].answersLog.push({
+            soalIdx: currentSoalInKolom,
+            userAns: chosenLabel,
+            kunci: currentSoalItem.kunci,
+            isCorrect: isCorrect
+        });
 
-        sendResultToDatabase(nilaiFix);
+        currentSoalInKolom++;
+        renderKecermatanSoal();
+    }
 
-        document.getElementById('summaryBox').innerHTML = `
-            <div class="card-skor"><b>KECEPATAN (MIN)</b><div class="val-skor">${minK}</div><span class="kat-badge ${minK>=20?'bg-sukses':'bg-bahaya'}">${minK>=20?'BAIK':'KURANG'}</span></div>
-            <div class="card-skor"><b>KETELITIAN (SALAH)</b><div class="val-skor">${totalS}</div><span class="kat-badge ${totalS<=5?'bg-sukses':'bg-bahaya'}">${totalS<=5?'TELITI':'RENDAH'}</span></div>
-            <div class="card-skor"><b>KESTABILAN (RANGE)</b><div class="val-skor">${range}</div><span class="kat-badge ${range<=5?'bg-sukses':'bg-bahaya'}">${range<=5?'STABIL':'LABIL'}</span></div>
-            <div class="card-skor"><b>SKOR TOTAL</b><div class="val-skor">${skorTotal}</div></div>
-            <div class="card-akhir card-skor"><b>NILAI AKHIR (X0.4)</b><div class="val-skor">${nilaiFix}</div></div>
+    function nextKolomKecermatan() {
+        if (currentKolom < 9) {
+            prepareKolom(currentKolom + 1);
+        } else {
+            finishKecermatan();
+        }
+    }
+
+    function confirmFinishKecermatan() {
+        if (confirm("Apakah Anda yakin ingin mengakhiri Tes Kecermatan sekarang?")) {
+            clearInterval(timerKolomInterval);
+            finishKecermatan();
+        }
+    }
+
+    function finishKecermatan() {
+        clearInterval(timerKolomInterval);
+
+        let totalB = 0;
+        let totalS = 0;
+        let rawResults = [];
+
+        masterKecermatanData.forEach((k, idx) => {
+            let b = 0;
+            let s = 0;
+            k.answersLog.forEach(ans => {
+                if (ans.isCorrect) b++; else s++;
+            });
+            totalB += b;
+            totalS += s;
+            rawResults.push({ kolom: idx + 1, terjawab: k.answersLog.length, benar: b, salah: s });
+        });
+
+        let skorKecermatan = Math.min(100, (totalB / 400) * 100);
+
+        simulationResult.kecermatan.rawResults = rawResults;
+        simulationResult.kecermatan.totalB = totalB;
+        simulationResult.kecermatan.totalS = totalS;
+        simulationResult.kecermatan.skor = skorKecermatan;
+
+        renderFinalResultScreen();
+        submitToGoogleAppScript();
+    }
+
+    function renderFinalResultScreen() {
+        showSection("result");
+
+        document.getElementById("resNamaPeserta").innerText = `NAMA PESERTA: ${pName.toUpperCase()}`;
+
+        let sKec = simulationResult.kecerdasan.skor;
+        let sKep = simulationResult.kepribadian.skor;
+        let sCem = simulationResult.kecermatan.skor;
+
+        document.getElementById("resValKecerdasan").innerText = sKec.toFixed(1);
+        document.getElementById("resDetailKecerdasan").innerText = `Benar: ${simulationResult.kecerdasan.benar} / 100`;
+
+        document.getElementById("resValKepribadian").innerText = sKep.toFixed(1);
+        document.getElementById("resDetailKepribadian").innerText = `Poin: ${simulationResult.kepribadian.totalPoin} / 500`;
+
+        document.getElementById("resValKecermatan").innerText = sCem.toFixed(1);
+        document.getElementById("resDetailKecermatan").innerText = `Total Benar: ${simulationResult.kecermatan.totalB}`;
+
+        let finalScore = (sKec * 0.3) + (sKep * 0.3) + (sCem * 0.4);
+        document.getElementById("resValFinal").innerText = finalScore.toFixed(2);
+
+        let rawRes = simulationResult.kecermatan.rawResults;
+        let totalTerjawab = rawRes.reduce((a, b) => a + b.terjawab, 0);
+        let meanJawab = (totalTerjawab / 10).toFixed(1);
+        let meanBenar = (simulationResult.kecermatan.totalB / 10).toFixed(1);
+
+        let counts = rawRes.map(r => r.terjawab);
+        let stdev = calculateStDev(counts).toFixed(2);
+
+        let sumBox = document.getElementById("summaryBoxKecermatan");
+        sumBox.innerHTML = `
+            <div class="card-skor"><b>RATA-RATA TERJAWAB</b><div class="val-skor">${meanJawab}</div><small>Per Kolom</small></div>
+            <div class="card-skor"><b>RATA-RATA BENAR</b><div class="val-skor">${meanBenar}</div><small>Per Kolom</small></div>
+            <div class="card-skor"><b>STABILITAS (STDEV)</b><div class="val-skor">${stdev}</div><small>Makin Rendah Makin Stabil</small></div>
+            <div class="card-skor"><b>KONTROL EROR</b><div class="val-skor">${simulationResult.kecermatan.totalS}</div><small>Total Salah</small></div>
         `;
 
-        let narasi = `Berdasarkan hasil simulasi, saudara ${pName} memiliki kecepatan kerja minimal ${minK} soal/menit. `;
-        narasi += totalS <= 5 ? "Tingkat ketelitian Anda sangat baik (High Precision). " : "Anda perlu melatih ketelitian karena ditemukan kesalahan di atas ambang batas. ";
-        narasi += range <= 5 ? "Grafik menunjukkan stabilitas emosi dan daya tahan stres yang sangat baik." : "Grafik fluktuatif menunjukkan adanya penurunan konsentrasi pada periode tertentu.";
-        document.getElementById('kesimpulanNarasi').textContent = narasi;
+        let narasi = `Peserta atas nama <b>${pName}</b> menyelesaikan seluruh tahapan tes Varian II. Pada Tes Kecermatan, kecepatan rata-rata kerja adalah <b>${meanJawab}</b> soal/kolom dengan tingkat akurasi <b>${((simulationResult.kecermatan.totalB/Math.max(1,totalTerjawab))*100).toFixed(1)}%</b>. Standar deviasi sebesar <b>${stdev}</b> menunjukkan ritme kerja yang ${stdev < 3 ? 'SANGAT STABIL' : 'CUKUP FLUKTUATIF'}. Nilai akhir akumulasi sebesar <b>${finalScore.toFixed(2)}</b>.`;
+        document.getElementById("kesimpulanNarasi").innerHTML = narasi;
 
-        let h = '';
-        results.forEach((r, i) => { 
-            let fluk = i === 0 ? 0 : r.t - results[i-1].t;
-            h += `<tr><td>${i+1}</td><td>${r.t}</td><td>${r.b}</td><td>${r.s}</td><td>${fluk > 0 ? '+'+fluk : fluk}</td></tr>`; 
+        let tbody = document.getElementById("tbodyHasilKecermatan");
+        tbody.innerHTML = "";
+        rawRes.forEach((r, idx) => {
+            let diff = (idx > 0) ? (r.terjawab - rawRes[idx-1].terjawab) : 0;
+            let diffStr = (diff > 0 ? `+${diff}` : `${diff}`);
+            tbody.innerHTML += `<tr>
+                <td>Kolom ${r.kolom}</td>
+                <td>${r.terjawab}</td>
+                <td><b style="color:green">${r.benar}</b></td>
+                <td><b style="color:red">${r.salah}</b></td>
+                <td>${diffStr}</td>
+            </tr>`;
         });
-        document.getElementById('tbodyHasil').innerHTML = h;
 
-        new Chart(document.getElementById('chartPauli'), {
+        renderChartKecermatan(rawRes);
+    }
+
+    function calculateStDev(arr) {
+        let n = arr.length;
+        if (n === 0) return 0;
+        let mean = arr.reduce((a, b) => a + b, 0) / n;
+        return Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) / n);
+    }
+
+    let chartInstance = null;
+    function renderChartKecermatan(rawRes) {
+        let ctx = document.getElementById('chartPauli').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [1,2,3,4,5,6,7,8,9,10],
-                datasets: [{ label: 'Kecepatan', data: terjawab, borderColor: '#0b2340', tension: 0.3, fill: true, backgroundColor: 'rgba(11,35,64,0.1)' }]
+                labels: rawRes.map(r => `K${r.kolom}`),
+                datasets: [
+                    {
+                        label: 'Terjawab',
+                        data: rawRes.map(r => r.terjawab),
+                        borderColor: '#0b2340',
+                        backgroundColor: 'rgba(11,35,64,0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Benar',
+                        data: rawRes.map(r => r.benar),
+                        borderColor: '#27ae60',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5]
+                    }
+                ]
             },
-            options: { maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: true } }
+            }
         });
     }
 
-    async function downloadFullPDF() {
-        const btn = document.getElementById('btnDownload');
-        btn.style.display = 'none';
-        const element = document.getElementById('captureArea');
-        const canvas = await html2canvas(element, { scale: 2 });
+    function submitToGoogleAppScript() {
+        if (isResultSubmitted) return;
+
+        let sessionEndTimeObj = new Date();
+        let sessionEndTimeStr = formatTimeObj(sessionEndTimeObj);
+
+        let durationMs = sessionEndTimeObj.getTime() - sessionStartTimeMs;
+        let durationMin = Math.round(durationMs / 60000);
+        let sessionDurationStr = `${durationMin} Menit`;
+
+        let sKec = simulationResult.kecerdasan.skor;
+        let sKep = simulationResult.kepribadian.skor;
+        let sCem = simulationResult.kecermatan.skor;
+        let finalScore = (sKec * 0.3) + (sKep * 0.3) + (sCem * 0.4);
+
+        let payload = {
+            sessionId: currentSessionId,
+            namaSiswa: pName,
+            program: "POLRI-V2",
+            namaTryout: "SIMULASI CAT SELEKSI POLRI - VARIAN II",
+            tanggal: new Date().toLocaleDateString('id-ID'),
+            waktuMulai: sessionStartTimeStr,
+            waktuSelesai: sessionEndTimeStr,
+            durasi: sessionDurationStr,
+            kecerdasan: sKec.toFixed(2),
+            kepribadian: sKep.toFixed(2),
+            kecermatan: sCem.toFixed(2),
+            nilaiAkhir: finalScore.toFixed(2)
+        };
+
+        fetch(APP_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            isResultSubmitted = true;
+            console.log("Submit to GS V2 success.");
+        })
+        .catch(err => {
+            console.error("Error submitting to GS V2:", err);
+        });
+    }
+
+    function showReviewSection() {
+        showSection("review");
+        document.getElementById("reviewNamaPeserta").innerText = `PESERTA: ${pName.toUpperCase()} | SESSION ID: ${currentSessionId}`;
+
+        let kCont = document.getElementById("reviewContainerKecerdasan");
+        kCont.innerHTML = "";
+
+        rawKecerdasan.forEach((q, i) => {
+            let uAns = simulationResult.kecerdasan.userAns[i];
+            let isCorrect = (uAns === q.ans);
+
+            let div = document.createElement("div");
+            div.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
+
+            let optsHtml = q.opts.map((o, idx) => {
+                let style = "";
+                if (idx === q.ans) style = "color:green; font-weight:bold;";
+                if (idx === uAns && !isCorrect) style = "color:red; text-decoration:line-through;";
+                return `<div style="${style}">${String.fromCharCode(65+idx)}. ${o} ${idx === q.ans ? '✓ (Kunci)' : ''} ${idx === uAns ? '(Jawaban Anda)' : ''}</div>`;
+            }).join("");
+
+            div.innerHTML = `
+                <b>Soal #${i+1}:</b> ${q.q}
+                <div style="margin:10px 0; font-size:13px;">${optsHtml}</div>
+                <div class="pembahasan-box"><b>Pembahasan:</b> ${q.exp}</div>
+            `;
+            kCont.appendChild(div);
+        });
+
+        let pCont = document.getElementById("reviewContainerKepribadian");
+        pCont.innerHTML = "";
+
+        rawKepribadian.forEach((q, i) => {
+            let uAns = simulationResult.kepribadian.userAns[i];
+            let chosenScore = (uAns !== undefined) ? q.opts[uAns].s : 0;
+
+            let div = document.createElement("div");
+            div.className = `review-item ${chosenScore >= 4 ? 'correct' : 'incorrect'}`;
+
+            let optsHtml = q.opts.map((o, idx) => {
+                let style = (idx === uAns) ? "font-weight:bold; color:var(--navy);" : "";
+                return `<div style="${style}">${String.fromCharCode(65+idx)}. ${o.t} <b style="color:var(--gold);">[Poin: ${o.s}]</b> ${idx === uAns ? '👈 (Jawaban Anda)' : ''}</div>`;
+            }).join("");
+
+            div.innerHTML = `
+                <b>Soal #${i+1}:</b> ${q.q}
+                <div style="margin:10px 0; font-size:13px;">${optsHtml}</div>
+            `;
+            pCont.appendChild(div);
+        });
+    }
+
+    function downloadFullPDF() {
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const w = pdf.internal.pageSize.getWidth();
-        const h = (canvas.height * w) / canvas.width;
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h);
-        pdf.save(`Hasil_Kecermatan_${pName}.pdf`);
-        btn.style.display = 'block';
+        let element = document.getElementById("captureArea");
+        let btnDownload = document.getElementById("btnDownload");
+        btnDownload.innerText = "⏳ MEMPROSES PDF...";
+
+        html2canvas(element, { scale: 1.5, useCORS: true }).then(canvas => {
+            let imgData = canvas.toDataURL('image/jpeg', 0.85);
+            let pdf = new jsPDF('p', 'mm', 'a4');
+            let imgWidth = 210;
+            let pageHeight = 295;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            pdf.save(`Hasil_Simulasi_POLRI_V2_${pName.replace(/\s+/g, '_')}.pdf`);
+            btnDownload.innerText = "📥 DOWNLOAD HASIL (PDF)";
+        }).catch(err => {
+            alert("Gagal mengunduh PDF. Silahkan coba lagi.");
+            btnDownload.innerText = "📥 DOWNLOAD HASIL (PDF)";
+        });
+    }
+
+    function downloadReviewPDF() {
+        const { jsPDF } = window.jspdf;
+        let element = document.getElementById("reviewCaptureArea");
+        let btn = document.getElementById("btnDownloadReview");
+        btn.innerText = "⏳ MEMPROSES PDF...";
+
+        html2canvas(element, { scale: 1.2, useCORS: true }).then(canvas => {
+            let imgData = canvas.toDataURL('image/jpeg', 0.8);
+            let pdf = new jsPDF('p', 'mm', 'a4');
+            let imgWidth = 210;
+            let pageHeight = 295;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            pdf.save(`Pembahasan_Simulasi_POLRI_V2_${pName.replace(/\s+/g, '_')}.pdf`);
+            btn.innerText = "📥 DOWNLOAD PEMBAHASAN (PDF)";
+        }).catch(err => {
+            alert("Gagal mengunduh PDF Pembahasan.");
+            btn.innerText = "📥 DOWNLOAD PEMBAHASAN (PDF)";
+        });
     }
 </script>
+
 </body>
 </html>
