@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="id" oncontextmenu="return false" onselectstart="return false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CAT TES KECERDASAN UMUM - LEVEL SULIT (100 SOAL HOTS LANJUTAN)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Library untuk Download PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root {
+            --navy: #0b2340;
+            --gold: #d4a017;
+            --bg: #f8fafc;
+            --gray: #f1f5f9;
+            --danger: #c0392b;
+            --btn-shadow: #cbd5e1;
+            --selected-bg: #e0f2fe;
+        }
+        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 0; color: #1e293b; }
+        
+        header { background: var(--navy); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--gold); }
+        .header-title h1 { margin: 0; font-size: 18px; color: #fff; }
+        .header-title p { margin: 3px 0 0; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .timer-badge { font-size: 22px; font-weight: bold; color: var(--gold); font-family: monospace; }
+
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        .user-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .user-card input { width: 80%; max-width: 400px; padding: 12px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; text-align: center; margin-top: 15px; outline: none; display: block; margin-left: auto; margin-right: auto; }
+
+        .opt { padding: 12px 16px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #fff; text-align: left; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .opt:hover { background: #f1f5f9; border-color: var(--navy); }
+        .opt.selected { background: var(--selected-bg); border-color: var(--navy); font-weight: bold; }
+
+        .nav-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-top: 15px; }
+        .nav-item { height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .nav-item.filled { background: var(--navy); color: white; }
+        .nav-item.active { border: 2px solid var(--gold); }
+
+        .btn { background: var(--navy); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; text-align: center; display: inline-block; }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-green { background: #27ae60; color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        
+        .fig-box { display: flex; gap: 10px; align-items: center; justify-content: center; background: #fff; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; overflow-x: auto; }
+        .fig-step { display: flex; flex-direction: column; align-items: center; }
+        .fig-step span { font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #64748b; }
+        
+        .matrix-table { border-collapse: collapse; margin: 15px auto; }
+        .matrix-table td { border: 2px solid var(--navy); width: 60px; height: 60px; text-align: center; font-size: 20px; font-weight: bold; background: #fff; }
+
+        .review-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .review-item.correct { border-left: 6px solid #27ae60; }
+        .review-item.incorrect { border-left: 6px solid var(--danger); }
+        .pembahasan-box { background: #f1f5f9; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; border-left: 3px solid var(--gold); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-title">
+        <h1>PERSONA RESEARCH & CONSULTING</h1>
+        <p>PAKET CAT KECERDASAN UMUM - LEVEL SULIT (100 SOAL HOTS LANJUTAN)</p>
+    </div>
+    <div id="timer" class="timer-badge">90:00</div>
+</header>
+
+<div class="container">
+    <!-- START / LOGIN -->
+    <div id="sec-start" class="user-card">
+        <h2 style="margin:0; color:var(--navy);">SIMULASI CAT KECERDASAN UMUM (LANJUTAN)</h2>
+        <p style="font-size:14px; color:#64748b; margin-top:5px;">100 Soal HOTS Baru dengan Tingkat Kesulitan Lebih Tinggi untuk Seleksi Kepolisian & Umum</p>
+        <input type="text" id="inputNama" placeholder="Masukkan Nama Lengkap Peserta..." autocomplete="off">
+        <br>
+        <button class="btn btn-gold" style="font-size: 18px; padding: 15px 40px;" onclick="startCAT()">MULAI UJIAN CAT</button>
+    </div>
+
+    <!-- MAIN EXAM -->
+    <div id="sec-exam" style="display:none;">
+        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+            <div style="flex:3; min-width:300px;">
+                <div class="card">
+                    <div id="q-no" style="font-weight:bold; color:var(--navy); margin-bottom:10px;">Soal 1 dari 100</div>
+                    <div id="q-text" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>
+                    <div id="q-options"></div>
+                    <div style="margin-top:25px; display:flex; justify-content:space-between;">
+                        <button class="btn" onclick="prevQuestion()" style="background:#64748b">Sebelumnya</button>
+                        <button class="btn" id="btn-next" onclick="nextQuestion()">Selanjutnya</button>
+                    </div>
+                </div>
+            </div>
+            <div style="flex:1; min-width:260px;">
+                <div class="card" style="padding:15px;">
+                    <div style="text-align:center; font-size:12px; font-weight:bold; margin-bottom:10px;">NAVIGASI SOAL (1-100)</div>
+                    <div id="navGrid" class="nav-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="sec-result" style="display:none;">
+        <div class="card" style="text-align:center;">
+            <h2 style="color:var(--navy); margin-bottom:5px;">HASIL AKHIR CAT KECERDASAN UMUM</h2>
+            <p id="resNama" style="font-weight:bold; color:var(--gold); margin-bottom:20px;">PESERTA: -</p>
+            <div style="background:var(--navy); color:white; padding:20px; border-radius:12px; max-width:400px; margin:0 auto 20px;">
+                <small style="opacity:0.8; font-weight:bold;">SKOR KECERDASAN UMUM (SKALA 100)</small>
+                <div id="resScore" style="font-size:54px; font-weight:900; color:var(--gold); margin:10px 0;">0.0</div>
+                <div id="resDetail" style="font-size:14px;">Jawaban Benar: 0 / 100</div>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <button class="btn btn-green" style="padding:15px 30px;" onclick="showReview()">LIHAT PEMBAHASAN SOAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEW -->
+    <div id="sec-review" style="display:none;">
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+                <h2 style="margin:0; color:var(--navy);">PEMBAHASAN 100 SOAL KECERDASAN UMUM</h2>
+                <div style="display:flex; gap:10px;">
+                    <button id="btnDownloadReview" class="btn btn-green" onclick="downloadReviewPDF()">📥 DOWNLOAD PEMBAHASAN (PDF)</button>
+                    <button class="btn" onclick="showSection('result')">Kembali ke Hasil</button>
+                </div>
+            </div>
+            <div id="reviewCaptureArea">
+                <div style="text-align:center; margin-bottom:20px; border-bottom:2px solid var(--navy); padding-bottom:10px;">
+                    <h3 style="margin:0; color:var(--navy);">DOKUMEN PEMBAHASAN LENGKAP HASIL SIMULASI</h3>
+                    <p id="reviewNamaPeserta" style="margin:5px 0 0; color:var(--gold); font-weight:bold;">PESERTA: -</p>
+                </div>
+                <div id="reviewContainer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
+
+    // helper SVG generators
+    function makeSVG(content) {
+        return `<svg width="70" height="70" viewBox="0 0 100 100" style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; vertical-align:middle;">${content}</svg>`;
+    }
+
+    // 100 SOAL KECERDASAN UMUM BARU (LEVEL SULIT / HOTS TINGGI)
+    const questions = [
+        // --- A. VERBAL (15 SOAL) ---
+        // Sinonim (5)
+        { q: "Kandil =", opts: ["A. Perahu", "B. Pelita", "C. Bayangan", "D. Selendang", "E. Pedang"], ans: 1, exp: "Kandil bermakna pelita atau lampu hias gantung." },
+        { q: "Brem = (Bukan makanan, merujuk kata serapan arkais)", opts: ["A. Ragu", "B. Pesta", "C. Minuman keras tradisional", "D. Garam", "E. Resah"], ans: 2, exp: "Brem atau bremi dalam kosakata klasik bermakna minuman keras peragian tape." },
+        { q: "Artikulasi =", opts: ["A. Kejelasan pelafalan", "B. Sambungan tulang", "C. Hubungan erat", "D. Pengaturan waktu", "E. Bentuk fisik"], ans: 0, exp: "Artikulasi adalah perubahan rongga dan ruang dalam saluran suara untuk menghasilkan bunyi bahasa yang jelas." },
+        { q: "Eksim =", opts: ["A. Penyakit kulit meradang", "B. Keadaan mendesak", "C. Perhitungan akurat", "D. Garis lintang", "E. Pengurangan pajak"], ans: 0, exp: "Eksim (eczema) adalah peradangan pada kulit yang ditandai gatal dan kemerahan." },
+        { q: "Fiktif =", opts: ["A. Nyata", "B. Khayalan", "C. Sah", "D. Resmi", "E. Ilmiah"], ans: 1, exp: "Fiktif bermakna bersifat fiksi, hanya terdapat dalam khayalan atau cerita rekaan." },
+
+        // Antonim (5)
+        { q: "Bonafide ×", opts: ["A. Terpercaya", "B. Kredibel", "C. Murtad / Curang (Tidak dapat dipercaya)", "D. Handal", "E. Stabil"], ans: 2, exp: "Bonafide (dapat dipercaya/baik kredibilitasnya) berlawanan dengan perusahaan/lembaga yang tidak bonafide (buruk/curang)." },
+        { q: "Cansela / Batal ×", opts: ["A. Batalkan", "B. Tetapkan / Lanjutkan", "C. Tunda", "D. Hapus", "E. Ubah"], ans: 1, exp: "Cancel (pembatalan) berlawanan dengan pengesahan atau kelanjutan." },
+        { q: "Dinamis ×", opts: ["A. Statis", "B. Bergerak", "C. Aktif", "D. Maju", "E. Cepat"], ans: 0, exp: "Dinamis (penuh gerak/perubahan) berlawanan dengan statis (diam/tidak berubah)." },
+        { q: "Nadir ×", opts: ["A. Puncak", "B. Rendah", "C. Dasar", "D. Turun", "E. Hancur"], ans: 0, exp: "Nadir adalah titik terendah, berlawanan dengan zenit atau titik puncak." },
+        { q: "Sekuler ×", opts: ["A. Duniawi", "B. Keagamaan / Religius", "C. Umum", "D. Terbuka", "E. Bebas"], ans: 1, exp: "Sekuler (bersifat duniawi/non-agama) berlawanan dengan religius/keagamaan." },
+
+        // Analogi (5)
+        { q: "LITERATUR : BACA = KULINER : ...", opts: ["A. Masak", "B. Makan", "C. Restoran", "D. Rasa", "E. Dapur"], ans: 1, exp: "Literatur berhubungan dengan kegiatan membaca, kuliner berhubungan dengan kegiatan makan." },
+        { q: "TERMOMETER : SUHU = BAROMETER : ...", opts: ["A. Curah Hujan", "B. Kelembapan", "C. Tekanan Udara", "D. Kecepatan Angin", "E. Ketinggian"], ans: 2, exp: "Termometer mengukur suhu, barometer mengukur tekanan udara." },
+        { q: "MATAHARI : TERBIT = AIR : ...", opts: ["A. Beku", "B. Mengalir", "C. Menguap", "D. Asin", "E. Jernih"], ans: 1, exp: "Sifat alami matahari adalah terbit, sifat alami air adalah mengalir dari tempat tinggi ke rendah." },
+        { q: "SURAT : AMPLOP = KUNCI : ...", opts: ["A. Pintu", "B. Gembok", "C. Rumah", "D. Logam", "E. Kamar"], ans: 1, exp: "Surat dimasukkan ke dalam amplop, kunci dimasukkan/dipasangkan ke gembok." },
+        { q: "BUMI : PLANET = HIU : ...", opts: ["A. Mamalia", "B. Amfibi", "C. Ikan", "D. Reptil", "E. Karnivora"], ans: 2, exp: "Bumi adalah klasifikasi dari planet, hiu adalah klasifikasi dari ikan bertulang rawan." },
+
+        // --- B. PENGETAHUAN UMUM INTERNASIONAL (10 SOAL) ---
+        { q: "Teori Relativitas Umum yang merevolusi pemahaman fisika modern mengenai gravitasi dikemukakan oleh...", opts: ["A. Isaac Newton", "B. Albert Einstein", "C. Nikola Tesla", "D. Stephen Hawking", "E. Max Planck"], ans: 1, exp: "Albert Einstein mempublikasikan Teori Relativitas Umum pada tahun 1915." },
+        { q: "Garis imajiner yang membagi bumi menjadi belahan bumi utara dan selatan disebut...", opts: ["A. Garis Bujur", "B. Garis Meridian", "C. Garis Khatulistiwa (Equator)", "D. Garis International Date Line", "E. Garis Tropic of Cancer"], ans: 2, exp: "Garis khatulistiwa atau equator adalah garis lintang 0 derajat." },
+        { q: "Organisasi Pakta Pertahanan Atlantik Utara (NATO) didirikan pada tahun 1949 dengan markas besar saat ini di...", opts: ["A. Washington DC, AS", "B. London, Inggris", "C. Brussels, Belgia", "D. Berlin, Jerman", "E. Paris, Prancis"], ans: 2, exp: "Markas besar NATO terletak di Brussels, Belgia." },
+        { q: "Perang Dunia II di kawasan Eropa resmi berakhir setelah Jerman menandatangani kapitulasi tanpa syarat pada bulan...", opts: ["A. Mei 1945", "B. Agustus 1945", "C. November 1944", "D. Januari 1946", "E. September 1945"], ans: 0, exp: "Kemenangan di Eropa (V-E Day) dirayakan pada Mei 1945 setelah Jerman menyerah." },
+        { q: "Sungai terpanjang di dunia yang mengalir melintasi benua Afrika adalah...", opts: ["A. Sungai Amazon", "B. Sungai Nil", "C. Sungai Yangtze", "D. Sungai Mississippi", "E. Sungai Mekong"], ans: 1, exp: "Sungai Nil di Afrika diakui sebagai sungai terpanjang di dunia." },
+        { q: "Penemu vaksin polio suntik (inactivated poliovirus vaccine) pada tahun 1953 adalah...", opts: ["A. Jonas Salk", "B. Louis Pasteur", "C. Alexander Fleming", "D. Robert Koch", "E. Edward Jenner"], ans: 0, exp: "Jonas Salk mengembangkan vaksin polio suntik pertama yang sukses." },
+        { q: "Negara terkecil di dunia berdasarkan luas wilayah dan jumlah penduduk yang berdaulat penuh adalah...", opts: ["A. Monako", "B. Nauru", "C. Liechtenstein", "D. Vatikan (Holy See)", "E. San Marino"], ans: 3, exp: "Negara Kota Vatikan adalah negara berdaulat terkecil di dunia." },
+        { q: "Revolusi Industri pertama kali dimulai pada pertengahan abad ke-18 di negara...", opts: ["A. Prancis", "B. Jerman", "C. Amerika Serikat", "D. Britania Raya (Inggris)", "E. Belanda"], ans: 3, exp: "Revolusi Industri bermula di Inggris sekitar tahun 1750-an." },
+        { q: "Perjanjian Versailles yang ditandatangani pada tahun 1919 resmi mengakhiri...", opts: ["A. Perang Dunia II", "B. Perang Dunia I", "C. Perang Dingin", "D. Perang Napoleon", "E. Perang Candu"], ans: 1, exp: "Perjanjian Versailles (1919) mengakhiri status perang antara Jerman dan Blok Sekutu dalam PD I." },
+        { q: "Unsur logam berat cair pada suhu kamar yang sering digunakan dalam termometer klasik adalah...", opts: ["A. Timbal", "B. Emas", "C. Raksa (Merkuri)", "D. Tembaga", "E. Seng"], ans: 2, exp: "Raksa atau merkuri (Hg) adalah satu-satunya logam yang berwujud cair pada suhu kamar." },
+
+        // --- C. LOGIKA GAMBAR / FIGURAL SVG (25 SOAL: 26-50) ---
+        // 1. Gambar Seri (5 Soal)
+        {
+            q: "Gambar Seri: Tentukan pola gambar ke-4 dari seri rotasi jarum jam berikut!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>1</span>${makeSVG('<line x1="50" y1="50" x2="50" y2="20" stroke="#000" stroke-width="4"/><circle cx="50" cy="20" r="4" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>2</span>${makeSVG('<line x1="50" y1="50" x2="80" y2="50" stroke="#000" stroke-width="4"/><circle cx="80" cy="50" r="4" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>3</span>${makeSVG('<line x1="50" y1="50" x2="50" y2="80" stroke="#000" stroke-width="4"/><circle cx="50" cy="80" r="4" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>4</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<line x1="50" y1="50" x2="20" y2="50" stroke="#000" stroke-width="4"/><circle cx="20" cy="50" r="4" fill="#000"/>'),
+                "B. " + makeSVG('<line x1="50" y1="50" x2="80" y2="50" stroke="#000" stroke-width="4"/><circle cx="80" cy="50" r="4" fill="#000"/>'),
+                "C. " + makeSVG('<line x1="50" y1="50" x2="50" y2="20" stroke="#000" stroke-width="4"/><circle cx="50" cy="20" r="4" fill="#000"/>'),
+                "D. " + makeSVG('<line x1="50" y1="50" x2="20" y2="20" stroke="#000" stroke-width="4"/><circle cx="20" cy="20" r="4" fill="#000"/>'),
+                "E. " + makeSVG('<line x1="50" y1="50" x2="80" y2="80" stroke="#000" stroke-width="4"/><circle cx="80" cy="80" r="4" fill="#000"/>')
+            ],
+            ans: 0,
+            exp: "Jarum berputar 90 derajat searah jarum jam: Atas -> Kanan -> Bawah -> Kiri (Pilihan A)."
+        },
+        {
+            q: "Gambar Seri: Penambahan jumlah titik di dalam lingkaran bertambah 1 setiap langkah!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>1</span>${makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="30" r="4" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>2</span>${makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="30" r="4" fill="#000"/><circle cx="70" cy="50" r="4" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>3</span>${makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="30" r="4" fill="#000"/><circle cx="70" cy="50" r="4" fill="#000"/><circle cx="50" cy="70" r="4" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>4</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="30" r="4" fill="#000"/><circle cx="70" cy="50" r="4" fill="#000"/><circle cx="30" cy="50" r="4" fill="#000"/>'),
+                "B. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="30" r="4" fill="#000"/><circle cx="70" cy="50" r="4" fill="#000"/><circle cx="50" cy="70" r="4" fill="#000"/><circle cx="30" cy="50" r="4" fill="#000"/>'),
+                "C. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="50" r="10" fill="#000"/>'),
+                "D. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="#000"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/>')
+            ],
+            ans: 1,
+            exp: "Titik bertambah searah jarum jam (Atas -> Kanan -> Bawah -> Kiri). Gambar ke-4 memiliki 4 titik lengkap (Pilihan B)."
+        },
+        {
+            q: "Gambar Seri: Pengurangan jumlah sisi bangun datar secara bertahap (Heksagon -> Pentagon -> Persegi -> ?)!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>6 Sisi</span>${makeSVG('<polygon points="50,15 80,32 80,68 50,85 20,68 20,32" stroke="#000" stroke-width="3" fill="none"/>')}</div>
+                    <div class="fig-step"><span>5 Sisi</span>${makeSVG('<polygon points="50,15 85,40 70,80 30,80 15,40" stroke="#000" stroke-width="3" fill="none"/>')}</div>
+                    <div class="fig-step"><span>4 Sisi</span>${makeSVG('<rect x="20" y="20" width="60" height="60" stroke="#000" stroke-width="3" fill="none"/>')}</div>
+                    <div class="fig-step"><span>?</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="20" y="20" width="60" height="60" stroke="#000" stroke-width="3" fill="none"/>'),
+                "B. " + makeSVG('<polygon points="50,15 85,80 15,80" stroke="#000" stroke-width="3" fill="none"/>'),
+                "C. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="3" fill="none"/>'),
+                "D. " + makeSVG('<polygon points="50,15 85,40 70,80 30,80 15,40" stroke="#000" stroke-width="3" fill="none"/>'),
+                "E. " + makeSVG('<line x1="20" y1="50" x2="80" y2="50" stroke="#000" stroke-width="3"/>')
+            ],
+            ans: 1,
+            exp: "Jumlah sisi berkurang 1: 6 -> 5 -> 4 -> 3 (Segitiga pada Pilihan B)."
+        },
+        {
+            q: "Gambar Seri: Pergerakan kotak hitam searah jarum jam pada matriks sudut 2x2!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>1</span>${makeSVG('<rect x="15" y="15" width="30" height="30" fill="#000"/><rect x="55" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="15" y="55" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="55" width="30" height="30" fill="none" stroke="#000"/>')}</div>
+                    <div class="fig-step"><span>2</span>${makeSVG('<rect x="15" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="15" width="30" height="30" fill="#000"/><rect x="15" y="55" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="55" width="30" height="30" fill="none" stroke="#000"/>')}</div>
+                    <div class="fig-step"><span>3</span>${makeSVG('<rect x="15" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="15" y="55" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="55" width="30" height="30" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>4</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="15" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="15" y="55" width="30" height="30" fill="#000"/><rect x="55" y="55" width="30" height="30" fill="none" stroke="#000"/>'),
+                "B. " + makeSVG('<rect x="15" y="15" width="30" height="30" fill="#000"/><rect x="55" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="15" y="55" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="55" width="30" height="30" fill="none" stroke="#000"/>'),
+                "C. " + makeSVG('<rect x="15" y="15" width="30" height="30" fill="#000"/><rect x="55" y="15" width="30" height="30" fill="#000"/><rect x="15" y="55" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="55" width="30" height="30" fill="none" stroke="#000"/>'),
+                "D. " + makeSVG('<rect x="15" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="15" width="30" height="30" fill="none" stroke="#000"/><rect x="15" y="55" width="30" height="30" fill="none" stroke="#000"/><rect x="55" y="55" width="30" height="30" fill="none" stroke="#000"/>'),
+                "E. " + makeSVG('<rect x="15" y="15" width="30" height="30" fill="#000"/><rect x="55" y="15" width="30" height="30" fill="#000"/><rect x="15" y="55" width="30" height="30" fill="#000"/><rect x="55" y="55" width="30" height="30" fill="#000"/>')
+            ],
+            ans: 0,
+            exp: "Kotak hitam bergeser searah jarum jam: Kiri Atas -> Kanan Atas -> Kanan Bawah -> Kiri Bawah (Pilihan A)."
+        },
+        {
+            q: "Gambar Seri: Pergantian arsiran lingkaran (Penuh -> Setengah -> Kosong -> ?)!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>1</span>${makeSVG('<circle cx="50" cy="50" r="35" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>2</span>${makeSVG('<path d="M 50 15 A 35 35 0 0 1 50 85 Z" fill="#000"/><circle cx="50" cy="50" r="35" stroke="#000" stroke-width="3" fill="none"/>')}</div>
+                    <div class="fig-step"><span>3</span>${makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="3" fill="none"/>')}</div>
+                    <div class="fig-step"><span>4</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<circle cx="50" cy="50" r="35" fill="#000"/>'),
+                "B. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="3" fill="none"/>'),
+                "C. " + makeSVG('<path d="M 15 50 A 35 35 0 0 1 85 50 Z" fill="#000"/><circle cx="50" cy="50" r="35" stroke="#000" stroke-width="3" fill="none"/>'),
+                "D. " + makeSVG('<circle cx="50" cy="50" r="20" fill="#000"/><circle cx="50" cy="50" r="35" stroke="#000" stroke-width="3" fill="none"/>'),
+                "E. " + makeSVG('<line x1="15" y1="50" x2="85" y2="50" stroke="#000" stroke-width="3"/>')
+            ],
+            ans: 2,
+            exp: "Pola urutan mundur (Penuh -> Setengah -> Kosong), lalu berulang kembali ke setengah penuh mendatar (Pilihan C)."
+        },
+
+        // 2. Pencerminan (5 Soal)
+        {
+            q: "Pencerminan: Tentukan hasil pencerminan terhadap sumbu vertikal dari bangun segitiga siku-siku berikut!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<polygon points="20,20 20,80 70,20" fill="#000"/><line x1="85" y1="10" x2="85" y2="90" stroke="red" stroke-width="2" stroke-dasharray="4"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<polygon points="20,20 20,80 70,20" fill="#000"/>'),
+                "B. " + makeSVG('<polygon points="80,20 80,80 30,20" fill="#000"/>'),
+                "C. " + makeSVG('<polygon points="20,80 70,80 70,20" fill="#000"/>'),
+                "D. " + makeSVG('<polygon points="20,20 70,20 20,80" fill="#000"/>'),
+                "E. " + makeSVG('<polygon points="30,20 80,80 30,80" fill="#000"/>')
+            ],
+            ans: 1,
+            exp: "Sisi tegak di sebelah kiri pada cermin vertikal berpindah ke sebelah kanan (Pilihan B)."
+        },
+        {
+            q: "Pencerminan: Tentukan hasil pencerminan horizontal (cermin di bawah) dari huruf 'F' berikut!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<path d="M 30 20 L 30 80 M 30 20 L 70 20 M 30 50 L 60 50" stroke="#000" stroke-width="6" fill="none"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<path d="M 30 20 L 30 80 M 30 20 L 70 20 M 30 50 L 60 50" stroke="#000" stroke-width="6" fill="none"/>'),
+                "B. " + makeSVG('<path d="M 30 80 L 30 20 M 30 80 L 70 80 M 30 50 L 60 50" stroke="#000" stroke-width="6" fill="none"/>'),
+                "C. " + makeSVG('<path d="M 70 20 L 70 80 M 70 20 L 30 20 M 70 50 L 40 50" stroke="#000" stroke-width="6" fill="none"/>'),
+                "D. " + makeSVG('<path d="M 70 80 L 70 20 M 70 80 L 30 80 M 70 50 L 40 50" stroke="#000" stroke-width="6" fill="none"/>'),
+                "E. " + makeSVG('<line x1="30" y1="50" x2="70" y2="50" stroke="#000" stroke-width="6"/>')
+            ],
+            ans: 1,
+            exp: "Pencerminan horizontal membalik posisi atas ke bawah (Pilihan B)."
+        },
+        {
+            q: "Pencerminan: Bayangan cermin vertikal dari tanda panah menunjuk ke Kiri-Bawah adalah...<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<line x1="70" y1="20" x2="20" y2="70" stroke="#000" stroke-width="5"/><polygon points="20,70 40,70 20,50" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<line x1="70" y1="20" x2="20" y2="70" stroke="#000" stroke-width="5"/><polygon points="20,70 40,70 20,50" fill="#000"/>'),
+                "B. " + makeSVG('<line x1="30" y1="20" x2="80" y2="70" stroke="#000" stroke-width="5"/><polygon points="80,70 60,70 80,50" fill="#000"/>'),
+                "C. " + makeSVG('<line x1="70" y1="80" x2="20" y2="30" stroke="#000" stroke-width="5"/><polygon points="20,30 40,30 20,50" fill="#000"/>'),
+                "D. " + makeSVG('<line x1="30" y1="80" x2="80" y2="30" stroke="#000" stroke-width="5"/><polygon points="80,30 60,30 80,50" fill="#000"/>'),
+                "E. " + makeSVG('<line x1="50" y1="20" x2="50" y2="80" stroke="#000" stroke-width="5"/>')
+            ],
+            ans: 1,
+            exp: "Panah mengarah ke Kiri-Bawah jika dicerminkan secara vertikal menjadi mengarah ke Kanan-Bawah (Pilihan B)."
+        },
+        {
+            q: "Pencerminan: Tentukan cermin vertikal dari persegi dengan titik hitam di sudut kiri atas!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="20" cy="20" r="6" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="20" cy="20" r="6" fill="#000"/>'),
+                "B. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="80" cy="20" r="6" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="20" cy="80" r="6" fill="#000"/>'),
+                "D. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="80" cy="80" r="6" fill="#000"/>'),
+                "E. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="#000"/>')
+            ],
+            ans: 1,
+            exp: "Titik hitam di sudut Kiri Atas berpindah ke sudut Kanan Atas pada cermin vertikal (Pilihan B)."
+        },
+        {
+            q: "Pencerminan: Tentukan pencerminan horizontal dari bangun panah dua arah mendatar!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<line x1="20" y1="50" x2="80" y2="50" stroke="#000" stroke-width="4"/><polygon points="20,50 35,40 35,60" fill="#000"/><polygon points="80,50 65,40 65,60" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<line x1="20" y1="50" x2="80" y2="50" stroke="#000" stroke-width="4"/><polygon points="20,50 35,40 35,60" fill="#000"/><polygon points="80,50 65,40 65,60" fill="#000"/>'),
+                "B. " + makeSVG('<line x1="50" y1="20" x2="50" y2="80" stroke="#000" stroke-width="4"/><polygon points="50,20 40,35 60,35" fill="#000"/><polygon points="50,80 40,65 60,65" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/>'),
+                "D. " + makeSVG('<circle cx="50" cy="50" r="30" fill="none" stroke="#000" stroke-width="2"/>'),
+                "E. " + makeSVG('<line x1="20" y1="20" x2="80" y2="80" stroke="#000" stroke-width="4"/>')
+            ],
+            ans: 0,
+            exp: "Panah simetris mendatar jika dicerminkan secara horizontal bentuknya tetap sama (Pilihan A)."
+        },
+
+        // 3. Rotasi (5 Soal)
+        {
+            q: "Rotasi: Hasil pemutaran objek sebesar 180 derajat dari huruf 'L' adalah...<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<path d="M 30 20 L 30 80 L 70 80" stroke="#000" stroke-width="8" fill="none"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<path d="M 30 20 L 30 80 L 70 80" stroke="#000" stroke-width="8" fill="none"/>'),
+                "B. " + makeSVG('<path d="M 70 20 L 70 80 L 30 80" stroke="#000" stroke-width="8" fill="none"/>'),
+                "C. " + makeSVG('<path d="M 70 80 L 70 20 L 30 20" stroke="#000" stroke-width="8" fill="none"/>'),
+                "D. " + makeSVG('<path d="M 30 80 L 70 80 L 70 20" stroke="#000" stroke-width="8" fill="none"/>'),
+                "E. " + makeSVG('<line x1="30" y1="50" x2="70" y2="50" stroke="#000" stroke-width="8"/>')
+            ],
+            ans: 1,
+            exp: "Huruf 'L' diputar 180 derajat akan mengarah ke kiri atas dan siku di kanan atas (Pilihan B)."
+        },
+        {
+            q: "Rotasi: Tentukan hasil pemutaran 90 derajat searah jarum jam dari segitiga siku-siku vertikal!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<polygon points="20,20 20,80 80,80" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<polygon points="20,20 20,80 80,80" fill="#000"/>'),
+                "B. " + makeSVG('<polygon points="20,20 80,20 80,80" fill="#000"/>'),
+                "C. " + makeSVG('<polygon points="20,20 20,80 80,20" fill="#000"/>'),
+                "D. " + makeSVG('<polygon points="20,80 80,20 80,80" fill="#000"/>'),
+                "E. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="#000"/>')
+            ],
+            ans: 1,
+            exp: "Diputar 90° searah jarum jam, sudut siku-siku berpindah ke kanan atas (Pilihan B)."
+        },
+        {
+            q: "Rotasi: Tentukan hasil pemutaran 270 derajat searah jarum jam dari bangun salib (+) berikut!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<path d="M 50 20 L 50 80 M 20 50 L 80 50" stroke="#000" stroke-width="12" fill="none"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<path d="M 50 20 L 50 80 M 20 50 L 80 50" stroke="#000" stroke-width="12" fill="none"/>'),
+                "B. " + makeSVG('<circle cx="50" cy="50" r="30" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="#000"/>'),
+                "D. " + makeSVG('<line x1="20" y1="20" x2="80" y2="80" stroke="#000" stroke-width="12"/>'),
+                "E. " + makeSVG('<polygon points="50,20 80,80 20,80" fill="#000"/>')
+            ],
+            ans: 0,
+            exp: "Bangun salib simetris sempurna berputar 270 derajat menghasilkan bentuk yang tetap sama (Pilihan A)."
+        },
+        {
+            q: "Rotasi: Putar persegi panjang vertikal sebesar 90 derajat berlawanan jarum jam!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<rect x="35" y="15" width="30" height="70" fill="none" stroke="#000" stroke-width="3"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="35" y="15" width="30" height="70" fill="none" stroke="#000" stroke-width="3"/>'),
+                "B. " + makeSVG('<rect x="15" y="35" width="70" height="30" fill="none" stroke="#000" stroke-width="3"/>'),
+                "C. " + makeSVG('<rect x="25" y="25" width="50" height="50" fill="none" stroke="#000" stroke-width="3"/>'),
+                "D. " + makeSVG('<circle cx="50" cy="50" r="35" fill="none" stroke="#000" stroke-width="3"/>'),
+                "E. " + makeSVG('<line x1="15" y1="50" x2="85" y2="50" stroke="#000" stroke-width="3"/>')
+            ],
+            ans: 1,
+            exp: "Persegi panjang vertikal diputar 90 derajat menjadi posisi horizontal (Pilihan B)."
+        },
+        {
+            q: "Rotasi: Tentukan hasil pemutaran 180 derajat dari tanda panah menunjuk ke Kanan!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Asli</span>${makeSVG('<line x1="20" y1="50" x2="80" y2="50" stroke="#000" stroke-width="5"/><polygon points="80,50 65,35 65,65" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<line x1="20" y1="50" x2="80" y2="50" stroke="#000" stroke-width="5"/><polygon points="80,50 65,35 65,65" fill="#000"/>'),
+                "B. " + makeSVG('<line x1="80" y1="50" x2="20" y2="50" stroke="#000" stroke-width="5"/><polygon points="20,50 35,35 35,65" fill="#000"/>'),
+                "C. " + makeSVG('<line x1="50" y1="20" x2="50" y2="80" stroke="#000" stroke-width="5"/><polygon points="50,20 35,35 65,35" fill="#000"/>'),
+                "D. " + makeSVG('<line x1="50" y1="80" x2="50" y2="20" stroke="#000" stroke-width="5"/><polygon points="50,80 35,65 65,65" fill="#000"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="10" fill="#000"/>')
+            ],
+            ans: 1,
+            exp: "Panah menghadap Kanan diputar 180 derajat menjadi menghadap ke Kiri (Pilihan B)."
+        },
+
+        // 4. Lipatan dan Potongan Gambar (5 Soal)
+        {
+            q: "Lipatan: Kertas bujur sangkar dilipat dua secara horizontal, lalu dilubangi dua lubang simetris. Saat dibuka...<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Lipat & Lubang</span>${makeSVG('<rect x="20" y="50" width="60" height="30" fill="none" stroke="#000" stroke-width="2"/><circle cx="40" cy="65" r="4" fill="#000"/><circle cx="60" cy="65" r="4" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="40" cy="65" r="4" fill="#000"/><circle cx="60" cy="65" r="4" fill="#000"/>'),
+                "B. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="40" cy="35" r="4" fill="#000"/><circle cx="60" cy="35" r="4" fill="#000"/><circle cx="40" cy="65" r="4" fill="#000"/><circle cx="60" cy="65" r="4" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="#000"/>'),
+                "D. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/>'),
+                "E. " + makeSVG('<polygon points="50,20 80,50 20,50" fill="none" stroke="#000" stroke-width="2"/>')
+            ],
+            ans: 1,
+            exp: "Lipatan horizontal menghasilkan simetri atas-bawah sehingga total terdapat 4 lubang (Pilihan B)."
+        },
+        {
+            q: "Lipatan: Kertas persegi dilipat 4, lalu dipotong bagian sudut luarnya. Saat dibuka, lubang apa yang terbentuk di tengah?<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Potong Sudut Luar</span>${makeSVG('<rect x="50" y="50" width="35" height="35" fill="none" stroke="#000" stroke-width="2"/><polygon points="85,85 70,85 85,70" fill="red"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="#000"/>'),
+                "B. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><rect x="40" y="40" width="20" height="20" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/>'),
+                "D. " + makeSVG('<polygon points="50,20 80,50 50,80 20,50" fill="none" stroke="#000" stroke-width="2"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="30" fill="#000"/>')
+            ],
+            ans: 1,
+            exp: "Potongan di sudut lipatan saat dibuka penuh menciptakan lubang persegi di bagian tengah kertas (Pilihan B)."
+        },
+        {
+            q: "Lipatan: Kertas lingkaran dilipat jadi 2, lalu dilipat lagi jadi 4, lalu digunting lurus di ujung lipatan. Bentuk lubang tengahnya adalah...<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Gunting Lipat 4</span>${makeSVG('<path d="M 50 50 L 85 50 A 35 35 0 0 0 50 15 Z" fill="none" stroke="#000" stroke-width="2"/><line x1="50" y1="50" x2="65" y2="35" stroke="red" stroke-width="3"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<circle cx="50" cy="50" r="35" fill="none" stroke="#000" stroke-width="2"/>'),
+                "B. " + makeSVG('<circle cx="50" cy="50" r="35" stroke="#000" stroke-width="2" fill="none"/><polygon points="50,30 70,50 50,70 30,50" fill="#000"/>'),
+                "C. " + makeSVG('<circle cx="50" cy="50" r="15" fill="#000"/>'),
+                "D. " + makeSVG('<rect x="30" y="30" width="40" height="40" fill="#000"/>'),
+                "E. " + makeSVG('<polygon points="50,15 85,50 15,50" fill="none" stroke="#000" stroke-width="2"/>')
+            ],
+            ans: 1,
+            exp: "Guntingan diagonal pada pusat lipatan 4 kuadran membentuk lubang bintang/belah ketupat di tengah lingkaran (Pilihan B)."
+        },
+        {
+            q: "Lipatan: Lembar persegi panjang dilipat tiga memanjang (seperti amplop surat), lalu dibor satu lubang di tengah. Saat dibuka...<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Lipat 3 + Lubang</span>${makeSVG('<rect x="30" y="20" width="40" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="5" fill="#000"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="5" fill="#000"/>'),
+                "B. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="25" cy="50" r="5" fill="#000"/><circle cx="50" cy="50" r="5" fill="#000"/><circle cx="75" cy="50" r="5" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="25" r="5" fill="#000"/><circle cx="50" cy="75" r="5" fill="#000"/>'),
+                "D. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="#000"/>'),
+                "E. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="#000"/>')
+            ],
+            ans: 1,
+            exp: "Lipatan tiga lembar berurutan menghasilkan 3 titik lubang sejajar secara horizontal saat dibuka penuh (Pilihan B)."
+        },
+        {
+            q: "Lipatan: Kertas segitiga sama sisi dilipat dua dari puncak ke alas, lalu dipotong di bagian puncaknya. Saat dibuka...<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Lipat & Potong Puncak</span>${makeSVG('<polygon points="50,20 80,80 20,80" fill="none" stroke="#000" stroke-width="2"/><line x1="40" y1="40" x2="60" y2="40" stroke="red" stroke-width="2"/>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<polygon points="50,20 80,80 20,80" fill="none" stroke="#000" stroke-width="2"/>'),
+                "B. " + makeSVG('<polygon points="50,20 80,80 20,80" fill="none" stroke="#000" stroke-width="2"/><polygon points="50,35 65,65 35,65" fill="#000"/>'),
+                "C. " + makeSVG('<polygon points="50,15 85,85 15,85" fill="none" stroke="#000" stroke-width="2"/><polygon points="50,30 70,70 30,70" fill="none" stroke="#000"/>'),
+                "D. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="none" stroke="#000" stroke-width="2"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="30" fill="none" stroke="#000" stroke-width="2"/>')
+            ],
+            ans: 2,
+            exp: "Pemotongan puncak pada segitiga lipat menghasilkan lubang berbentuk segitiga kecil di bagian tengah dalam segitiga besar (Pilihan C)."
+        },
+
+        // 5. Pola dan Komposisi Gambar / Matriks (5 Soal)
+        {
+            q: "Pola Matriks Gambar 2x2: Tentukan elemen ke-4 yang hilang (?)!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>[1,1]</span>${makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/>')}</div>
+                    <div class="fig-step"><span>[1,2]</span>${makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/><line x1="50" y1="20" x2="50" y2="80" stroke="#000" stroke-width="2"/>')}</div>
+                    <div class="fig-step"><span>[2,1]</span>${makeSVG('<polygon points="50,20 80,80 20,80" stroke="#000" stroke-width="2" fill="none"/>')}</div>
+                    <div class="fig-step"><span>[2,2]</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<polygon points="50,20 80,80 20,80" stroke="#000" stroke-width="2" fill="none"/>'),
+                "B. " + makeSVG('<polygon points="50,20 80,80 20,80" stroke="#000" stroke-width="2" fill="none"/><line x1="50" y1="20" x2="50" y2="80" stroke="#000" stroke-width="2"/>'),
+                "C. " + makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/>'),
+                "D. " + makeSVG('<polygon points="50,20 80,80 20,80" fill="#000"/>'),
+                "E. " + makeSVG('<line x1="20" y1="50" x2="80" y2="50" stroke="#000" stroke-width="2"/>')
+            ],
+            ans: 1,
+            exp: "Pola matriks: Kolom kedua adalah gambar kolom pertama yang diberi garis pembagi vertikal di tengahnya (Pilihan B)."
+        },
+        {
+            q: "Matriks Komposisi (Segitiga + Titik Tengah = ?)!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Segitiga</span>${makeSVG('<polygon points="50,20 80,80 20,80" stroke="#000" stroke-width="2" fill="none"/>')}</div>
+                    <div class="fig-step"><span>+</span><span style="font-size:24px;">+</span></div>
+                    <div class="fig-step"><span>Titik</span>${makeSVG('<circle cx="50" cy="55" r="7" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>=</span><span style="font-size:24px;">=</span></div>
+                    <div class="fig-step"><span>?</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<polygon points="50,20 80,80 20,80" stroke="#000" stroke-width="2" fill="none"/>'),
+                "B. " + makeSVG('<circle cx="50" cy="55" r="7" fill="#000"/>'),
+                "C. " + makeSVG('<polygon points="50,20 80,80 20,80" stroke="#000" stroke-width="2" fill="none"/><circle cx="50" cy="55" r="7" fill="#000"/>'),
+                "D. " + makeSVG('<polygon points="50,20 80,80 20,80" fill="#000"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/>')
+            ],
+            ans: 2,
+            exp: "Penggabungan objek memasukkan titik hitam di pusat bangun segitiga (Pilihan C)."
+        },
+        {
+            q: "Pengurangan Visual (Lingkaran bersilang dikurangi garis silang = ?)!<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Gbr 1</span>${makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/><line x1="25" y1="25" x2="75" y2="75" stroke="#000" stroke-width="2"/><line x1="75" y1="25" x2="25" y2="75" stroke="#000" stroke-width="2"/>')}</div>
+                    <div class="fig-step"><span>-</span><span style="font-size:24px;">-</span></div>
+                    <div class="fig-step"><span>Gbr 2</span>${makeSVG('<line x1="25" y1="25" x2="75" y2="75" stroke="#000" stroke-width="2"/>')}</div>
+                    <div class="fig-step"><span>=</span><span style="font-size:24px;">=</span></div>
+                    <div class="fig-step"><span>?</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/><line x1="75" y1="25" x2="25" y2="75" stroke="#000" stroke-width="2"/>'),
+                "B. " + makeSVG('<line x1="25" y1="25" x2="75" y2="75" stroke="#000" stroke-width="2"/>'),
+                "C. " + makeSVG('<circle cx="50" cy="50" r="30" stroke="#000" stroke-width="2" fill="none"/>'),
+                "D. " + makeSVG('<line x1="75" y1="25" x2="25" y2="75" stroke="#000" stroke-width="2"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="30" fill="#000"/>')
+            ],
+            ans: 0,
+            exp: "Menghilangkan satu garis diagonal menyisakan lingkaran dan satu garis diagonal sebaliknya (Pilihan A)."
+        },
+        {
+            q: "Operasi XOR Visual (Elemen yang sama dihilangkan):<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>A</span>${makeSVG('<rect x="30" y="30" width="40" height="40" fill="none" stroke="#000" stroke-width="2"/>')}</div>
+                    <div class="fig-step"><span>XOR</span><span style="font-size:16px;">XOR</span></div>
+                    <div class="fig-step"><span>B</span>${makeSVG('<rect x="30" y="30" width="40" height="40" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>=</span><span style="font-size:24px;">=</span></div>
+                    <div class="fig-step"><span>?</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<rect x="30" y="30" width="40" height="40" fill="none" stroke="#000" stroke-width="2"/>'),
+                "B. " + makeSVG('<circle cx="50" cy="50" r="10" fill="#000"/>'),
+                "C. " + makeSVG('<rect x="30" y="30" width="40" height="40" fill="none" stroke="#000" stroke-width="2"/><circle cx="50" cy="50" r="10" fill="#000"/>'),
+                "D. " + makeSVG('<line x1="30" y1="30" x2="70" y2="70" stroke="#000" stroke-width="2"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="30" fill="none" stroke="#000" stroke-width="2"/>')
+            ],
+            ans: 1,
+            exp: "Persegi terdapat pada kedua objek sehingga saling menghilangkan. Tersisa titik hitam di tengah (Pilihan B)."
+        },
+        {
+            q: "Kelengkapan Potongan Puzzle Segitiga:<br><br>" +
+               `<div class="fig-box">
+                    <div class="fig-step"><span>Bagian Kiri</span>${makeSVG('<polygon points="50,20 50,80 20,80" fill="#000"/>')}</div>
+                    <div class="fig-step"><span>+</span><span style="font-size:24px;">+</span></div>
+                    <div class="fig-step"><span>Pelengkap</span>${makeSVG('<text x="40" y="60" font-size="30">?</text>')}</div>
+                </div>`,
+            opts: [
+                "A. " + makeSVG('<polygon points="50,20 50,80 80,80" fill="#000"/>'),
+                "B. " + makeSVG('<polygon points="50,20 50,80 20,80" fill="#000"/>'),
+                "C. " + makeSVG('<polygon points="50,20 80,80 20,80" fill="#000"/>'),
+                "D. " + makeSVG('<rect x="20" y="20" width="60" height="60" fill="#000"/>'),
+                "E. " + makeSVG('<circle cx="50" cy="50" r="30" fill="#000"/>')
+            ],
+            ans: 0,
+            exp: "Pelengkap untuk menyatukan segitiga sama kaki adalah bagian kanan segitiga (Pilihan A)."
+        },
+// --- D. MATEMATIKA BERPOLA DALAM TABEL / KOTAK ANGKA (10 SOAL: 51-60) ---
+        {
+            q: "Matriks Angka: Tentukan angka pada tanda tanya (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>6</td><td>9</td></tr><tr><td>15</td><td>?</td></tr></table>`,
+            opts: ["A. 21", "B. 24", "C. 27", "D. 30", "E. 33"],
+            ans: 1,
+            exp: "Pola: Penjumlahan baris (9 + 15 = 24)."
+        },
+        {
+            q: "Matriks Angka: Tentukan nilai kotak (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>3</td><td>7</td><td>21</td></tr><tr><td>4</td><td>8</td><td>32</td></tr><tr><td>5</td><td>9</td><td>?</td></tr></table>`,
+            opts: ["A. 40", "B. 42", "C. 45", "D. 48", "E. 50"],
+            ans: 2,
+            exp: "Pola: Kolom 1 dikali Kolom 2 sama dengan Kolom 3 (5 x 9 = 45)."
+        },
+        {
+            q: "Matriks Angka: Tentukan angka yang hilang (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>16</td><td>4</td><td>4</td></tr><tr><td>28</td><td>7</td><td>4</td></tr><tr><td>36</td><td>9</td><td>?</td></tr></table>`,
+            opts: ["A. 3", "B. 4", "C. 5", "D. 6", "E. 7"],
+            ans: 1,
+            exp: "Pola: Kolom 1 dibagi Kolom 2 = Kolom 3 (36 / 9 = 4)."
+        },
+        {
+            q: "Kotak Angka Berpola: Tentukan nilai (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>6</td><td>8</td><td>100</td></tr><tr><td>5</td><td>12</td><td>169</td></tr><tr><td>9</td><td>40</td><td>?</td></tr></table>`,
+            opts: ["A. 1200", "B. 1450", "C. 1681", "D. 1800", "E. 2000"],
+            ans: 2,
+            exp: "Pola Pythagoras: K1² + K2² = K3. Baris 3: 9² + 40² = 81 + 1600 = 1681."
+        },
+        {
+            q: "Tabel Matriks: Tentukan nilai (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>19</td><td>11</td><td>8</td></tr><tr><td>14</td><td>6</td><td>8</td></tr><tr><td>23</td><td>14</td><td>?</td></tr></table>`,
+            opts: ["A. 7", "B. 8", "C. 9", "D. 10", "E. 11"],
+            ans: 2,
+            exp: "Pola: Kolom 1 dikurang Kolom 2 = Kolom 3 (23 - 14 = 9)."
+        },
+        {
+            q: "Matriks Angka Diagonal: Tentukan angka pada tanda tanya (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>2</td><td>3</td><td>9</td></tr><tr><td>3</td><td>3</td><td>27</td></tr><tr><td>4</td><td>3</td><td>?</td></tr></table>`,
+            opts: ["A. 32", "B. 48", "C. 64", "D. 81", "E. 100"],
+            ans: 2,
+            exp: "Pola: Kolom 1 pangkat Kolom 2 = Kolom 3. Baris 3: 4³ = 64."
+        },
+        {
+            q: "Kotak Bilangan: Tentukan nilai (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>45</td><td>5</td><td>9</td></tr><tr><td>56</td><td>7</td><td>8</td></tr><tr><td>72</td><td>8</td><td>?</td></tr></table>`,
+            opts: ["A. 7", "B. 8", "C. 9", "D. 10", "E. 11"],
+            ans: 2,
+            exp: "Pola: Kolom 1 dibagi Kolom 2 = Kolom 3 (72 / 8 = 9)."
+        },
+        {
+            q: "Matriks Khusus: Tentukan nilai (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>3</td><td>7</td><td>20</td></tr><tr><td>5</td><td>9</td><td>28</td></tr><tr><td>7</td><td>11</td><td>?</td></tr></table>`,
+            opts: ["A. 32", "B. 34", "C. 36", "D. 38", "E. 40"],
+            ans: 2,
+            exp: "Pola: (Kolom 1 + Kolom 2) ditambah 14 (atau pola linear). Mari periksa: (7 + 11) x 2 = 36."
+        },
+        {
+            q: "Kotak Angka Berpola Kubik: Tentukan nilai (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>3</td><td>27</td><td>30</td></tr><tr><td>4</td><td>64</td><td>68</td></tr><tr><td>5</td><td>125</td><td>?</td></tr></table>`,
+            opts: ["A. 128", "B. 130", "C. 135", "D. 140", "E. 145"],
+            ans: 1,
+            exp: "Pola: Kolom 1 ditambah Kolom 2 (pangkat tiga dari K1) = Kolom 3. 5 + 125 = 130."
+        },
+        {
+            q: "Tabel Matriks: Tentukan nilai (?)!<br><br>" +
+               `<table class="matrix-table"><tr><td>48</td><td>6</td><td>8</td></tr><tr><td>63</td><td>7</td><td>9</td></tr><tr><td>81</td><td>9</td><td>?</td></tr></table>`,
+            opts: ["A. 7", "B. 8", "C. 9", "D. 10", "E. 11"],
+            ans: 2,
+            exp: "Pola: Kolom 1 dibagi Kolom 2 = Kolom 3 (81 / 9 = 9)."
+        },
+
+        // --- E. DERET ANGKA (10 SOAL: 61-70) ---
+        { q: "2, 6, 18, 54, 162, ...", opts: ["A. 324", "B. 450", "C. 486", "D. 512", "E. 600"], ans: 2, exp: "Pola dikali 3 secara konsisten (162 x 3 = 486)." },
+        { q: "4, 7, 12, 19, 28, ...", opts: ["A. 37", "B. 39", "C. 41", "D. 43", "E. 45"], ans: 1, exp: "Pola selisih bertingkat: +3, +5, +7, +9, berikutnya +11 (28 + 11 = 39)." },
+        { q: "1, 8, 27, 64, 125, 216, ...", opts: ["A. 250", "B. 300", "C. 343", "D. 400", "E. 512"], ans: 2, exp: "Deret kubik bilangan bulat (7³ = 343)." },
+        { q: "150, 138, 125, 111, 96, ...", opts: ["A. 78", "B. 80", "C. 82", "D. 84", "E. 86"], ans: 1, exp: "Pola pengurangan bertambah: -12, -13, -14, -15, berikutnya -16 (96 - 16 = 80)." },
+        { q: "5, 7, 11, 13, 17, 19, ...", opts: ["A. 21", "B. 23", "C. 25", "D. 27", "E. 29"], ans: 1, exp: "Deret bilangan prima berurutan setelah 19 adalah 23." },
+        { q: "3, 6, 9, 18, 21, 42, ...", opts: ["A. 45", "B. 50", "C. 60", "D. 84", "E. 90"], ans: 0, exp: "Pola bergantian: +3, x2, +3, x2, +3. Suku berikutnya: 42 + 3 = 45." },
+        { q: "512, 128, 32, 8, ...", opts: ["A. 0", "B. 1", "C. 2", "D. 4", "E. 6"], ans: 2, exp: "Pola dibagi 4 secara konsisten (8 / 4 = 2)." },
+        { q: "2, 6, 12, 20, 30, ...", opts: ["A. 40", "B. 42", "C. 45", "D. 48", "E. 50"], ans: 1, exp: "Pola n(n+1): 1x2=2, 2x3=6, 3x4=12, 4x5=20, 5x6=30, 6x7 = 42." },
+        { q: "1, 2, 4, 7, 11, 16, ...", opts: ["A. 20", "B. 21", "C. 22", "D. 23", "E. 25"], ans: 2, exp: "Pola penambahan meningkat: +1, +2, +3, +4, +5, berikutnya +6 (16 + 6 = 22)." },
+        { q: "3, 4, 7, 11, 18, 29, ...", opts: ["A. 40", "B. 43", "C. 45", "D. 47", "E. 50"], ans: 3, exp: "Deret Fibonacci (penjumlahan dua suku sebelumnya): 18 + 29 = 47." },
+
+        // --- F. SOAL CERITA MATEMATIKA (10 SOAL: 71-80) ---
+        { q: "Sebuah pesawat terbang menempuh jarak 1200 km dengan kecepatan rata-rata 400 km/jam. Jika berangkat pukul 08.00, pukul berapa tiba?", opts: ["A. Pukul 10.00", "B. Pukul 10.30", "C. Pukul 11.00", "D. Pukul 11.30", "E. Pukul 12.00"], ans: 2, exp: "Waktu = 1200 / 400 = 3 jam. 08.00 + 3 jam = Pukul 11.00." },
+        { q: "Harga sebuah laptop setelah mendapat diskon 15% adalah Rp 3.400.000. Berapakah harga awal laptop tersebut?", opts: ["A. Rp 3.800.000", "B. Rp 4.000.000", "C. Rp 4.200.000", "D. Rp 4.500.000", "E. Rp 5.000.000"], ans: 1, exp: "Harga Awal = 3.400.000 / (1 - 0.15) = 3.400.000 / 0.85 = Rp 4.000.000." },
+        { q: "Perbandingan kelereng Andi dan Budi adalah 4 : 5. Jika jumlah kelereng mereka 72 buah, berapa jumlah kelereng Budi?", opts: ["A. 32", "B. 36", "C. 40", "D. 45", "E. 48"], ans: 2, exp: "Kelereng Budi = (5 / 9) x 72 = 40 buah." },
+        { q: "Suatu proyek bangunan dikerjakan oleh 12 orang selama 10 hari. Jika ingin diselesaikan dalam 8 hari, berapa tambahan pekerja yang diperlukan?", opts: ["A. 2 orang", "B. 3 orang", "C. 4 orang", "D. 5 orang", "E. 6 orang"], ans: 1, exp: "Total pekerja = (12 x 10) / 8 = 15 orang. Tambahan pekerja = 15 - 12 = 3 orang." },
+        { q: "Rata-rata nilai 6 orang siswa adalah 80. Jika digabungkan dengan 4 orang siswa lain yang rata-ratanya 70, berapa rata-rata gabungan seluruhnya?", opts: ["A. 74", "B. 75", "C. 76", "D. 77", "E. 78"], ans: 2, exp: "Total nilai = (6 x 80) + (4 x 70) = 480 + 280 = 760. Rata-rata gabungan = 760 / 10 = 76." },
+        { q: "Umur ibu saat ini 3 kali umur anaknya. Lima tahun yang akan datang, jumlah umur keduanya adalah 66 tahun. Berapa umur ibu saat ini?", opts: ["A. 36 tahun", "B. 39 tahun", "C. 42 tahun", "D. 45 tahun", "E. 48 tahun"], ans: 3, exp: "I = 3A. (I+5) + (A+5) = 66 -> 4A + 10 = 66 -> 4A = 56 -> A = 14. Umur ibu = 3 x 14 = 42 (tapi cek: 5 tahun lagi ibu 47, anak 19, jumlah 66. Jadi umur ibu saat ini 42? Koreksi: Jika A=14, I=42. 5 thn lagi I=47, A=19 -> 66. Tepat)." },
+        { q: "Sebuah tangki berisi penuh minyak seberat 500 kg. Jika berat tangki kosong adalah 80 kg, dan saat berisi setengah bagian berat totalnya 290 kg, berapa berat minyak dalam tangki penuh?", opts: ["A. 420 kg", "B. 450 kg", "C. 480 kg", "D. 500 kg", "E. 520 kg"], ans: 0, exp: "Berat minyak setengah = 290 - 80 = 210 kg. Berat minyak penuh = 210 x 2 = 420 kg." },
+        { q: "Berapakah nilai dari 37,5% dari 560?", opts: ["A. 195", "B. 200", "C. 210", "D. 220", "E. 225"], ans: 2, exp: "37.5% = 3/8. (3/8) x 560 = 3 x 70 = 210." },
+        { q: "Jika 6x + 4 = 3x + 22, maka nilai dari x² - 2 adalah...", opts: ["A. 34", "B. 36", "C. 38", "D. 40", "E. 42"], ans: 2, exp: "3x = 18 -> x = 6. Nilai 6² - 2 = 36 - 2 = 34." },
+        { q: "Dua kendaraan terpisah jarak 270 km bergerak saling mendekat dengan kecepatan masing-masing 50 km/jam dan 40 km/jam. Jika berangkat pukul 07.00, pukul berapa mereka berpapasan?", opts: ["A. Pukul 09.00", "B. Pukul 09.30", "C. Pukul 10.00", "D. Pukul 10.30", "E. Pukul 11.00"], ans: 2, exp: "Waktu papasan = 270 / (50 + 40) = 270 / 90 = 3 jam. 07.00 + 3 jam = Pukul 10.00." },
+
+        // --- G. SILOGISME (10 SOAL: 81-90) ---
+        { q: "Semua anggota korps lalu lintas wajib menguasai regulasi jalan raya. Sebagian anggota korps lalu lintas bertugas di wilayah ibukota. Kesimpulan yang sah:", opts: ["A. Sebagian anggota di ibukota wajib menguasai regulasi jalan raya", "B. Semua anggota di ibukota tidak tahu regulasi", "C. Sebagian anggota yang tahu regulasi bukan korlantas", "D. Tidak ada anggota korlantas di ibukota", "E. Semua yang paham regulasi adalah korlantas"], ans: 0, exp: "Karena seluruh anggota korlantas wajib menguasai regulasi, maka sebagian anggota di ibukota juga wajib menguasainya." },
+        { q: "Jika prosedur pengamanan dipatuhi, maka potensi gangguan keamanan dapat ditekan. Potensi gangguan keamanan saat ini tidak dapat ditekan. Kesimpulan:", opts: ["A. Prosedur pengamanan tidak dipatuhi", "B. Prosedur pengamanan telah dipatuhi dengan baik", "C. Gangguan keamanan pasti terjadi", "D. Prosedur pengamanan gagal total", "E. Keamanan tetap terjaga"], ans: 0, exp: "Modus Tollens: ~Q maka ~P (Prosedur pengamanan tidak dipatuhi)." },
+        { q: "Semua perwira tinggi harus lulus uji kelayakan strategis. Brigadir Jenderal Hendra tidak lulus uji kelayakan strategis. Kesimpulan:", opts: ["A. Brigadir Jenderal Hendra bukan perwira tinggi yang sah", "B. Hendra lulus uji taktik lapangan", "C. Hendra tetap dilantik", "D. Semua perwira lulus ujian", "E. Hendra pensiun"], ans: 0, exp: "Karena syarat mutlak perwira tinggi adalah lulus uji kelayakan, maka Hendra yang tidak lulus dipastikan tidak memenuhi syarat." },
+        { q: "Jika cuaca berkabut tebal terjadi, maka jadwal pelayaran ditunda. Jika jadwal pelayaran ditunda, maka penumpang diberikan akomodasi penginapan. Hari ini cuaca berkabut tebal terjadi. Kesimpulan:", opts: ["A. Penumpang diberikan akomodasi penginapan", "B. Pelayaran tidak ditunda", "C. Penumpang batal berangkat", "D. Cuaca cerah seketika", "E. Tidak ada penumpang di pelabuhan"], ans: 0, exp: "Silogisme hipotetis: P -> Q, Q -> R, P terjadi -> R terjadi (Penumpang diberikan akomodasi penginapan)." },
+        { q: "Semua analis intelijen menguasai teknik pemetaan data. Sebagian analis intelijen bertugas di bidang siber. Kesimpulan:", opts: ["A. Sebagian analis di bidang siber menguasai teknik pemetaan data", "B. Semua analis siber sangat handal", "C. Tidak ada analis siber yang paham data", "D. Teknik pemetaan hanya milik siber", "E. Semua analis siber tidak kompeten"], ans: 0, exp: "Sebagian analis intelijen yang berada di bidang siber dipastikan menguasai teknik pemetaan data." },
+        { q: "Tidak ada pelanggar kode etik yang berhakmendapat penghargaan khusus. Sebagian anggota mendapat penghargaan khusus. Kesimpulan:", opts: ["A. Sebagian anggota bukan pelanggar kode etik", "B. Semua anggota melanggar kode etik", "C. Sebagian anggota peraih penghargaan melanggar etik", "D. Semua anggota mendapat penghargaan", "E. Tidak ada anggota berprestasi"], ans: 0, exp: "Anggota yang mendapat penghargaan khusus dipastikan bukan merupakan pelanggar kode etik." },
+        { q: "Setiap hari Senin seluruh personel melaksanakan apel pagi bersenjata. Hari ini seluruh personel melaksanakan apel pagi bersenjata. Kesimpulan:", opts: ["A. Hari ini mungkin hari Senin", "B. Hari ini pasti hari Senin", "C. Hari ini bukan hari Senin", "D. Apel bersenjata hanya hari Senin", "E. Apel ditiadakan"], ans: 0, exp: "Konsekuen terjadi tidak serta-merta memastikan sebab tunggal (bisa hari khusus lain), sehingga kemungkinan besar hari ini hari Senin." },
+        { q: "Jika strategi penyergapan efektif, maka tersangka berhasil diamankan. Tersangka tidak berhasil diamankan. Kesimpulan:", opts: ["A. Strategi penyergapan tidak efektif", "B. Tersangka melarikan diri ke luar kota", "C. Strategi sangat efektif", "D. Penyergapan ditunda", "E. Personil kurang sigap"], ans: 0, exp: "Modus Tollens: ~Q maka ~P (Strategi penyergapan tidak efektif)." },
+        { q: "Semua personel kesatuan khusus mahir bertahan hidup di hutan. Sebagian personel kesatuan khusus adalah penembak jitu. Kesimpulan:", opts: ["A. Sebagian penembak jitu mahir bertahan hidup di hutan", "B. Semua penembak jitu adalah kesatuan khusus", "C. Tidak ada penembak jitu yang bisa bertahan hidup", "D. Semua orang mahir bertahan hidup", "E. Sebagian kesatuan khusus tidak mahir bertahan"], ans: 0, exp: "Sebagian personel kesatuan khusus yang merupakan penembak jitu dipastikan mahir bertahan hidup di hutan." },
+        { q: "Semua kendaraan operasional dilapisi baja anti peluru. Sebagian kendaraan operasional bertipe ambulans. Kesimpulan:", opts: ["A. Sebagian ambulans operasional dilapisi baja anti peluru", "B. Semua ambulans berbaja anti peluru", "C. Tidak ada ambulans berbaja", "D. Kendaraan operasional hanya truk", "E. Baja anti peluru hanya untuk ambulans"], ans: 0, exp: "Sebagian kendaraan operasional yang bertipe ambulans dipastikan dilapisi baja anti peluru." },
+
+        // --- H. PEMAHAMAN BACAAN DAN PENALARAN LOGIS (10 SOAL: 91-100) ---
+        {
+            q: "Bacaan Singkat: 'Transparansi anggaran dan akuntabilitas kinerja merupakan dua pilar krusial dalam mewujudkan tata kelola pemerintahan yang bersih dan terpercaya.'<br><br>Pertanyaan: Berdasarkan teks tersebut, simpulan yang paling valid adalah...",
+            opts: [
+                "A. Pemerintahan yang bersih dan terpercaya memerlukan transparansi dan akuntabilitas",
+                "B. Tata kelola pemerintahan tidak butuh akuntabilitas",
+                "C. Transparansi anggaran hanya berlaku untuk sektor swasta",
+                "D. Masyarakat tidak peduli pada kinerja pemerintah",
+                "E. Akuntabilitas kinerja menghambat transparansi"
+            ],
+            ans: 0,
+            exp: "Teks menyatakan transparansi dan akuntabilitas adalah dua pilar tata kelola pemerintahan yang bersih dan terpercaya."
+        },
+        {
+            q: "Bacaan Singkat: 'Digitalisasi sistem administrasi kependudukan terbukti memangkas waktu birokrasi dan meminimalisir praktik percaloan.'<br><br>Pertanyaan: Apa gagasan utama paragraf tersebut?",
+            opts: [
+                "A. Administrasi kependudukan manual lebih cepat",
+                "B. Manfaat digitalisasi administrasi dalam memangkas birokrasi dan percaloan",
+                "C. Praktik percaloan meningkat karena digitalisasi",
+                "D. Masyarakat menolak sistem digital",
+                "E. Kantor kependudukan ditutup total"
+            ],
+            ans: 1,
+            exp: "Gagasan utama mencakup dampak positif digitalisasi administrasi terhadap birokrasi dan percaloan."
+        },
+        {
+            q: "Penalaran Logis: Skor tes IQ Dani lebih tinggi daripada Eko. Skor Feri lebih rendah daripada Eko. Skor Gilang lebih tinggi daripada Dani. Siapakah yang memiliki skor IQ paling rendah?",
+            opts: ["A. Dani", "B. Eko", "C. Feri", "D. Gilang", "E. Dani dan Eko"],
+            ans: 2,
+            exp: "Urutan dari tertinggi ke terendah: Gilang > Dani > Eko > Feri. Yang paling rendah adalah Feri."
+        },
+        {
+            q: "Penalaran Logis: Lima orang perenang (P, Q, R, S, T) bertanding. P finish sebelum Q. R finish di belakang S. Q finish di depan S, namun di belakang T. Siapakah perenang yang menempati urutan pertama?",
+            opts: ["A. P", "B. Q", "C. R", "D. S", "E. T"],
+            ans: 4,
+            exp: "Urutan dari depan ke belakang: T > Q > P > S > R. Urutan pertama adalah T."
+        },
+        {
+            q: "Bacaan Singkat: 'Pengembangan infrastruktur digital di daerah terpencil menuntut sinergi kuat antara penyedia telekomunikasi dan dukungan regulasi pemerintah pusat.'<br><br>Pertanyaan: Simpulan yang paling tepat adalah...",
+            opts: [
+                "A. Infrastruktur digital di daerah terpencil butuh sinergi telekomunikasi dan regulasi",
+                "B. Daerah terpencil tidak membutuhkan internet",
+                "C. Pemerintah pusat melarang pembangunan telekomunikasi",
+                "D. Penyedia telekomunikasi bekerja sendiri tanpa aturan",
+                "E. Infrastruktur digital merusak lingkungan"
+            ],
+            ans: 0,
+            exp: "Teks menegaskan bahwa pembangunan infrastruktur di daerah terpencil membutuhkan sinergi dan dukungan regulasi."
+        },
+        {
+            q: "Penalaran Logis: Gedung A lebih tinggi daripada Gedung B. Gedung C lebih pendek daripada Gedung B, namun lebih tinggi daripada Gedung D. Gedung manakah yang paling pendek?",
+            opts: ["A. Gedung A", "B. Gedung B", "C. Gedung C", "D. Gedung D", "E. Gedung A dan C"],
+            ans: 3,
+            exp: "Urutan tinggi ke pendek: A > B > C > D. Gedung yang paling pendek adalah Gedung D."
+        },
+        {
+            q: "Bacaan Singkat: 'Pencegahan radikalisme di kalangan generasi muda memerlukan pendekatan edukatif, dialog terbuka, serta penguatan wawasan kebangsaan.'<br><br>Pertanyaan: Asumsi dasar dari paragraf tersebut adalah...",
+            opts: [
+                "A. Edukasi, dialog, dan wawasan kebangsaan efektif mencegah radikalisme bagi pemuda",
+                "B. Radikalisme tidak dapat dicegah dengan pendidikan",
+                "C. Wawasan kebangsaan hanya untuk kaum tua",
+                "D. Dialog terbuka menimbulkan perpecahan",
+                "E. Generasi muda mengabaikan nilai kebangsaan"
+            ],
+            ans: 0,
+            exp: "Asumsi paragraf adalah metode edukasi, dialog, dan wawasan kebangsaan efektif menangkal radikalisme."
+        },
+        {
+            q: "Penalaran Logis: Pos Penjagaan X berada di sebelah barat Pos Pantau Y. Pos Pantau Z berada di sebelah timur Pos Pantau Y dan sebelah selatan Pos Utama W. Di manakah posisi Pos Penjagaan X relatif terhadap Pos Utama W?",
+            opts: ["A. Barat Daya", "B. Timur Laut", "C. Tenggara", "D. Barat Laut", "E. Selatan"],
+            ans: 0,
+            exp: "Utara-selatan: Pos Utama W di utara Z (Z di selatan W). Pos Pantau Y di timur X. Pos Utama W relatif terhadap X dapat diturunkan secara geometris menjadi arah Barat Daya."
+        },
+        {
+            q: "Bacaan Singkat: 'Peningkatan investasi di sektor maritim terbukti mendongkrak pertumbuhan ekonomi daerah pesisir secara signifikan.'<br><br>Pertanyaan: Hubungan sebab-akibat yang terkandung dalam kalimat tersebut adalah...",
+            opts: [
+                "A. Pertumbuhan ekonomi menyebabkan investasi maritim",
+                "B. Peningkatan investasi maritim mendongkrak pertumbuhan ekonomi pesisir",
+                "C. Sektor maritim menghambat pertumbuhan ekonomi",
+                "D. Daerah pesisir menolak adanya investasi",
+                "E. Ekonomi pesisir tidak dipengaruhi investasi"
+            ],
+            ans: 1,
+            exp: "Sebab: Peningkatan investasi maritim. Akibat: Mendongkrak pertumbuhan ekonomi pesisir."
+        },
+        {
+            q: "Penalaran Logis: Empat orang pengawas (P, Q, R, S) duduk mengelilingi meja bujur sangkar pada empat sisi yang berbeda. P duduk berhadapan dengan Q. R duduk di sebelah kiri P. Di manakah posisi duduk S?",
+            opts: [
+                "A. Berhadapan dengan R",
+                "B. Di sebelah kanan P",
+                "C. Di sebelah kiri Q",
+                "D. Di antara P dan Q",
+                "E. Di sebelah kanan Q"
+            ],
+            ans: 0,
+            exp: "P berhadapan dengan Q. R di sebelah kiri P. Kursi tersisa yang berhadapan dengan R ditempati oleh S."
+        }
+    ];
+
+    let currentIdx = 0;
+    let userAnswers = {};
+    let timerInterval = null;
+    let timeLeft = 90 * 60; // 90 Menit
+
+    function startCAT() {
+        let nama = document.getElementById("inputNama").value.trim();
+        if (!nama) {
+            alert("Harap masukkan Nama Lengkap peserta terlebih dahulu!");
+            return;
+        }
+
+        document.getElementById("sec-start").style.display = "none";
+        document.getElementById("sec-exam").style.display = "block";
+
+        renderNavGrid();
+        renderQuestion();
+        startTimer();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById("timer").innerText = 
+                String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+            }
+        }, 1000);
+    }
+
+    function renderNavGrid() {
+        let grid = document.getElementById("navGrid");
+        grid.innerHTML = "";
+        for (let i = 0; i < questions.length; i++) {
+            let item = document.createElement("div");
+            item.className = "nav-item";
+            if (userAnswers[i] !== undefined) item.classList.add("filled");
+            if (i === currentIdx) item.classList.add("active");
+            item.innerText = i + 1;
+            item.onclick = () => {
+                currentIdx = i;
+                renderQuestion();
+                renderNavGrid();
+            };
+            grid.appendChild(item);
+        }
+    }
+
+    function renderQuestion() {
+        let qData = questions[currentIdx];
+        document.getElementById("q-no").innerText = `Soal Kecerdasan Umum #${currentIdx + 1} dari ${questions.length}`;
+        document.getElementById("q-text").innerHTML = qData.q;
+
+        let optCont = document.getElementById("q-options");
+        optCont.innerHTML = "";
+
+        qData.opts.forEach((optText, idx) => {
+            let div = document.createElement("div");
+            div.className = "opt";
+            if (userAnswers[currentIdx] === idx) div.classList.add("selected");
+            div.innerHTML = optText;
+
+            // SISTEM AUTONEXT SESUAI ACUAN
+            div.onclick = () => {
+                userAnswers[currentIdx] = idx;
+                renderNavGrid();
+                if (currentIdx < questions.length - 1) {
+                    currentIdx++;
+                    renderQuestion();
+                    renderNavGrid();
+                } else {
+                    renderQuestion();
+                }
+            };
+            optCont.appendChild(div);
+        });
+
+        document.getElementById("btn-next").innerText = (currentIdx === questions.length - 1) ? "SELESAI UJIAN" : "Selanjutnya";
+    }
+
+    function nextQuestion() {
+        if (currentIdx < questions.length - 1) {
+            currentIdx++;
+            renderQuestion();
+            renderNavGrid();
+        } else {
+            if (confirm("Apakah Anda yakin ingin mengakhiri ujian dan melihat hasil akhir?")) {
+                finishExam();
+            }
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            renderQuestion();
+            renderNavGrid();
+        }
+    }
+
+    function finishExam() {
+        clearInterval(timerInterval);
+
+        let benar = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (userAnswers[i] === questions[i].ans) {
+                benar++;
+            }
+        }
+        let finalScore = (benar / questions.length) * 100;
+
+        document.getElementById("sec-exam").style.display = "none";
+        document.getElementById("sec-result").style.display = "block";
+
+        let namaPeserta = document.getElementById("inputNama").value.trim();
+        document.getElementById("resNama").innerText = `PESERTA: ${namaPeserta.toUpperCase()}`;
+        document.getElementById("resScore").innerText = finalScore.toFixed(1);
+        document.getElementById("resDetail").innerText = `Jawaban Benar: ${benar} dari ${questions.length} Soal`;
+
+        // Kirim hasil ke Google Apps Script Master
+        sendToAppsScript(namaPeserta, finalScore, benar);
+    }
+
+    function sendToAppsScript(nama, score, benar) {
+        let payload = {
+            sessionId: "CAT-ADV-" + Date.now(),
+            namaSiswa: nama,
+            program: "KECERDASAN UMUM LEVEL SULIT",
+            namaTryout: "100 Soal HOTS Lanjutan Kecerdasan Umum",
+            tanggal: new Date().toLocaleDateString('id-ID'),
+            kecerdasan: score.toFixed(2),
+            benar: benar,
+            totalSoal: 100
+        };
+
+        fetch(APP_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).catch(err => console.error("Apps Script Error:", err));
+    }
+
+    function showReview() {
+        document.getElementById("sec-result").style.display = "none";
+        document.getElementById("sec-review").style.display = "block";
+
+        let namaPeserta = document.getElementById("inputNama").value.trim();
+        document.getElementById("reviewNamaPeserta").innerText = `PESERTA: ${namaPeserta.toUpperCase()}`;
+
+        let revCont = document.getElementById("reviewContainer");
+        revCont.innerHTML = "";
+
+        questions.forEach((q, i) => {
+            let uAns = userAnswers[i];
+            let isCorrect = (uAns === q.ans);
+
+            let div = document.createElement("div");
+            div.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
+
+            let optsHtml = q.opts.map((o, idx) => {
+                let style = "";
+                if (idx === q.ans) style = "color:green; font-weight:bold;";
+                if (idx === uAns && !isCorrect) style = "color:red; text-decoration:line-through;";
+                return `<div style="${style}">${o} ${idx === q.ans ? '✓ (Kunci)' : ''} ${idx === uAns ? '(Pilihan Anda)' : ''}</div>`;
+            }).join("");
+
+            div.innerHTML = `
+                <b>Soal #${i+1}:</b> ${q.q}
+                <div style="margin:10px 0; font-size:13px;">${optsHtml}</div>
+                <div class="pembahasan-box"><b>Pembahasan:</b> ${q.exp}</div>
+            `;
+            revCont.appendChild(div);
+        });
+    }
+
+    function showSection(sec) {
+        document.getElementById("sec-result").style.display = "none";
+        document.getElementById("sec-review").style.display = "none";
+        document.getElementById("sec-" + sec).style.display = "block";
+    }
+
+    // Fungsi Download Pembahasan ke PDF
+    function downloadReviewPDF() {
+        const { jsPDF } = window.jspdf;
+        let element = document.getElementById("reviewCaptureArea");
+        let btn = document.getElementById("btnDownloadReview");
+        btn.innerText = "⏳ MEMPROSES PDF...";
+
+        html2canvas(element, { scale: 1.2, useCORS: true }).then(canvas => {
+            let imgData = canvas.toDataURL('image/jpeg', 0.8);
+            let pdf = new jsPDF('p', 'mm', 'a4');
+            let imgWidth = 210;
+            let pageHeight = 295;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            let namaPeserta = document.getElementById("inputNama").value.trim() || "Peserta";
+            pdf.save(`Pembahasan_Kecerdasan_Umum_Sulit_${namaPeserta.replace(/\s+/g, '_')}.pdf`);
+            btn.innerText = "📥 DOWNLOAD PEMBAHASAN (PDF)";
+        }).catch(err => {
+            alert("Gagal mengunduh PDF Pembahasan.");
+            btn.innerText = "📥 DOWNLOAD PEMBAHASAN (PDF)";
+        });
+    }
+</script>
+
+</body>
+</html>
