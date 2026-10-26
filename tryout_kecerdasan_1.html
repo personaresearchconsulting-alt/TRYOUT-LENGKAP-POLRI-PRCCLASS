@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="id" oncontextmenu="return false" onselectstart="return false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CAT KECERDASAN POLRI — 100 SOAL LATIHAN TERSTRUKTUR</title>
+    
+    <!-- Fonts & Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root { 
+            --navy: #0b2340; 
+            --gold: #d4a017; 
+            --bg: #f8fafc; 
+            --gray: #f1f5f9; 
+            --danger: #c0392b; 
+            --btn-shadow: #cbd5e1; 
+        }
+        * { 
+            box-sizing: border-box; 
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; 
+        }
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 0; 
+            color: #1e293b; 
+        }
+
+        /* HEADER MASTER */
+        header { 
+            background: var(--navy); 
+            color: white; 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 4px solid var(--gold); 
+        }
+        .header-title h1 { margin: 0; font-size: 18px; color: #fff; }
+        .header-title p { margin: 3px 0 0; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .timer-badge { font-size: 20px; font-weight: bold; color: var(--gold); font-family: monospace; }
+
+        .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        /* INPUT / LOGIN SECTION */
+        .user-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .user-card input { width: 80%; max-width: 400px; padding: 12px; font-size: 16px; border: 2px solid #cbd5e1; border-radius: 8px; text-align: center; margin-top: 15px; outline: none; display: block; margin-left: auto; margin-right: auto; }
+        
+        /* OPTION CARDS */
+        .opt { padding: 14px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #fff; text-align: left; line-height: 1.5; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .opt:hover { background: #f1f5f9; border-color: var(--navy); }
+        .opt.selected { background: #e0f2fe; border-color: var(--navy); font-weight: bold; }
+
+        /* NAVIGASI SOAL GRID */
+        .nav-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 15px; }
+        .nav-item { height: 35px; display: flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .nav-item.filled { background: var(--navy); color: white; }
+        .nav-item.active { border: 2px solid var(--gold); }
+
+        /* BUTTONS */
+        .btn { background: var(--navy); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; text-align: center; display: inline-block; }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-green { background: #27ae60; color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        /* REKAP & RESULT AREA */
+        .final-box { background: var(--navy); color: #fff; padding: 25px; border-radius: 16px; text-align: center; margin-bottom: 25px; }
+        .final-val { font-size: 56px; font-weight: 900; color: var(--gold); margin: 10px 0; }
+
+        /* PEMBAHASAN CONTAINER */
+        .review-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .review-item.correct { border-left: 6px solid #27ae60; }
+        .review-item.incorrect { border-left: 6px solid var(--danger); }
+        .pembahasan-box { background: #f1f5f9; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; border-left: 3px solid var(--gold); line-height: 1.6; }
+
+        /* VISUAL ELEMENTS & TABLES */
+        .math-table { border-collapse: collapse; margin: 15px auto; }
+        .math-table td { border: 2px solid var(--navy); width: 50px; height: 50px; text-align: center; font-size: 18px; font-weight: bold; }
+        .svg-container { text-align: center; margin: 10px 0; }
+        .svg-opt-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
+        .svg-opt-card { border: 2px solid #e2e8f0; border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; background: #fff; }
+        .svg-opt-card:hover { border-color: var(--navy); background: #f8fafc; }
+        .svg-opt-card.selected { border-color: var(--navy); background: #e0f2fe; font-weight: bold; }
+
+        /* REKAP TABLE SUBTES */
+        .subtest-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 25px; font-size: 13px; }
+        .subtest-table th, .subtest-table td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; }
+        .subtest-table th { background: var(--navy); color: white; }
+        .subtest-table tr:nth-child(even) { background: #f8fafc; }
+    </style>
+</head>
+<body>
+
+<div id="captureArea">
+    <!-- MASTER HEADER -->
+    <header id="masterHeader">
+        <div class="header-title">
+            <h1 id="headerMainTitle">CAT KECERDASAN POLRI</h1>
+            <p id="headerSubTitle">100 SOAL LATIHAN TERSTRUKTUR & HOTS</p>
+        </div>
+        <div id="timer" class="timer-badge">90:00</div>
+    </header>
+
+    <div class="container">
+        <!-- SECTION 1: START / IDENTITAS -->
+        <div id="sec-start" class="user-card">
+            <h2 style="margin:0; color:var(--navy);">IDENTITAS PESERTA TES KECERDASAN</h2>
+            <p style="font-size:14px; color:#64748b; margin-top:5px;">Simulasi CAT Kecerdasan Seleksi Polri — 100 Soal Terstruktur & Validated</p>
+            <input type="text" id="inputNama" placeholder="Masukkan Nama Lengkap Peserta..." autocomplete="off">
+            <br>
+            <button class="btn btn-gold" style="font-size: 18px; padding: 15px 40px;" onclick="startFullSimulation()">MULAI TES KECERDASAN</button>
+        </div>
+
+        <!-- SECTION 2: TES KECERDASAN -->
+        <div id="sec-kecerdasan" style="display:none;">
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                <div style="flex:3; min-width:300px;">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <div id="k-q-no" style="font-weight:bold; color:var(--navy);">Soal 1 dari 100</div>
+                            <span id="k-q-cat" style="background:#e0f2fe; color:var(--navy); padding:3px 8px; border-radius:4px; font-size:11px; font-weight:bold;">Kategori</span>
+                        </div>
+                        <div id="k-q-text" style="font-size:15px; line-height:1.6; margin-bottom:20px;"></div>
+                        <div id="k-options"></div>
+                        <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center;">
+                            <button class="btn" onclick="prevQ_Kecerdasan()" style="background:#64748b">Sebelumnya</button>
+                            <button class="btn btn-danger" onclick="confirmFinishKecerdasan()">Selesai & Kirim</button>
+                            <button class="btn" id="k-btn-next" onclick="nextQ_Kecerdasan()">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:250px;">
+                    <div class="card" style="padding:15px;">
+                        <div style="text-align:center; font-size:12px; font-weight:bold; margin-bottom:10px;">NAVIGASI SOAL</div>
+                        <div id="k-navGrid" class="nav-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: HASIL / REKAP AKHIR -->
+        <div id="sec-result" style="display:none;">
+            <div class="card">
+                <div style="text-align:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    <h2 style="margin:0; color:var(--navy);">LAPORAN HASIL TES KECERDASAN POLRI</h2>
+                    <p style="margin:5px 0 0; color:var(--gold); font-weight:bold;">CAT KECERDASAN POLRI — 100 SOAL LATIHAN TERSTRUKTUR</p>
+                </div>
+
+                <div id="resNamaPeserta" style="background:#eef6ff; padding:15px; border-radius:12px; margin-bottom:25px; font-weight:bold; font-size:18px; color:var(--navy); text-align:center;">
+                    NAMA PESERTA: -
+                </div>
+
+                <div class="final-box">
+                    <div>NILAI AKHIR KECERDASAN</div>
+                    <div class="final-val" id="resValKecerdasan">0</div>
+                    <div style="font-size: 14px; opacity: 0.9;" id="resDetailKecerdasan">Jawaban Benar: 0 / 100 Soal</div>
+                </div>
+
+                <h3 style="color:var(--navy); margin-bottom:10px;">Rincian Per-Subtes / Kategori</h3>
+                <div id="resSubtestTable"></div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+                    <button class="btn btn-gold" style="flex:1; padding:15px;" onclick="showReviewSection()">📖 LIHAT PEMBAHASAN DETIL SOAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: PEMBAHASAN / REVIEW -->
+        <div id="sec-review" style="display:none;">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    <h2 style="margin:0; color:var(--navy);">PEMBAHASAN SOAL LENGKAP</h2>
+                    <div>
+                        <button class="btn btn-green" style="margin-right:10px;" onclick="downloadPembahasanPDF()">📥 Download Pembahasan PDF</button>
+                        <button class="btn" onclick="showSection('result')">Kembali ke Hasil</button>
+                    </div>
+                </div>
+                
+                <div id="reviewCaptureArea">
+                    <div style="text-align:center; margin-bottom:20px; border-bottom:2px solid var(--navy); padding-bottom:10px;">
+                        <h3 style="margin:0; color:var(--navy);">DOKUMEN PEMBAHASAN DETIL TES KECERDASAN POLRI</h3>
+                        <p id="reviewNamaPeserta" style="margin:5px 0 0; color:var(--gold); font-weight:bold;">PESERTA: -</p>
+                    </div>
+
+                    <div id="reviewContainerKecerdasan"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Integrasi Google Apps Script
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
+
+    let currentSection = "start";
+    let pName = "";
+    let currentSessionId = "";
+    let sessionStartTimeStr = "";
+    let sessionStartTimeMs = 0;
+
+    let timerInterval = null;
+    let timerLeft = 5400; // 90 Menit
+
+    let simulationResult = {
+        kecerdasan: { userAns: {}, benar: 0, skor: 0 }
+    };
+
+    let isResultSubmitted = false;
+
+    function formatTimeObj(dateObj) {
+        let h = String(dateObj.getHours()).padStart(2, '0');
+        let m = String(dateObj.getMinutes()).padStart(2, '0');
+        let s = String(dateObj.getSeconds()).padStart(2, '0');
+        return h + ":" + m + ":" + s;
+    }
+
+    function initSessionOnStart(namaPeserta) {
+        pName = namaPeserta;
+        let existingSession = sessionStorage.getItem("prc_session_id");
+        let existingStartStr = sessionStorage.getItem("prc_start_time_str");
+        let existingStartMs = sessionStorage.getItem("prc_start_time_ms");
+
+        if (!existingSession || !existingStartStr) {
+            let counterKey = "prc_counter_default";
+            let lastNum = parseInt(localStorage.getItem(counterKey) || "0", 10) + 1;
+            localStorage.setItem(counterKey, lastNum);
+            let formattedNum = String(lastNum).padStart(2, '0');
+            
+            currentSessionId = "POLRI-" + formattedNum;
+            
+            let startDate = new Date();
+            sessionStartTimeMs = startDate.getTime();
+            sessionStartTimeStr = formatTimeObj(startDate);
+
+            sessionStorage.setItem("prc_session_id", currentSessionId);
+            sessionStorage.setItem("prc_start_time_str", sessionStartTimeStr);
+            sessionStorage.setItem("prc_start_time_ms", sessionStartTimeMs);
+        } else {
+            currentSessionId = existingSession;
+            sessionStartTimeStr = existingStartStr;
+            sessionStartTimeMs = parseInt(existingStartMs, 10);
+        }
+    }
+
+    // -------------------------------------------------------------
+    // BANK 100 SOAL KECERDASAN TERSTRUKTUR POLRI (Q001 - Q100)
+    // -------------------------------------------------------------
+    const rawKecerdasan = [
+        // --- 1. VERBAL: SINONIM (8 SOAL) ---
+        { id: "Q001", cat: "Verbal — Sinonim", diff: "Mudah", q: "PRESISI =", opts: ["Ketepatan", "Kecepatan", "Keagungan", "Kekuatan", "Kejelasan"], ans: 0, exp: "<b>Jawaban Benar: A (Ketepatan)</b><br><b>Konsep:</b> Sinonim (Persamaan Makna Kata).<br><b>Analisis:</b> Kata 'Presisi' bermakna tingkat ketepatan, keakuratan, atau keteledoran yang sangat kecil.<br><b>Strategi:</b> Cari kata yang menunjukkan kecermatan atau ketepatan ukur." },
+        { id: "Q002", cat: "Verbal — Sinonim", diff: "Mudah", q: "VIGILANSI =", opts: ["Kebebasan", "Kewaspadaan", "Kecepatan", "Keberanian", "Kecerdasan"], ans: 1, exp: "<b>Jawaban Benar: B (Kewaspadaan)</b><br><b>Konsep:</b> Kewaspadaan/Kesiapsiagaan.<br><b>Analisis:</b> 'Vigilansi' bermakna sikap wawas diri, kesiapsiagaan, atau kewaspadaan penuh terhadap risiko.<br><b>Strategi:</b> Istilah ini sering digunakan dalam konteks intelijen dan keamanan." },
+        { id: "Q003", cat: "Verbal — Sinonim", diff: "Sedang", q: "RESTITUSI =", opts: ["Pengurangan", "Pemberian", "Ganti Rugi", "Pembatalan", "Pencabutan"], ans: 2, exp: "<b>Jawaban Benar: C (Ganti Rugi)</b><br><b>Konsep:</b> Istilah Hukum.<br><b>Analisis:</b> 'Restitusi' adalah pembayaran ganti kerugian yang dibebankan kepada pelaku kejahatan kepada korban.<br><b>Strategi:</b> Kaitkan dengan hukum pidana dan perlindungan korban." },
+        { id: "Q004", cat: "Verbal — Sinonim", diff: "Sedang", q: "KOLABORASI =", opts: ["Persaingan", "Pembagian", "Pemisahan", "Kerja Sama", "Penafsiran"], ans: 3, exp: "<b>Jawaban Benar: D (Kerja Sama)</b><br><b>Konsep:</b> Hubungan Kerja.<br><b>Analisis:</b> 'Kolaborasi' berarti bentuk kerja sama atau gabungan usaha untuk mencapai tujuan bersama." },
+        { id: "Q005", cat: "Verbal — Sinonim", diff: "Sulit", q: "INSINUASI =", opts: ["Sanjungan", "Tuduhan", "Sindiran", "Pujian", "Dorongan"], ans: 2, exp: "<b>Jawaban Benar: C (Sindiran)</b><br><b>Konsep:</b> Kosakata Formal/Abstrak.<br><b>Analisis:</b> 'Insinuasi' adalah tuduhan tersembunyi, sindiran, atau kiasan yang tidak terang-terangan." },
+        { id: "Q006", cat: "Verbal — Sinonim", diff: "Mudah", q: "IMPLEMENTASI =", opts: ["Pelaksanaan", "Perencanaan", "Pengawasan", "Penetapan", "Penyusunan"], ans: 0, exp: "<b>Jawaban Benar: A (Pelaksanaan)</b><br><b>Konsep:</b> Manajemen Organisasi.<br><b>Analisis:</b> 'Implementasi' adalah pelaksanaan atau penerapan nyata dari suatu rencana/kebijakan." },
+        { id: "Q007", cat: "Verbal — Sinonim", diff: "Sedang", q: "KONSISTENSI =", opts: ["Perubahan", "Ketaatan Asas", "Kecepatan", "Keberanian", "Keluwesan"], ans: 1, exp: "<b>Jawaban Benar: B (Ketaatan Asas)</b><br><b>Konsep:</b> Sikap & Perilaku.<br><b>Analisis:</b> 'Konsistensi' bermakna ketetapan, selaras, dan ketaatan asas dalam bertindak." },
+        { id: "Q008", cat: "Verbal — Sinonim", diff: "Sulit", q: "EVOKASI =", opts: ["Penghentian", "Pencegahan", "Penggugah Rasa", "Penetapan", "Pengarsipan"], ans: 2, exp: "<b>Jawaban Benar: C (Penggugah Rasa)</b><br><b>Konsep:</b> Kosakata Sastra/Psikologi.<br><b>Analisis:</b> 'Evokasi' bermakna daya yang memunculkan atau menggugah rasa, ingatan, atau emosi." },
+
+        // --- 2. VERBAL: ANTONIM (8 SOAL) ---
+        { id: "Q009", cat: "Verbal — Antonim", diff: "Mudah", q: "PROGRES ><", opts: ["Agres", "Kongres", "Transgres", "Regres", "Ingres"], ans: 3, exp: "<b>Jawaban Benar: D (Regres)</b><br><b>Konsep:</b> Antonim (Lawan Kata).<br><b>Analisis:</b> Progres bermakna kemajuan, sedangkan Regres bermakna kemunduran." },
+        { id: "Q010", cat: "Verbal — Antonim", diff: "Mudah", q: "STATIS ><", opts: ["Dinamis", "Pasif", "Tetap", "Labil", "Kritis"], ans: 0, exp: "<b>Jawaban Benar: A (Dinamis)</b><br><b>Konsep:</b> Pergerakan.<br><b>Analisis:</b> Statis bermakna diam/tidak bergerak, lawan katanya adalah Dinamis (aktif bergerak)." },
+        { id: "Q011", cat: "Verbal — Antonim", diff: "Sedang", q: "SKEPTIS ><", opts: ["Ragu", "Yakin", "Curiga", "Pesimis", "Apatis"], ans: 1, exp: "<b>Jawaban Benar: B (Yakin)</b><br><b>Konsep:</b> Pendirian.<br><b>Analisis:</b> Skeptis bermakna ragu-ragu atau kurang percaya, lawan katanya adalah Yakin." },
+        { id: "Q012", cat: "Verbal — Antonim", diff: "Sedang", q: "EKSPLISIT ><", opts: ["Jelas", "Tegas", "Implisit", "Terbuka", "Nyata"], ans: 2, exp: "<b>Jawaban Benar: C (Implisit)</b><br><b>Konsep:</b> Makna Pernyataan.<br><b>Analisis:</b> Eksplisit bermakna tersurat/jelas, sedangkan Implisit bermakna tersirat/tersembunyi." },
+        { id: "Q013", cat: "Verbal — Antonim", diff: "Sulit", q: "VERIFIKASI ><", opts: ["Validasi", "Konfirmasi", "Pemeriksaan", "Falsifikasi", "Pengujian"], ans: 3, exp: "<b>Jawaban Benar: D (Falsifikasi)</b><br><b>Konsep:</b> Logika Ilmiah.<br><b>Analisis:</b> Verifikasi adalah pembuktian kebenaran, sedangkan Falsifikasi adalah pembuktian kesalahan." },
+        { id: "Q014", cat: "Verbal — Antonim", diff: "Sedang", q: "DIVERGEN ><", opts: ["Menyebar", "Meluas", "Berbeda", "Terpisah", "Konvergen"], ans: 4, exp: "<b>Jawaban Benar: E (Konvergen)</b><br><b>Konsep:</b> Pola Arah.<br><b>Analisis:</b> Divergen bermakna menyebar/bercabang, sedangkan Konvergen bermakna memusat/mengumpul." },
+        { id: "Q015", cat: "Verbal — Antonim", diff: "Sulit", q: "KOHESIF ><", opts: ["Renggang", "Solid", "Kuat", "Padu", "Melekat"], ans: 0, exp: "<b>Jawaban Benar: A (Renggang)</b><br><b>Konsep:</b> Kerapatan.<br><b>Analisis:</b> Kohasif bermakna melekat/padu/solid, lawan katanya adalah Renggang/Terpisah." },
+        { id: "Q016", cat: "Verbal — Antonim", diff: "Mudah", q: "MODERAT ><", opts: ["Seimbang", "Ekstrem", "Wajar", "Tengah", "Biasa"], ans: 1, exp: "<b>Jawaban Benar: B (Ekstrem)</b><br><b>Konsep:</b> Sikap/Pendapat.<br><b>Analisis:</b> Moderat bermakna seimbang/tidak berlebihan, lawan katanya adalah Ekstrem." },
+
+        // --- 3. VERBAL: ANALOGI KATA (8 SOAL) ---
+        { id: "Q017", cat: "Verbal — Analogi Kata", diff: "Mudah", q: "KAMERA : LENSA = TELESKOP : ...", opts: ["Cermin", "Okuler", "Bintang", "Langit", "Fokus"], ans: 1, exp: "<b>Jawaban Benar: B (Okuler)</b><br><b>Hubungan:</b> Alat dan Komponen Utama Pembesar Gambar.<br><b>Analisis:</b> Kamera menggunakan lensa, teleskop menggunakan lensa okuler." },
+        { id: "Q018", cat: "Verbal — Analogi Kata", diff: "Mudah", q: "PENA : MENULIS = KUAS : ...", opts: ["Melukis", "Mewarnai", "Dinding", "Kanvas", "Tinta"], ans: 0, exp: "<b>Jawaban Benar: A (Melukis)</b><br><b>Hubungan:</b> Alat dan Fungsi Utama.<br><b>Analisis:</b> Pena berfungsi untuk menulis, kuas berfungsi untuk melukis." },
+        { id: "Q019", cat: "Verbal — Analogi Kata", diff: "Sedang", q: "POLISI : KETERTIBAN = HAKIM : ...", opts: ["Hukum", "Keadilan", "Vonis", "Sidang", "Pengacara"], ans: 1, exp: "<b>Jawaban Benar: B (Keadilan)</b><br><b>Hubungan:</b> Profesi dan Tujuan Utama Tugas.<br><b>Analisis:</b> Polisi bertugas menjaga ketertiban, Hakim bertugas menegakkan keadilan." },
+        { id: "Q020", cat: "Verbal — Analogi Kata", diff: "Sedang", q: "RADAR : GELOMBANG = SONAR : ...", opts: ["Cahaya", "Air", "Bunyi", "Kapal", "Laut"], ans: 2, exp: "<b>Jawaban Benar: C (Bunyi)</b><br><b>Hubungan:</b> Alat Deteksi dan Media Gelombang.<br><b>Analisis:</b> Radar memakai gelombang radio/elektromagnetik, Sonar memakai gelombang bunyi." },
+        { id: "Q021", cat: "Verbal — Analogi Kata", diff: "Sedang", q: "PANCASILA : IDEOLOGI = UUD 1945 : ...", opts: ["Hukum", "Peraturan", "Pedoman", "Konstitusi", "Dasar"], ans: 3, exp: "<b>Jawaban Benar: D (Konstitusi)</b><br><b>Hubungan:</b> Naskah Kebernegaraan dan Kedudukan Hukum.<br><b>Analisis:</b> Pancasila adalah ideologi negara, UUD 1945 adalah konstitusi negara." },
+        { id: "Q022", cat: "Verbal — Analogi Kata", diff: "Sulit", q: "ISLANDIA : REYKJAVIK = FINLANDIA : ...", opts: ["Oslo", "Stockholm", "Kopenhagen", "Amsterdam", "Helsinki"], ans: 4, exp: "<b>Jawaban Benar: E (Helsinki)</b><br><b>Hubungan:</b> Negara dan Ibu Kota.<br><b>Analisis:</b> Ibu kota Islandia adalah Reykjavik, ibu kota Finlandia adalah Helsinki." },
+        { id: "Q023", cat: "Verbal — Analogi Kata", diff: "Sulit", q: "TERMODINAMIKA : FISIKA = BOTANI : ...", opts: ["Biologi", "Kimia", "Geologi", "Astronomi", "Ekologi"], ans: 0, exp: "<b>Jawaban Benar: A (Biologi)</b><br><b>Hubungan:</b> Cabang Ilmu dan Induk Ilmu.<br><b>Analisis:</b> Termodinamika cabang Fisika, Botani cabang Biologi." },
+        { id: "Q024", cat: "Verbal — Analogi Kata", diff: "Sedang", q: "SUTRADARA : FILM = COMPOSER : ...", opts: ["Lagu", "Musik", "Partitur", "Orkestra", "Penyanyi"], ans: 1, exp: "<b>Jawaban Benar: B (Musik)</b><br><b>Hubungan:</b> Pencipta/Pengarah dan Karya Utama.<br><b>Analisis:</b> Sutradara menghasilkan film, Composer menghasilkan karya musik." },
+
+        // --- 4. PENGELOMPOKAN KATA (6 SOAL) ---
+        { id: "Q025", cat: "Pengelompokan Kata", diff: "Mudah", q: "Manakah kata yang TIDAK TERMASUK dalam kelompoknya?", opts: ["Melati", "Mawar", "Anggrek", "Bayam", "Tulip"], ans: 3, exp: "<b>Jawaban Benar: D (Bayam)</b><br><b>Kriteria:</b> Klasifikasi Tanaman.<br><b>Analisis:</b> Melati, Mawar, Anggrek, dan Tulip adalah tanaman bunga/hias. Bayam adalah tanaman sayuran." },
+        { id: "Q026", cat: "Pengelompokan Kata", diff: "Sedang", q: "Pilihlah kata yang keluar dari kelompok kriteria berikut:", opts: ["Brimob", "Reskrim", "Sabhara", "Koramil", "Lantas"], ans: 3, exp: "<b>Jawaban Benar: D (Koramil)</b><br><b>Kriteria:</b> Satuan Kerja Kepolisian (Polri).<br><b>Analisis:</b> Brimob, Reskrim, Sabhara, dan Lantas adalah fungsi/satuan Polri. Koramil adalah satuan TNI-AD." },
+        { id: "Q027", cat: "Pengelompokan Kata", diff: "Sedang", q: "Manakah opsi yang memiliki kriteria klasifikasi berbeda?", opts: ["Kiloan", "Meteran", "Termometer", "Timbangan", "Penggaris"], ans: 0, exp: "<b>Jawaban Benar: A (Kiloan)</b><br><b>Kriteria:</b> Alat Ukur vs Satuan/Istilah.<br><b>Analisis:</b> Meteran, Termometer, Timbangan, Penggaris adalah nama alat ukur fisik. Kiloan adalah sebutan satuan/sistem." },
+        { id: "Q028", cat: "Pengelompokan Kata", diff: "Sulit", q: "Manakah kata yang TIDAK sekelompok berdasarkan fungsi?", opts: ["Monitor", "Printer", "Speaker", "Proyektor", "Keyboard"], ans: 4, exp: "<b>Jawaban Benar: E (Keyboard)</b><br><b>Kriteria:</b> Perangkat Periferal Komputer.<br><b>Analisis:</b> Monitor, Printer, Speaker, Proyektor adalah perangkat output. Keyboard adalah perangkat input." },
+        { id: "Q029", cat: "Pengelompokan Kata", diff: "Sedang", q: "Pilihlah kata yang tidak memiliki hubungan kualifikasi kelompok:", opts: ["Pancasila", "UUD 1945", "NKRI", "Bhinneka Tunggal Ika", "KUA"], ans: 4, exp: "<b>Jawaban Benar: E (KUA)</b><br><b>Kriteria:</b> Empat Konsensus Dasar Bangsa Indonesia.<br><b>Analisis:</b> Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika adalah 4 Pilar Bangsa. KUA adalah Kantor Urusan Agama." },
+        { id: "Q030", cat: "Pengelompokan Kata", diff: "Mudah", q: "Manakah kata yang tidak termasuk kelompoknya?", opts: ["Harimau", "Singa", "Serigala", "Sapi", "Macan Tutul"], ans: 3, exp: "<b>Jawaban Benar: D (Sapi)</b><br><b>Kriteria:</b> Jenis Makanan / Pemangsa.<br><b>Analisis:</b> Harimau, Singa, Serigala, dan Macan Tutul adalah Karnivora (pemangsa). Sapi adalah Herbivora." },
+
+        // --- 5. NUMERIK: DERET ANGKA (10 SOAL) ---
+        { id: "Q031", cat: "Numerik — Deret Angka", diff: "Mudah", q: "2, 4, 8, 16, 32, ...", opts: ["48", "50", "60", "64", "128"], ans: 3, exp: "<b>Jawaban Benar: D (64)</b><br><b>Pola Matematis:</b> Perkalian 2 beruntun (×2).<br><b>Analisis:</b> 32 × 2 = 64." },
+        { id: "Q032", cat: "Numerik — Deret Angka", diff: "Mudah", q: "1, 4, 9, 16, 25, ...", opts: ["30", "32", "36", "40", "49"], ans: 2, exp: "<b>Jawaban Benar: C (36)</b><br><b>Pola Matematis:</b> Bilangan Kuadrat (1², 2², 3², 4², 5², 6²).<br><b>Analisis:</b> 6² = 36." },
+        { id: "Q033", cat: "Numerik — Deret Angka", diff: "Sedang", q: "3, 6, 11, 18, 27, ...", opts: ["35", "36", "38", "40", "42"], ans: 2, exp: "<b>Jawaban Benar: C (38)</b><br><b>Pola Bertingkat:</b> Beda bertambah bilangan ganjil (+3, +5, +7, +9, +11).<br><b>Analisis:</b> 27 + 11 = 38." },
+        { id: "Q034", cat: "Numerik — Deret Angka", diff: "Sedang", q: "100, 95, 85, 70, 50, ...", opts: ["15", "20", "25", "30", "35"], ans: 2, exp: "<b>Jawaban Benar: C (25)</b><br><b>Pola Pengurangan:</b> -5, -10, -15, -20, -25.<br><b>Analisis:</b> 50 - 25 = 25." },
+        { id: "Q035", cat: "Numerik — Deret Angka", diff: "Sedang", q: "2, 3, 5, 8, 13, 21, ...", opts: ["28", "30", "32", "34", "35"], ans: 3, exp: "<b>Jawaban Benar: D (34)</b><br><b>Pola Fibonacci:</b> Penjumlahan dua suku sebelumnya.<br><b>Analisis:</b> 13 + 21 = 34." },
+        { id: "Q036", cat: "Numerik — Deret Angka", diff: "Sedang", q: "81, 27, 9, 3, ...", opts: ["1", "0", "1/3", "2", "1.5"], ans: 0, exp: "<b>Jawaban Benar: A (1)</b><br><b>Pola Pembagian:</b> Pembagian 3 konsisten (÷3).<br><b>Analisis:</b> 3 ÷ 3 = 1." },
+        { id: "Q037", cat: "Numerik — Deret Angka", diff: "Sulit", q: "4, 8, 12, 24, 28, ...", opts: ["32", "36", "52", "56", "60"], ans: 3, exp: "<b>Jawaban Benar: D (56)</b><br><b>Pola Selang-Seling Operasi:</b> ×2, +4, ×2, +4, ×2.<br><b>Analisis:</b> 28 × 2 = 56." },
+        { id: "Q038", cat: "Numerik — Deret Angka", diff: "Sulit", q: "7, 12, 22, 42, 82, ...", opts: ["122", "142", "152", "162", "172"], ans: 3, exp: "<b>Jawaban Benar: D (162)</b><br><b>Pola Beda Geometri:</b> Beda +5, +10, +20, +40, +80.<br><b>Analisis:</b> 82 + 80 = 162." },
+        { id: "Q039", cat: "Numerik — Deret Angka", diff: "Sulit", q: "1, 2, 6, 24, 120, ...", opts: ["480", "500", "600", "720", "840"], ans: 3, exp: "<b>Jawaban Benar: D (720)</b><br><b>Pola Faktorial:</b> ×2, ×3, ×4, ×5, ×6.<br><b>Analisis:</b> 120 × 6 = 720." },
+        { id: "Q040", cat: "Numerik — Deret Angka", diff: "Sedang", q: "5, 10, 15, 20, 25, ...", opts: ["28", "30", "32", "35", "40"], ans: 1, exp: "<b>Jawaban Benar: B (30)</b><br><b>Pola Aritmetika:</b> Penambahan 5 (+5).<br><b>Analisis:</b> 25 + 5 = 30." },
+
+        // --- 6. MATEMATIKA BERPOLA (8 SOAL) ---
+        { 
+            id: "Q041", cat: "Matematika Berpola", diff: "Sedang", 
+            q: "Perhatikan tabel matriks angka berikut:<br><table class='math-table'><tr><td>4</td><td>7</td><td>11</td></tr><tr><td>5</td><td>8</td><td>13</td></tr><tr><td>6</td><td>9</td><td>?</td></tr></table>Berapakah nilai untuk menggantikan tanda tanya (?)", 
+            opts: ["14", "15", "16", "17", "18"], ans: 1, 
+            exp: "<b>Jawaban Benar: B (15)</b><br><b>Pola Operasi:</b> Kolom 1 + Kolom 2 = Kolom 3.<br><b>Langkah:</b> Baris 1: 4 + 7 = 11. Baris 2: 5 + 8 = 13. Baris 3: 6 + 9 = 15." 
+        },
+        { 
+            id: "Q042", cat: "Matematika Berpola", diff: "Sedang", 
+            q: "Perhatikan tabel matriks angka berikut:<br><table class='math-table'><tr><td>3</td><td>4</td><td>12</td></tr><tr><td>5</td><td>6</td><td>30</td></tr><tr><td>7</td><td>8</td><td>?</td></tr></table>Berapakah nilai angka pada tanda tanya (?)", 
+            opts: ["50", "52", "54", "56", "58"], ans: 3, 
+            exp: "<b>Jawaban Benar: D (56)</b><br><b>Pola Operasi:</b> Kolom 1 × Kolom 2 = Kolom 3.<br><b>Langkah:</b> 7 × 8 = 56." 
+        },
+        { 
+            id: "Q043", cat: "Matematika Berpola", diff: "Sulit", 
+            q: "Perhatikan pola matriks 2 × 2 berikut:<br><table class='math-table'><tr><td>8</td><td>2</td></tr><tr><td>5</td><td>20</td></tr></table>Pola tersebut konsisten dengan matriks berikut:<br><table class='math-table'><tr><td>9</td><td>3</td></tr><tr><td>4</td><td>?</td></tr></table>Berapakah nilai (?) yang tepat?", 
+            opts: ["10", "12", "14", "15", "18"], ans: 1, 
+            exp: "<b>Jawaban Benar: B (12)</b><br><b>Pola Operasi:</b> (Kiri Atas ÷ Kanan Atas) × Kiri Bawah = Kanan Bawah.<br><b>Langkah:</b> Matriks 1: (8 ÷ 2) × 5 = 4 × 5 = 20. Matriks 2: (9 ÷ 3) × 4 = 3 × 4 = 12." 
+        },
+        { 
+            id: "Q044", cat: "Matematika Berpola", diff: "Sulit", 
+            q: "Perhatikan susunan angka berpola berikut:<br><table class='math-table'><tr><td>15</td><td>5</td><td>3</td></tr><tr><td>24</td><td>6</td><td>4</td></tr><tr><td>35</td><td>7</td><td>?</td></tr></table>Berapakah angka yang tepat untuk (?)", 
+            opts: ["3", "4", "5", "6", "7"], ans: 2, 
+            exp: "<b>Jawaban Benar: C (5)</b><br><b>Pola Operasi:</b> Kolom 1 ÷ Kolom 2 = Kolom 3.<br><b>Langkah:</b> 35 ÷ 7 = 5." 
+        },
+        { 
+            id: "Q045", cat: "Matematika Berpola", diff: "Sedang", 
+            q: "Perhatikan tabel operasi berikut:<br><table class='math-table'><tr><td>2</td><td>3</td><td>13</td></tr><tr><td>4</td><td>1</td><td>17</td></tr><tr><td>5</td><td>2</td><td>?</td></tr></table>Berapakah nilai (?)", 
+            opts: ["25", "27", "29", "31", "33"], ans: 2, 
+            exp: "<b>Jawaban Benar: C (29)</b><br><b>Pola Operasi:</b> (Kolom 1)² + (Kolom 2)² = Kolom 3.<br><b>Langkah:</b> 5² + 2² = 25 + 4 = 29." 
+        },
+        { 
+            id: "Q046", cat: "Matematika Berpola", diff: "Sulit", 
+            q: "Perhatikan susunan angka dalam tabel:<br><table class='math-table'><tr><td>10</td><td>4</td><td>12</td></tr><tr><td>14</td><td>6</td><td>16</td></tr><tr><td>18</td><td>8</td><td>?</td></tr></table>Berapakah nilai (?)", 
+            opts: ["18", "20", "22", "24", "26"], ans: 1, 
+            exp: "<b>Jawaban Benar: B (20)</b><br><b>Pola Operasi:</b> Kolom 3 = (Kolom 1 + Kolom 2) - 2.<br><b>Langkah:</b> (10+4)-2=12, (14+6)-2=16. Maka (18+8)-2 = 26 - 6 = 20." 
+        },
+        { 
+            id: "Q047", cat: "Matematika Berpola", diff: "Sulit", 
+            q: "Perhatikan hubungan angka berikut:<br><table class='math-table'><tr><td>6</td><td>3</td><td>9</td></tr><tr><td>10</td><td>2</td><td>25</td></tr><tr><td>12</td><td>4</td><td>?</td></tr></table>Berapakah nilai (?)", 
+            opts: ["20", "25", "27", "30", "36"], ans: 2, 
+            exp: "<b>Jawaban Benar: C (27)</b><br><b>Pola Operasi:</b> (Kolom 1 ÷ Kolom 2)³ = Kolom 3.<br><b>Langkah:</b> (6 ÷ 3)² = 9, (10 ÷ 2)² = 25, (12 ÷ 4)³ = 3³ = 27." 
+        },
+        { 
+            id: "Q048", cat: "Matematika Berpola", diff: "Sedang", 
+            q: "Perhatikan matriks angka:<br><table class='math-table'><tr><td>7</td><td>2</td><td>14</td></tr><tr><td>9</td><td>3</td><td>27</td></tr><tr><td>11</td><td>4</td><td>?</td></tr></table>Berapakah nilai (?)", 
+            opts: ["38", "40", "42", "44", "46"], ans: 3, 
+            exp: "<b>Jawaban Benar: D (44)</b><br><b>Pola Operasi:</b> Kolom 1 × Kolom 2 = Kolom 3.<br><b>Langkah:</b> 11 × 4 = 44." 
+        },
+
+        // --- 7. NUMERIK: SOAL CERITA MATEMATIKA (8 SOAL) ---
+        { id: "Q049", cat: "Numerik — Soal Cerita", diff: "Mudah", q: "Sebuah mobil patroli menempuh jarak 180 km dengan kecepatan rata-rata 60 km/jam. Berapa lama waktu yang dibutuhkan?", opts: ["2.5 Jam", "3.5 Jam", "4 Jam", "3 Jam", "2 Jam"], ans: 3, exp: "<b>Jawaban Benar: D (3 Jam)</b><br><b>Rumus:</b> Waktu = Jarak ÷ Kecepatan.<br><b>Perhitungan:</b> 180 km ÷ 60 km/jam = 3 jam." },
+        { id: "Q050", cat: "Numerik — Soal Cerita", diff: "Sedang", q: "Lima orang pekerja dapat menyelesaikan pengecatan pos pengamanan dalam waktu 6 hari. Berapa hari yang dibutuhkan jika dikerjakan oleh 10 orang?", opts: ["2 Hari", "2.5 Hari", "4 Hari", "5 Hari", "3 Hari"], ans: 4, exp: "<b>Jawaban Benar: E (3 Hari)</b><br><b>Rumus Perbandingan Berbalik Nilai:</b> Pekerja1 × Hari1 = Pekerja2 × Hari2.<br><b>Perhitungan:</b> 5 × 6 = 10 × H2 ➔ 30 = 10 H2 ➔ H2 = 3 hari." },
+        { id: "Q051", cat: "Numerik — Soal Cerita", diff: "Sedang", q: "Harga sebuah Alat Komunikasi (HT) setelah mendapat diskon 20% adalah Rp 800.000. Berapakah harga awal HT tersebut sebelum diskon?", opts: ["Rp 1.000.000", "Rp 960.000", "Rp 1.100.000", "Rp 900.000", "Rp 1.200.000"], ans: 0, exp: "<b>Jawaban Benar: A (Rp 1.000.000)</b><br><b>Rumus Persentase:</b> Harga Awal = Harga Akhir ÷ (1 - %Diskon).<br><b>Perhitungan:</b> 800.000 ÷ 0.8 = Rp 1.000.000." },
+        { id: "Q052", cat: "Numerik — Soal Cerita", diff: "Mudah", q: "Rasio jumlah personel Pria dan Wanita di sebuah polsek adalah 7 : 3. Jika jumlah total personel adalah 50 orang, berapa jumlah personel Wanita?", opts: ["35 Orang", "15 Orang", "20 Orang", "25 Orang", "10 Orang"], ans: 1, exp: "<b>Jawaban Benar: B (15 Orang)</b><br><b>Rumus Rasio:</b> Wanita = (Rasio Wanita ÷ Total Rasio) × Total Personel.<br><b>Perhitungan:</b> (3 ÷ 10) × 50 = 15 orang." },
+        { id: "Q053", cat: "Numerik — Soal Cerita", diff: "Sulit", q: "Sebuah tangki bahan bakar kendaraan operasional berisi 3/4 bagian. Setelah digunakan 15 liter, sisa bahan bakar menjadi 1/2 bagian. Berapa kapasitas total tangki?", opts: ["50 Liter", "45 Liter", "60 Liter", "80 Liter", "75 Liter"], ans: 2, exp: "<b>Jawaban Benar: C (60 Liter)</b><br><b>Persamaan Aljabar:</b> (3/4 - 1/2) X = 15 ➔ (1/4) X = 15 ➔ X = 60 Liter." },
+        { id: "Q054", cat: "Numerik — Soal Cerita", diff: "Sedang", q: "Rata-rata nilai tes 4 orang adalah 80. Jika nilai siswa ke-5 digabungkan, rata-ratanya menjadi 82. Berapa nilai siswa ke-5 tersebut?", opts: ["88", "85", "92", "90", "95"], ans: 3, exp: "<b>Jawaban Benar: D (90)</b><br><b>Perhitungan Rata-Rata:</b> Total Awal = 4 × 80 = 320. Total Baru = 5 × 82 = 410. Nilai Siswa Ke-5 = 410 - 320 = 90." },
+        { id: "Q055", cat: "Numerik — Soal Cerita", diff: "Sulit", q: "Sebuah bus bergerak dari Kota A ke Kota B pukul 07.00 dengan kecepatan 50 km/jam. Pada saat yang sama mobil sedan bergerak dari B ke A dengan kecepatan 70 km/jam. Jarak A-B = 240 km. Pukul berapa mereka berpapasan?", opts: ["Pukul 08.30", "Pukul 09.30", "Pukul 10.00", "Pukul 08.45", "Pukul 09.00"], ans: 4, exp: "<b>Jawaban Benar: E (Pukul 09.00)</b><br><b>Rumus Papasan:</b> Waktu = Jarak ÷ (V1 + V2) = 240 ÷ (50 + 70) = 240 ÷ 120 = 2 jam. 07.00 + 2 jam = 09.00." },
+        { id: "Q056", cat: "Numerik — Soal Cerita", diff: "Sedang", q: "Suatu dokumen laporan jika diketik 30 baris per halaman membutuhkan 240 halaman. Jika diketik 40 baris per halaman, berapa halaman yang dibutuhkan?", opts: ["180 Halaman", "200 Halaman", "160 Halaman", "210 Halaman", "190 Halaman"], ans: 0, exp: "<b>Jawaban Benar: A (180 Halaman)</b><br><b>Perbandingan Berbalik Nilai:</b> Total Baris = 240 × 30 = 7.200 baris. Halaman Baru = 7.200 ÷ 40 = 180 Halaman." },
+
+        // --- 8. SILOGISME & PENALARAN LOGIS (10 SOAL) ---
+        { id: "Q057", cat: "Silogisme & Penalaran Logis", diff: "Mudah", q: "Semua anggota kepolisian wajib menjaga kedisiplinan. Sebagian anggota kepolisian bertugas di bagian lalu lintas.<br>Kesimpulan yang paling tepat adalah:", opts: ["Semua anggota lalu lintas tidak disiplin", "Sebagian anggota lalu lintas wajib menjaga kedisiplinan", "Sebagian anggota yang disiplin bukan polisi", "Tidak ada anggota lalu lintas yang disiplin", "Semua yang disiplin pasti anggota lalu lintas"], ans: 1, exp: "<b>Jawaban Benar: B (Sebagian anggota lalu lintas wajib menjaga kedisiplinan)</b><br><b>Analisis Premis:</b> Karena SELURUH polisi wajib disiplin, maka sebagian polisi yang ada di lalu lintas juga WAJIB menjaga kedisiplinan." },
+        { id: "Q058", cat: "Silogisme & Penalaran Logis", diff: "Sedang", q: "Jika pengawasan ditingkatkan, maka tingkat kecurangan menurun. Saat ini tingkat kecurangan tidak menurun.<br>Kesimpulan yang sah adalah:", opts: ["Pengawasan telah ditingkatkan", "Kecurangan tetap terjadi", "Pengawasan tidak ditingkatkan", "Pengawasan tidak berguna", "Tingkat kecurangan naik"], ans: 2, exp: "<b>Jawaban Benar: C (Pengawasan tidak ditingkatkan)</b><br><b>Logika Modus Tollens:</b> P ➔ Q. ~Q terjadi. Maka kesimpulannya adalah ~P (Pengawasan tidak ditingkatkan)." },
+        { id: "Q059", cat: "Silogisme & Penalaran Logis", diff: "Mudah", q: "Semua calon perwira harus lulus tes fisik. Budi tidak lulus tes fisik.<br>Kesimpulan:", opts: ["Budi lulus tes psikologi", "Budi tetap menjadi perwira", "Semua orang lulus tes fisik", "Budi bukan calon perwira yang lulus", "Budi tidak ikut tes fisik"], ans: 3, exp: "<b>Jawaban Benar: D (Budi bukan calon perwira yang lulus)</b><br><b>Analisis:</b> Syarat mutlak lulus perwira adalah lulus tes fisik. Budi tidak lulus tes fisik, maka Budi bukan calon perwira yang lulus." },
+        { id: "Q060", cat: "Silogisme & Penalaran Logis", diff: "Sedang", q: "Jika hujan deras turun, maka jalanan licin. Jika jalanan licin, maka risiko kecelakaan meningkat. Hari ini hujan deras turun.<br>Kesimpulan yang pasti benar:", opts: ["Jalanan tidak licin", "Tidak terjadi kecelakaan", "Hujan deras berhenti", "Pengendara berjalan lambat", "Risiko kecelakaan meningkat"], ans: 4, exp: "<b>Jawaban Benar: E (Risiko kecelakaan meningkat)</b><br><b>Silogisme Hipotetis:</b> P ➔ Q, Q ➔ R. Fakta P terjadi, maka R pasti terjadi." },
+        { id: "Q061", cat: "Silogisme & Penalaran Logis", diff: "Sedang", q: "Semua penyidik memiliki keterampilan analisis bukti. Sebagian penyidik adalah ahli siber.<br>Kesimpulan:", opts: ["Sebagian ahli siber memiliki keterampilan analisis bukti", "Semua ahli siber adalah penyidik", "Tidak ada penyidik yang ahli siber", "Keterampilan analisis bukti hanya dimiliki ahli siber", "Semua ahli siber tidak bisa menganalisis bukti"], ans: 0, exp: "<b>Jawaban Benar: A (Sebagian ahli siber memiliki keterampilan analisis bukti)</b><br><b>Analisis Himpunan:</b> Irisan antara penyidik dan ahli siber memastikan bahwa sebagian ahli siber memiliki keterampilan analisis bukti." },
+        { id: "Q062", cat: "Silogisme & Penalaran Logis", diff: "Sulit", q: "Tidak ada pelanggar aturan yang mendapat penghargaan. Sebagian anggota mendapat penghargaan.<br>Kesimpulan:", opts: ["Semua anggota pelanggar aturan", "Sebagian anggota bukan pelanggar aturan", "Sebagian anggota yang mendapat penghargaan melanggar aturan", "Semua anggota mendapat penghargaan", "Tidak ada anggota yang disiplin"], ans: 1, exp: "<b>Jawaban Benar: B (Sebagian anggota bukan pelanggar aturan)</b><br><b>Analisis Negasi:</b> Anggota yang mendapat penghargaan dipastikan BUKAN merupakan pelanggar aturan." },
+        { id: "Q063", cat: "Silogisme & Penalaran Logis", diff: "Sedang", q: "Setiap hari Senin seluruh personel mengikuti upacara. Hari ini seluruh personel mengikuti upacara.<br>Kesimpulan:", opts: ["Hari ini pasti hari Senin", "Hari ini mungkin hari Senin", "Hari ini bukan hari Senin", "Upacara hanya ada hari Senin", "Upacara ditiadakan"], ans: 1, exp: "<b>Jawaban Benar: B (Hari ini mungkin hari Senin)</b><br><b>Kesesatan Konsekuen:</b> Upacara wajib hari Senin, tetapi upacara bisa saja diadakan pada hari lain untuk acara khusus." },
+        { id: "Q064", cat: "Silogisme & Penalaran Logis", diff: "Sedang", q: "Jika kondisi fisik bugar, maka latihan dapat berjalan maksimal. Latihan tidak berjalan maksimal.<br>Kesimpulan:", opts: ["Kondisi fisik bugar", "Latihan dihentikan", "Kondisi fisik tidak bugar", "Latihan ditunda", "Peserta tidak hadir"], ans: 2, exp: "<b>Jawaban Benar: C (Kondisi fisik tidak bugar)</b><br><b>Modus Tollens:</b> P ➔ Q. ~Q. Kesimpulan: ~P (Kondisi fisik tidak bugar)." },
+        { id: "Q065", cat: "Silogisme & Penalaran Logis", diff: "Sulit", q: "Semua tim SAR ahli berenang. Sebagian tim SAR adalah anggota Polairud.<br>Kesimpulan:", opts: ["Semua anggota Polairud adalah tim SAR", "Tidak ada anggota Polairud yang ahli berenang", "Sebagian anggota Polairud ahli berenang", "Semua yang ahli berenang adalah tim SAR", "Sebagian tim SAR tidak bisa berenang"], ans: 2, exp: "<b>Jawaban Benar: C (Sebagian anggota Polairud ahli berenang)</b><br><b>Analisis:</b> Anggota Polairud yang menjadi tim SAR dipastikan memiliki keahlian berenang." },
+        { id: "Q066", cat: "Silogisme & Penalaran Logis", diff: "Sedang", q: "Semua kendaraan patroli dilengkapi sirine. Sebagian kendaraan patroli berupa sepeda motor.<br>Kesimpulan:", opts: ["Semua sepeda motor dilengkapi sirine", "Tidak ada sepeda motor yang dilengkapi sirine", "Kendaraan patroli hanya mobil", "Sebagian sepeda motor patroli dilengkapi sirine", "Sirine hanya untuk sepeda motor"], ans: 3, exp: "<b>Jawaban Benar: D (Sebagian sepeda motor patroli dilengkapi sirine)</b><br><b>Analisis:</b> Sepeda motor yang berfungsi sebagai kendaraan patroli dipastikan dilengkapi sirine." },
+
+        // --- 9. LOGIKA SPASIAL & VISUAL - SVG (10 SOAL) ---
+        {
+            id: "Q067", cat: "Logika Spasial — SVG", diff: "Sedang",
+            q: "Manakah gambar hasil ROTASI 90 DERAJAT SEARAH JARUM JAM dari bentuk berikut?<br><div class='svg-container'><svg width='80' height='80' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><polygon points='50,20 80,80 20,80' fill='#d4a017'/></svg></div>",
+            opts: ["Rotasi A", "Rotasi B", "Rotasi C", "Rotasi D", "Rotasi E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><polygon points='80,50 20,80 20,20' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><polygon points='50,80 20,20 80,20' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><polygon points='20,50 80,20 80,80' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><polygon points='50,20 80,80 20,80' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='50' cy='50' r='30' fill='#d4a017'/></svg>"
+            ],
+            ans: 0,
+            exp: "<b>Jawaban Benar: A</b><br><b>Analisis Spasial:</b> Segitiga yang menunjuk ke atas (Utara) bila diputar 90° searah jarum jam akan menunjuk ke kanan (Timur)."
+        },
+        {
+            id: "Q068", cat: "Logika Spasial — SVG", diff: "Sedang",
+            q: "Pilihlah hasil PENCERMINAN HORISONTAL (terhadap sumbu tegak) dari gambar ini:<br><div class='svg-container'><svg width='80' height='80' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><path d='M20,20 L80,20 L20,80 Z' fill='#0b2340'/></svg></div>",
+            opts: ["Cermin A", "Cermin B", "Cermin C", "Cermin D", "Cermin E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><path d='M20,20 L80,20 L80,80 Z' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><path d='M20,80 L80,80 L80,20 Z' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><path d='M20,20 L80,20 L20,80 Z' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><path d='M20,80 L80,80 L20,20 Z' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='50' cy='50' r='25' fill='#0b2340'/></svg>"
+            ],
+            ans: 0,
+            exp: "<b>Jawaban Benar: A</b><br><b>Analisis Spasial:</b> Pencerminan vertikal/horizontal membalik posisi siku-siku dari kiri atas ke kanan atas."
+        },
+        {
+            id: "Q069", cat: "Logika Spasial — SVG", diff: "Sulit",
+            q: "Manakah gambar yang merupakan ROTASI 180 DERAJAT dari bentuk L berikut?<br><div class='svg-container'><svg width='80' height='80' viewBox='0 0 100 100'><path d='M30,20 L30,80 L80,80 L80,60 L50,60 L50,20 Z' fill='#d4a017' stroke='#0b2340' stroke-width='2'/></svg></div>",
+            opts: ["Bentuk A", "Bentuk B", "Bentuk C", "Bentuk D", "Bentuk E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><path d='M30,20 L30,80 L80,80 L80,60 L50,60 L50,20 Z' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><path d='M20,20 L70,20 L70,40 L40,40 L40,80 L20,80 Z' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><path d='M20,20 L80,20 L80,40 L50,40 L50,80 L20,80 Z' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><path d='M50,20 L80,20 L80,80 L30,80 L30,60 L50,60 Z' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='50' cy='50' r='30' fill='#d4a017'/></svg>"
+            ],
+            ans: 1,
+            exp: "<b>Jawaban Benar: B</b><br><b>Analisis Spasial:</b> Rotasi 180° membalikkan seluruh koordinat secara diagonal (Atas->Bawah, Kiri->Kanan)."
+        },
+        {
+            id: "Q070", cat: "Logika Spasial — SVG", diff: "Mudah",
+            q: "Manakah objek visual yang memiliki pola LINGKARAN HITAM DI POJOK KANAN BAWAH?<br>",
+            opts: ["A", "B", "C", "D", "E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='25' cy='25' r='10' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='75' cy='25' r='10' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='75' cy='75' r='10' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='25' cy='75' r='10' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><circle cx='50' cy='50' r='10' fill='#000'/></svg>"
+            ],
+            ans: 2,
+            exp: "<b>Jawaban Benar: C</b><br><b>Analisis Spasial:</b> Koordinat (75,75) pada kotak viewBox (100x100) berada tepat di pojok kanan bawah."
+        },
+        {
+            id: "Q071", cat: "Logika Spasial — SVG", diff: "Sedang",
+            q: "Pilihlah kelanjutan pola garis diagonal bertambah berikut: (1 garis ➔ 2 garis ➔ 3 garis ➔ ...)<br>",
+            opts: ["Pola A", "Pola B", "Pola C", "Pola D", "Pola E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='20' x2='80' y2='80' stroke='#0b2340' stroke-width='4'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='20' x2='80' y2='80' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='40' x2='60' y2='80' stroke='#0b2340' stroke-width='4'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='20' x2='80' y2='80' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='40' x2='60' y2='80' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='60' x2='40' y2='80' stroke='#0b2340' stroke-width='4'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='20' x2='80' y2='80' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='40' x2='60' y2='80' stroke='#0b2340' stroke-width='4'/><line x1='20' y1='60' x2='40' y2='80' stroke='#0b2340' stroke-width='4'/><line x1='40' y1='20' x2='80' y2='60' stroke='#0b2340' stroke-width='4'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='#0b2340'/></svg>"
+            ],
+            ans: 3,
+            exp: "<b>Jawaban Benar: D</b><br><b>Analisis Pola Visual:</b> Setiap deret menambah 1 garis sejajar baru. Gambar D memiliki tepat 4 garis sejajar."
+        },
+        {
+            id: "Q072", cat: "Logika Spasial — SVG", diff: "Sulit",
+            q: "Manakah pasangan bentuk geometris yang SIMETRIS PENCERMINAN VERTIKAL?<br>",
+            opts: ["Simetris A", "Simetris B", "Simetris C", "Simetris D", "Simetris E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><polygon points='30,20 10,80 50,80' fill='#d4a017'/><polygon points='70,20 50,80 90,80' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><polygon points='30,20 10,80 50,80' fill='#d4a017'/><polygon points='70,80 50,20 90,20' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='30' cy='50' r='20' fill='#d4a017'/><rect x='60' y='30' width='30' height='40' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='none'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='50' cy='50' r='30' fill='#d4a017'/></svg>"
+            ],
+            ans: 0,
+            exp: "<b>Jawaban Benar: A</b><br><b>Analisis Spasial:</b> Pilihan A menampilkan dua segitiga yang saling bercermin penuh terhadap sumbu tengah tegak."
+        },
+        {
+            id: "Q073", cat: "Logika Spasial — SVG", diff: "Sedang",
+            q: "Manakah gambar dengan PANAH MENGHADAP BARAT DAYA (Kiri Bawah)?<br>",
+            opts: ["Panah A", "Panah B", "Panah C", "Panah D", "Panah E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><line x1='50' y1='50' x2='50' y2='10' stroke='#000' stroke-width='6'/><polygon points='50,5 40,20 60,20' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><line x1='50' y1='50' x2='90' y2='50' stroke='#000' stroke-width='6'/><polygon points='95,50 80,40 80,60' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><line x1='80' y1='20' x2='20' y2='80' stroke='#000' stroke-width='6'/><polygon points='15,85 15,65 35,85' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><line x1='20' y1='20' x2='80' y2='80' stroke='#000' stroke-width='6'/><polygon points='85,85 65,85 85,65' fill='#000'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='50' cy='50' r='20' fill='#000'/></svg>"
+            ],
+            ans: 2,
+            exp: "<b>Jawaban Benar: C</b><br><b>Analisis Orientasi:</b> Arah panah pada C bergerak dari kanan atas (80,20) menuju kiri bawah (15,85) yang merupakan arah Barat Daya."
+        },
+        {
+            id: "Q074", cat: "Logika Spasial — SVG", diff: "Sedang",
+            q: "Identifikasi bentuk yang memiliki DUA LINGKARAN TERPOTONG DENGAN PERSEGI PANJANG MATRIKS:<br>",
+            opts: ["Bentuk A", "Bentuk B", "Bentuk C", "Bentuk D", "Bentuk E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='20' y='20' width='60' height='60' fill='none' stroke='#000' stroke-width='3'/><circle cx='20' cy='20' r='15' fill='#d4a017'/><circle cx='80' cy='80' r='15' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='20' y='20' width='60' height='60' fill='none' stroke='#000' stroke-width='3'/><circle cx='50' cy='50' r='15' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='30' cy='50' r='20' fill='#d4a017'/><circle cx='70' cy='50' r='20' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><line x1='10' y1='10' x2='90' y2='90' stroke='#000' stroke-width='4'/></svg>"
+            ],
+            ans: 0,
+            exp: "<b>Jawaban Benar: A</b><br><b>Analisis Visual:</b> Opsi A secara presisi memiliki 2 lingkaran di sudut diagonal persegi panjang."
+        },
+        {
+            id: "Q075", cat: "Logika Spasial — SVG", diff: "Sulit",
+            q: "Manakah bentuk hasil penggabungan (union) antara PERSEGI dan LINGKARAN yang berpusat sama?<br>",
+            opts: ["A", "B", "C", "D", "E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='25' y='25' width='50' height='50' fill='#0b2340'/><circle cx='50' cy='50' r='35' fill='#d4a017' opacity='0.7'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><polygon points='50,10 90,90 10,90' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><line x1='10' y1='50' x2='90' y2='50' stroke='#000' stroke-width='5'/></svg>"
+            ],
+            ans: 0,
+            exp: "<b>Jawaban Benar: A</b><br><b>Analisis Spasial:</b> Gambar A menggabungkan objek persegi pusat dengan lingkaran ber-opacity di titik koordinat (50,50)."
+        },
+        {
+            id: "Q076", cat: "Logika Spasial — SVG", diff: "Sedang",
+            q: "Pilihlah bentuk yang memiliki BINTANG LIMA DI DALAM LINGKARAN KUNING:<br>",
+            opts: ["A", "B", "C", "D", "E"],
+            isSvgOpt: true,
+            svgOpts: [
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='#d4a017'/><polygon points='50,20 58,38 78,38 62,50 68,70 50,58 32,70 38,50 22,38 42,38' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='#0b2340'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><polygon points='50,20 80,80 20,80' fill='#d4a017'/></svg>",
+                "<svg width='60' height='60' viewBox='0 0 100 100'><rect x='20' y='20' width='60' height='60' fill='none' stroke='#000' stroke-width='2'/></svg>"
+            ],
+            ans: 0,
+            exp: "<b>Jawaban Benar: A</b><br><b>Analisis Visual:</b> Gambar A menampilkan poligon bintang 5 sudut di dalam lingkaran emas."
+        },
+
+        // --- 10. ARAH MATA ANGIN & ORIENTASI RUANG DENGAN PETA SVG (6 SOAL) ---
+        { 
+            id: "Q077", cat: "Arah Mata Angin", diff: "Mudah", 
+            q: "Ahmad berjalan 10 meter ke utara, berbelok 6 meter ke timur, lalu berbelok 10 meter ke selatan.<br><div class='svg-container'><svg width='200' height='120' viewBox='0 0 200 120' style='background:#f1f5f9; border-radius:8px;'><polyline points='40,100 40,20 140,20 140,100' fill='none' stroke='#0b2340' stroke-width='3' stroke-dasharray='4'/><circle cx='40' cy='100' r='6' fill='#27ae60'/><text x='20' y='115' font-size='10' font-weight='bold'>Start</text><circle cx='140' cy='100' r='6' fill='#c0392b'/><text x='145' y='115' font-size='10' font-weight='bold'>Finish</text><text x='10' y='60' font-size='10'>10m U</text><text x='80' y='15' font-size='10'>6m T</text><text x='150' y='60' font-size='10'>10m S</text></svg></div>Di manakah posisi Ahmad sekarang relatif terhadap titik awal?", 
+            opts: ["6 meter di sebelah barat", "6 meter di sebelah timur", "10 meter di sebelah utara", "10 meter di sebelah selatan", "Kembali ke titik awal"], 
+            ans: 1, 
+            exp: "<b>Jawaban Benar: B (6 meter di sebelah timur)</b><br><b>Langkah Pergerakan:</b> Utara 10m (+10 Y) ➔ Timur 6m (+6 X) ➔ Selatan 10m (-10 Y). Posisi Akhir: X=+6, Y=0. Posisi 6 meter di timur." 
+        },
+        { 
+            id: "Q078", cat: "Arah Mata Angin", diff: "Mudah", 
+            q: "Budi menghadap ke barat. Ia berputar 90° searah jarum jam, lalu berputar lagi 180°.<br><div class='svg-container'><svg width='120' height='120' viewBox='0 0 100 100' style='background:#f1f5f9; border-radius:50%;'><text x='45' y='15' font-size='10' font-weight='bold'>U</text><text x='45' y='95' font-size='10' font-weight='bold'>S</text><text x='5' y='55' font-size='10' font-weight='bold'>B</text><text x='85' y='55' font-size='10' font-weight='bold'>T</text><circle cx='50' cy='50' r='3' fill='#000'/><path d='M50,50 L20,50' stroke='#c0392b' stroke-width='2' marker-end='url(#arrow)'/></svg></div>Ke arah manakah Budi menghadap sekarang?", 
+            opts: ["Utara", "Timur", "Selatan", "Barat", "Tenggara"], 
+            ans: 2, 
+            exp: "<b>Jawaban Benar: C (Selatan)</b><br><b>Langkah Putaran:</b> Barat + 90° (searah) = Utara. Utara + 180° = Selatan." 
+        },
+        { 
+            id: "Q079", cat: "Arah Mata Angin", diff: "Sedang", 
+            q: "Posisi Gedung A berada di utara Gedung B. Gedung C berada di timur Gedung B.<br><div class='svg-container'><svg width='160' height='120' viewBox='0 0 160 120' style='background:#f1f5f9; border-radius:8px;'><rect x='30' y='20' width='30' height='25' fill='#0b2340'/><text x='40' y='36' fill='#fff' font-size='10'>A</text><rect x='30' y='75' width='30' height='25' fill='#0b2340'/><text x='40' y='91' fill='#fff' font-size='10'>B</text><rect x='100' y='75' width='30' height='25' fill='#0b2340'/><text x='110' y='91' fill='#fff' font-size='10'>C</text><line x1='45' y1='45' x2='45' y2='75' stroke='#d4a017' stroke-width='2'/><line x1='60' y1='87' x2='100' y2='87' stroke='#d4a017' stroke-width='2'/></svg></div>Di manakah posisi Gedung A relatif terhadap Gedung C?", 
+            opts: ["Timur Laut", "Barat Daya", "Tenggara", "Barat Laut", "Utara"], 
+            ans: 3, 
+            exp: "<b>Jawaban Benar: D (Barat Laut)</b><br><b>Analisis Posisi:</b> B ada di selatan A dan barat C. Maka posisi A berada di sebelah Barat Laut dari C." 
+        },
+        { 
+            id: "Q080", cat: "Arah Mata Angin", diff: "Sedang", 
+            q: "Tim Patroli bergerak 5 km ke selatan, lalu 12 km ke barat.<br><div class='svg-container'><svg width='180' height='100' viewBox='0 0 180 100' style='background:#f1f5f9; border-radius:8px;'><polyline points='150,20 150,70 30,70' fill='none' stroke='#0b2340' stroke-width='3'/><line x1='150' y1='20' x2='30' y2='70' stroke='#c0392b' stroke-width='2' stroke-dasharray='4'/><text x='155' y='45' font-size='10'>5 km</text><text x='80' y='85' font-size='10'>12 km</text><text x='80' y='40' font-size='10' fill='#c0392b'>? km</text></svg></div>Berapakah jarak lurus terdekat dari posisi awal ke posisi akhir?", 
+            opts: ["13 km", "15 km", "17 km", "10 km", "14 km"], 
+            ans: 0, 
+            exp: "<b>Jawaban Benar: A (13 km)</b><br><b>Rumus Phytagoras:</b> c = √(a² + b²) = √(5² + 12²) = √(25 + 144) = √169 = 13 km." 
+        },
+        { 
+            id: "Q081", cat: "Arah Mata Angin", diff: "Sulit", 
+            q: "Seseorang menghadap ke arah Barat Daya. Ia berbelok 135° searah jarum jam.<br><div class='svg-container'><svg width='120' height='120' viewBox='0 0 100 100' style='background:#f1f5f9; border-radius:50%;'><text x='45' y='15' font-size='10'>U</text><text x='85' y='55' font-size='10'>T</text><text x='45' y='95' font-size='10'>S</text><text x='5' y='55' font-size='10'>B</text><path d='M50,50 L25,75' stroke='#c0392b' stroke-width='3'/><path d='M50,50 L50,10' stroke='#27ae60' stroke-width='3'/></svg></div>Ke arah manakah posisi hadapnya sekarang?", 
+            opts: ["Utara", "Timur Laut", "Timur", "Tenggara", "Barat Laut"], 
+            ans: 0, 
+            exp: "<b>Jawaban Benar: A (Utara)</b><br><b>Perhitungan Putaran:</b> Barat Daya (225°) + 135° searah jarum jam = 360° (Utara)." 
+        },
+        { 
+            id: "Q082", cat: "Arah Mata Angin", diff: "Sulit", 
+            q: "Berdasarkan denah lokasi berikut, manakah jalur yang paling tepat dari Pos Utama menuju Markas Komando?<br><div class='svg-container'><svg width='220' height='120' viewBox='0 0 220 120' style='background:#f1f5f9; border-radius:8px;'><rect x='10' y='45' width='35' height='30' fill='#27ae60'/><text x='15' y='63' fill='#fff' font-size='8'>Pos Utama</text><rect x='170' y='45' width='40' height='30' fill='#0b2340'/><text x='175' y='63' fill='#fff' font-size='8'>Markas</text><path d='M45,60 L90,20 L130,20 L170,60' fill='none' stroke='#d4a017' stroke-width='3'/><text x='100' y='15' font-size='9'>Rute A (Utara-Timur)</text></svg></div>", 
+            opts: ["Bergerak ke Utara lalu ke Timur memutar", "Bergerak langsung ke Timur searah garis lurus", "Bergerak ke Selatan lalu ke Barat", "Bergerak ke Barat Laut", "Bergerak memutar ke Tenggara"], 
+            ans: 0, 
+            exp: "<b>Jawaban Benar: A (Bergerak ke Utara lalu ke Timur memutar)</b><br><b>Analisis Peta:</b> Jalur Rute A diarahkan naik ke utara dahulu sebelum berbelok menuju timur Mako." 
+        },
+
+        // --- 11. PENGETAHUAN UMUM (8 SOAL) ---
+        { id: "Q083", cat: "Pengetahuan Umum", diff: "Mudah", q: "Lembaga negara Indonesia yang berwenang menguji undang-undang terhadap UUD 1945 adalah:", opts: ["Mahkamah Agung", "Mahkamah Konstitusi", "Komisi Yudisial", "DPR", "MPR"], ans: 1, exp: "<b>Jawaban Benar: B (Mahkamah Konstitusi)</b><br><b>Fakta Hukum:</b> Mahkamah Konstitusi (MK) berwenang menguji UU terhadap UUD 1945." },
+        { id: "Q084", cat: "Pengetahuan Umum", diff: "Mudah", q: "Pancasila sebagai dasar negara Indonesia secara resmi disahkan oleh PPKI pada tanggal:", opts: ["17 Agustus 1945", "18 Agustus 1945", "1 Juni 1945", "22 Juni 1945", "28 Oktober 1928"], ans: 1, exp: "<b>Jawaban Benar: B (18 Agustus 1945)</b><br><b>Fakta Sejarah:</b> PPKI mengesahkan Pancasila dan UUD 1945 pada tanggal 18 Agustus 1945." },
+        { id: "Q085", cat: "Pengetahuan Umum", diff: "Sedang", q: "Lagu kebangsaan Indonesia Raya pertama kali dikumandangkan pada peristiwa:", opts: ["Proklamasi Kemerdekaan", "Kongres Pemuda II", "Sidang BPUPKI", "Deklarasi Juanda", "Hari Pahlawan"], ans: 1, exp: "<b>Jawaban Benar: B (Kongres Pemuda II)</b><br><b>Fakta Sejarah:</b> Indonesia Raya ciptaan W.R. Supratman pertama kali dimainkan saat Kongres Pemuda II tanggal 28 Oktober 1928." },
+        { id: "Q086", cat: "Pengetahuan Umum", diff: "Sedang", q: "Provinsi terbanyak di pulau Sumatra berdasarkan pemekaran wilayah saat ini adalah:", opts: ["8 Provinsi", "9 Provinsi", "10 Provinsi", "11 Provinsi", "12 Provinsi"], ans: 2, exp: "<b>Jawaban Benar: C (10 Provinsi)</b><br><b>Geografi Indonesia:</b> Sumatra terdiri atas 10 provinsi (Aceh, Sumut, Sumbar, Riau, Kepri, Jambi, Bengkulu, Sumsel, Babel, Lampung)." },
+        { id: "Q087", cat: "Pengetahuan Umum", diff: "Sedang", q: "Bhinneka Tunggal Ika tertera dalam Kitab Sutasoma karya:", opts: ["Mpu Sedah", "Mpu Panular", "Mpu Tantular", "Mpu Prapanca", "Mpu Kanwa"], ans: 2, exp: "<b>Jawaban Benar: C (Mpu Tantular)</b><br><b>Sejarah Sastra:</b> Semboyan Bhinneka Tunggal Ika ditulis oleh Mpu Tantular dalam Kitab Sutasoma." },
+        { id: "Q088", cat: "Pengetahuan Umum", diff: "Sulit", q: "Organisasi internasional PBB secara resmi berdiri pada tanggal:", opts: ["24 Oktober 1945", "10 November 1945", "14 Agustus 1941", "17 Desember 1948", "1 Juni 1946"], ans: 0, exp: "<b>Jawaban Benar: A (24 Oktober 1945)</b><br><b>Sejarah Dunia:</b> Perserikatan Bangsa-Bangsa (PBB) berdiri resmi pada 24 Oktober 1945." },
+        { id: "Q089", cat: "Pengetahuan Umum", diff: "Mudah", q: "Mata uang negara Jepang adalah:", opts: ["Yuan", "Won", "Yen", "Ringgit", "Pesos"], ans: 2, exp: "<b>Jawaban Benar: C (Yen)</b><br><b>Pengetahuan Dunia:</b> Mata uang resmi Jepang adalah Yen (¥)." },
+        { id: "Q090", cat: "Pengetahuan Umum", diff: "Sedang", q: "Konferensi Asia Afrika (KAA) pertama kali diselenggarakan di Bandung pada tahun:", opts: ["1950", "1953", "1955", "1960", "1965"], ans: 2, exp: "<b>Jawaban Benar: C (1955)</b><br><b>Sejarah Diplomasi:</b> KAA diselenggarakan di Gedung Merdeka Bandung pada tanggal 18-24 April 1955." },
+
+        // --- 12. PENGETAHUAN KHUSUS POLRI (10 SOAL) ---
+        { id: "Q091", cat: "Pengetahuan POLRI", diff: "Mudah", q: "Undang-Undang Republik Indonesia yang mengatur tentang Kepolisian Negara Republik Indonesia adalah:", opts: ["UU No. 2 Tahun 2002", "UU No. 3 Tahun 2002", "UU No. 34 Tahun 2004", "UU No. 5 Tahun 2014", "UU No. 22 Tahun 2009"], ans: 0, exp: "<b>Jawaban Benar: A (UU No. 2 Tahun 2002)</b><br><b>Dasar Hukum:</b> Landasan utama kepolisian diatur dalam UU No. 2 Tahun 2002." },
+        { id: "Q092", cat: "Pengetahuan POLRI", diff: "Mudah", q: "Tugas pokok Kepolisian Negara Republik Indonesia diatur dalam UU No. 2 Tahun 2002 pasal:", opts: ["Pasal 10", "Pasal 13", "Pasal 15", "Pasal 18", "Pasal 20"], ans: 1, exp: "<b>Jawaban Benar: B (Pasal 13)</b><br><b>Dasar Hukum:</b> Pasal 13 memuat 3 tugas pokok: Harkamtibmas, Gakkum, serta Lindiaksimas." },
+        { id: "Q093", cat: "Pengetahuan POLRI", diff: "Sedang", q: "Kepolisian Negara Republik Indonesia berada di bawah kedudukan presiden secara langsung sesuai prinsip:", opts: ["Departemental", "Nondepartemental", "Satu Kesatuan Komando Swatantra", "Hierarki Kementerian", "Otonomi Khusus"], ans: 1, exp: "<b>Jawaban Benar: B (Nondepartemental)</b><br><b>Kedudukan Polri:</b> Polri berada langsung di bawah Presiden Republik Indonesia." },
+        { id: "Q094", cat: "Pengetahuan POLRI", diff: "Sedang", q: "Semboyan Tri Brata merupakan pedoman hidup bagi setiap anggota Polri. Isi dari Tri Brata ketiga adalah:", opts: ["Bakti kami kepada negara", "Senantiasa melindungi, mengayomi, dan melayani masyarakat", "Setia kepada Pancasila dan UUD 1945", "Menegakkan hukum dengan adil", "Memelihara keamanan nasional"], ans: 1, exp: "<b>Jawaban Benar: B (Senantiasa melindungi, mengayomi, dan melayani masyarakat)</b><br><b>Pedoman Etika:</b> Tri Brata ke-3 berbunyi: 'Senantiasa melindungi, mengayomi, dan melayani masyarakat dengan keikhlasan...'" },
+        { id: "Q095", cat: "Pengetahuan POLRI", diff: "Sedang", q: "Catur Prasetya merupakan pedoman kerja bagi anggota Polri. Prinsip pertamanya adalah:", opts: ["Menjunjung tinggi kebenaran", "Menjaga kehormatan bangsa", "Ksatria", "Sadar", "Tangguh"], ans: 0, exp: "<b>Jawaban Benar: A (Menjunjung tinggi kebenaran)</b><br><b>Doktrin Polri:</b> Catur Prasetya memuat pedoman kerja anggota Polri." },
+        { id: "Q096", cat: "Pengetahuan POLRI", diff: "Mudah", q: "Hari Bhayangkara diperingati setiap tanggal:", opts: ["1 Juni", "1 Juli", "17 Agustus", "28 Oktober", "10 November"], ans: 1, exp: "<b>Jawaban Benar: B (1 Juli)</b><br><b>Sejarah Polri:</b> Penetapan Penetapan Presiden No. 11/1946 menjadikan tanggal 1 Juli sebagai Hari Bhayangkara." },
+        { id: "Q097", cat: "Pengetahuan POLRI", diff: "Sedang", q: "Satuan kerja Polri yang bertugas melakukan penyelidikan dan penyidikan tindak pidana adalah:", opts: ["Sabhara", "Reskrim", "Lantas", "Intelkam", "Brimob"], ans: 1, exp: "<b>Jawaban Benar: B (Reskrim)</b><br><b>Fungsi Operasional:</b> Reserse Kriminal (Reskrim) bertugas dalam penegakan hukum tindak pidana." },
+        { id: "Q098", cat: "Pengetahuan POLRI", diff: "Sedang", q: "Kepala Kepolisian Negara Republik Indonesia (Kapolri) diangkat dan diberhentikan oleh Presiden dengan persetujuan:", opts: ["Mahkamah Agung", "DPR", "MPR", "Kompolnas", "Kejaksaan Agung"], ans: 1, exp: "<b>Jawaban Benar: B (DPR)</b><br><b>Ketentuan Tata Negara:</b> Pengangkatan Kapolri membutuhkan persetujuan Dewan Perwakilan Rakyat (DPR)." },
+        { id: "Q099", cat: "Pengetahuan POLRI", diff: "Sulit", q: "Lembaga eksternal yang bertugas membantu Presiden dalam menetapkan arah kebijakan Polri adalah:", opts: ["Kompolnas", "Komnas HAM", "KPK", "LPSJR", "Komisi III DPR"], ans: 0, exp: "<b>Jawaban Benar: A (Kompolnas)</b><br><b>Kelembagaan:</b> Komisi Kepolisian Nasional (Kompolnas) bertugas memberikan saran dan pertimbangan kepada Presiden." },
+        { id: "Q100", cat: "Pengetahuan POLRI", diff: "Sedang", q: "Pangkat tertinggi dalam jenjang Bintara Kepolisian Republik Indonesia adalah:", opts: ["Bripda", "Bripka", "Aipda", "Aiptu", "Brigadir"], ans: 3, exp: "<b>Jawaban Benar: D (Aiptu)</b><br><b>Kepangkatan Polri:</b> Ajun Inspektur Polisi Satu (Aiptu) adalah pangkat tertinggi golongan Bintara." }
+    ];
+
+    let currentKIndex = 0;
+    let userAnswers = {};
+
+    function showSection(secId) {
+        document.getElementById("sec-start").style.display = "none";
+        document.getElementById("sec-kecerdasan").style.display = "none";
+        document.getElementById("sec-result").style.display = "none";
+        document.getElementById("sec-review").style.display = "none";
+
+        if (secId === "start") document.getElementById("sec-start").style.display = "block";
+        if (secId === "kecerdasan") document.getElementById("sec-kecerdasan").style.display = "block";
+        if (secId === "result") document.getElementById("sec-result").style.display = "block";
+        if (secId === "review") document.getElementById("sec-review").style.display = "block";
+
+        currentSection = secId;
+    }
+
+    function startFullSimulation() {
+        let nameInput = document.getElementById("inputNama").value.trim();
+        if (!nameInput) {
+            alert("Harap masukkan nama lengkap peserta terlebih dahulu!");
+            return;
+        }
+
+        initSessionOnStart(nameInput);
+        userAnswers = {};
+        currentKIndex = 0;
+
+        showSection("kecerdasan");
+        renderKecerdasanQuestion();
+        renderKecerdasanNav();
+        startTimer();
+    }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timerLeft--;
+            let m = Math.floor(timerLeft / 60);
+            let s = timerLeft % 60;
+            document.getElementById("timer").innerText = 
+                String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+
+            if (timerLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Waktu ujian telah habis!");
+                finishSimulation();
+            }
+        }, 1000);
+    }
+
+    function renderKecerdasanQuestion() {
+        let qData = rawKecerdasan[currentKIndex];
+        document.getElementById("k-q-no").innerText = "Soal " + (currentKIndex + 1) + " dari " + rawKecerdasan.length;
+        document.getElementById("k-q-cat").innerText = qData.cat + " (" + qData.diff + ")";
+        document.getElementById("k-q-text").innerHTML = qData.q;
+
+        let optContainer = document.getElementById("k-options");
+        optContainer.innerHTML = "";
+
+        if (qData.isSvgOpt && qData.svgOpts) {
+            let grid = document.createElement("div");
+            grid.className = "svg-opt-grid";
+
+            qData.svgOpts.forEach((svgHtml, idx) => {
+                let card = document.createElement("div");
+                card.className = "svg-opt-card";
+                if (userAnswers[currentKIndex] === idx) card.classList.add("selected");
+
+                card.innerHTML = "<div style='font-weight:bold; margin-bottom:4px;'>" + String.fromCharCode(65 + idx) + "</div>" + svgHtml;
+                card.onclick = () => selectKecerdasanAnswer(idx);
+                grid.appendChild(card);
+            });
+            optContainer.appendChild(grid);
+        } else {
+            qData.opts.forEach((optText, idx) => {
+                let optDiv = document.createElement("div");
+                optDiv.className = "opt";
+                if (userAnswers[currentKIndex] === idx) optDiv.classList.add("selected");
+
+                optDiv.innerHTML = "<strong style='min-width:20px;'>" + String.fromCharCode(65 + idx) + ".</strong> <span>" + optText + "</span>";
+                optDiv.onclick = () => selectKecerdasanAnswer(idx);
+                optContainer.appendChild(optDiv);
+            });
+        }
+
+        renderKecerdasanNav();
+    }
+
+    function renderKecerdasanNav() {
+        let navContainer = document.getElementById("k-navGrid");
+        navContainer.innerHTML = "";
+
+        rawKecerdasan.forEach((item, idx) => {
+            let navBtn = document.createElement("div");
+            navBtn.className = "nav-item";
+            if (userAnswers[idx] !== undefined) navBtn.classList.add("filled");
+            if (idx === currentKIndex) navBtn.classList.add("active");
+
+            navBtn.innerText = idx + 1;
+            navBtn.onclick = () => {
+                currentKIndex = idx;
+                renderKecerdasanQuestion();
+            };
+            navContainer.appendChild(navBtn);
+        });
+    }
+
+    function selectKecerdasanAnswer(ansIdx) {
+        userAnswers[currentKIndex] = ansIdx;
+        renderKecerdasanQuestion();
+
+        // AutoNext Logic
+        setTimeout(() => {
+            if (currentKIndex < rawKecerdasan.length - 1) {
+                currentKIndex++;
+                renderKecerdasanQuestion();
+            }
+        }, 300);
+    }
+
+    function prevQ_Kecerdasan() {
+        if (currentKIndex > 0) {
+            currentKIndex--;
+            renderKecerdasanQuestion();
+        }
+    }
+
+    function nextQ_Kecerdasan() {
+        if (currentKIndex < rawKecerdasan.length - 1) {
+            currentKIndex++;
+            renderKecerdasanQuestion();
+        }
+    }
+
+    function confirmFinishKecerdasan() {
+        let answeredCount = Object.keys(userAnswers).length;
+        if (confirm("Anda baru menjawab " + answeredCount + " dari 100 soal. Yakin ingin mengakhiri tes sekarang?")) {
+            finishSimulation();
+        }
+    }
+
+    function finishSimulation() {
+        clearInterval(timerInterval);
+
+        let correctCount = 0;
+        let subtestStats = {};
+
+        rawKecerdasan.forEach((q, idx) => {
+            if (!subtestStats[q.cat]) {
+                subtestStats[q.cat] = { total: 0, benar: 0 };
+            }
+            subtestStats[q.cat].total++;
+
+            if (userAnswers[idx] === q.ans) {
+                correctCount++;
+                subtestStats[q.cat].benar++;
+            }
+        });
+
+        let finalScore = Math.round((correctCount / rawKecerdasan.length) * 100);
+
+        simulationResult.kecerdasan.userAns = userAnswers;
+        simulationResult.kecerdasan.benar = correctCount;
+        simulationResult.kecerdasan.skor = finalScore;
+
+        document.getElementById("resNamaPeserta").innerText = "NAMA PESERTA: " + pName.toUpperCase();
+        document.getElementById("resValKecerdasan").innerText = finalScore;
+        document.getElementById("resDetailKecerdasan").innerText = "Jawaban Benar: " + correctCount + " / 100 Soal";
+
+        // Tabel Subtes
+        let subTableHtml = "<table class='subtest-table'><thead><tr><th>No</th><th>Kategori Subtes</th><th>Jumlah Soal</th><th>Benar</th><th>Nilai Kategori</th></tr></thead><tbody>";
+        let subIdx = 1;
+        for (let cat in subtestStats) {
+            let catTotal = subtestStats[cat].total;
+            let catBenar = subtestStats[cat].benar;
+            let catScore = Math.round((catBenar / catTotal) * 100);
+            subTableHtml += `<tr>
+                <td>${subIdx++}</td>
+                <td>${cat}</td>
+                <td>${catTotal}</td>
+                <td><strong style="color:#27ae60;">${catBenar}</strong></td>
+                <td><strong>${catScore}</strong></td>
+            </tr>`;
+        }
+        subTableHtml += "</tbody></table>";
+        document.getElementById("resSubtestTable").innerHTML = subTableHtml;
+
+        showSection("result");
+        sendToGoogleAppsScript(finalScore, correctCount, subtestStats);
+    }
+
+    function sendToGoogleAppsScript(score, totalCorrect, subtestStats) {
+        if (isResultSubmitted) return;
+        isResultSubmitted = true;
+
+        let durationSeconds = 5400 - timerLeft;
+        let durationMin = Math.floor(durationSeconds / 60);
+        let durationSec = durationSeconds % 60;
+        let durasiFormatted = durationMin + " menit " + durationSec + " detik";
+
+        let now = new Date();
+        let timestampStr = now.getFullYear() + "-" + 
+            String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+            String(now.getDate()).padStart(2, '0') + " " + formatTimeObj(now);
+
+        // Ekstraksi nilai per kategori untuk fleksibilitas pembacaan Apps Script
+        let subtestScores = {};
+        if (subtestStats) {
+            for (let cat in subtestStats) {
+                let catScore = Math.round((subtestStats[cat].benar / subtestStats[cat].total) * 100);
+                subtestScores[cat] = catScore;
+            }
+        }
+
+        // Payload komprehensif yang mencakup seluruh variasi nama properti standar Apps Script
+        let payload = {
+            // Identitas Sesi & Peserta
+            sessionId: currentSessionId,
+            SessionId: currentSessionId,
+            sessionIdPeserta: currentSessionId,
+            namaSiswa: pName,
+            NamaSiswa: pName,
+            nama: pName,
+            Nama: pName,
+            namaPeserta: pName,
+            NamaPeserta: pName,
+
+            // Program & Test Title
+            program: "SELEKSI POLRI",
+            Program: "SELEKSI POLRI",
+            namaTryout: "CAT KECERDASAN POLRI (100 SOAL)",
+            NamaTryout: "CAT KECERDASAN POLRI (100 SOAL)",
+            namaTes: "CAT KECERDASAN POLRI",
+            NamaTes: "CAT KECERDASAN POLRI",
+
+            // Waktu & Durasi
+            startTimeStr: sessionStartTimeStr,
+            WaktuMulai: sessionStartTimeStr,
+            waktuPengerjaan: timestampStr,
+            WaktuPengerjaan: timestampStr,
+            tanggal: timestampStr,
+            Tanggal: timestampStr,
+            durasi: durasiFormatted,
+            Durasi: durasiFormatted,
+
+            // Hasil Nilai Utama
+            skorAkhir: score,
+            SkorAkhir: score,
+            nilaiAkhir: score,
+            NilaiAkhir: score,
+            nilai: score,
+            Nilai: score,
+            totalBenar: totalCorrect,
+            TotalBenar: totalCorrect,
+            benar: totalCorrect,
+            Benar: totalCorrect,
+            totalSoal: 100,
+            TotalSoal: 100,
+
+            // Subtes Per Kategori
+            kecerdasan: score,
+            Kecerdasan: score,
+            subtes: subtestScores,
+            Subtes: JSON.stringify(subtestScores),
+
+            // Rincian kategori individual (jika Apps Script membaca per kolom subtes)
+            verbalSinonim: subtestScores["Verbal — Sinonim"] || 0,
+            verbalAntonim: subtestScores["Verbal — Antonim"] || 0,
+            verbalAnalogi: subtestScores["Verbal — Analogi Kata"] || 0,
+            pengelompokanKata: subtestScores["Pengelompokan Kata"] || 0,
+            numerikDeret: subtestScores["Numerik — Deret Angka"] || 0,
+            matematikaBerpola: subtestScores["Matematika Berpola"] || 0,
+            numerikSoalCerita: subtestScores["Numerik — Soal Cerita"] || 0,
+            silogisme: subtestScores["Silogisme & Penalaran Logis"] || 0,
+            spasialSVG: subtestScores["Logika Spasial — SVG"] || 0,
+            arahMataAngin: subtestScores["Arah Mata Angin"] || 0,
+            pengetahuanUmum: subtestScores["Pengetahuan Umum"] || 0,
+            pengetahuanPolri: subtestScores["Pengetahuan POLRI"] || 0
+        };
+
+        // Pengiriman payload menggunakan text/plain JSON Stringify untuk menghindari kerumitan CORS di Apps Script
+        fetch(APP_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        })
+        .then(() => console.log("Data hasil tryout berhasil dikirim ke Google Apps Script."))
+        .catch(err => {
+            console.error("Gagal mengirim data via POST JSON, mencoba fallback URLSearchParams:", err);
+            // Fallback pengiriman menggunakan URLSearchParams
+            let searchParams = new URLSearchParams();
+            for (let key in payload) {
+                if (typeof payload[key] === 'object') {
+                    searchParams.append(key, JSON.stringify(payload[key]));
+                } else {
+                    searchParams.append(key, payload[key]);
+                }
+            }
+            fetch(APP_SCRIPT_URL + "?" + searchParams.toString(), { method: "GET", mode: "no-cors" })
+            .catch(e => console.error("Gagal mengirim data via fallback:", e));
+        });
+    }
+
+    function showReviewSection() {
+        document.getElementById("reviewNamaPeserta").innerText = "PESERTA: " + pName.toUpperCase();
+        let container = document.getElementById("reviewContainerKecerdasan");
+        container.innerHTML = "";
+
+        rawKecerdasan.forEach((q, idx) => {
+            let uAns = userAnswers[idx];
+            let isCorrect = uAns === q.ans;
+
+            let itemDiv = document.createElement("div");
+            itemDiv.className = "review-item " + (isCorrect ? "correct" : "incorrect");
+
+            let uAnsText = uAns !== undefined ? String.fromCharCode(65 + uAns) : "Tidak Dijawab";
+            let cAnsText = String.fromCharCode(65 + q.ans);
+
+            itemDiv.innerHTML = `
+                <div style="font-weight:bold; color:var(--navy); margin-bottom:5px;">Soal ${idx + 1} — ${q.cat}</div>
+                <div style="font-size:14px; margin-bottom:10px;">${q.q}</div>
+                <div style="font-size:13px; margin-bottom:5px;">Jawaban Anda: <strong style="color:${isCorrect ? '#27ae60' : '#c0392b'}">${uAnsText}</strong> | Kunci: <strong>${cAnsText}</strong></div>
+                <div class="pembahasan-box">${q.exp}</div>
+            `;
+            container.appendChild(itemDiv);
+        });
+
+        showSection("review");
+    }
+
+    function downloadPembahasanPDF() {
+        const element = document.getElementById("reviewCaptureArea");
+        const opt = {
+            margin:       10,
+            filename:     `Pembahasan_CAT_Kecerdasan_${pName.replace(/\s+/g, '_')}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Menggunakan window.jspdf & html2canvas untuk konversi PDF
+        html2canvas(element, { scale: 2 }).then(canvas => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = 210 - 20;
+            const pageHeight = 295;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 10;
+
+            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight + 10;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            pdf.save(`Pembahasan_CAT_Kecerdasan_${pName.replace(/\s+/g, '_')}.pdf`);
+        });
+    }
+</script>
+</body>
+</html>
